@@ -1,4 +1,4 @@
-<script set up>
+<script setup>
     import Label from "./Label.vue";
     import Button from "./Button.vue";
     import Input from "./Input.vue";
