@@ -8,16 +8,18 @@ import Register from "../views/Register.vue";
 import MyProfile from "../views/MyProfile.vue";
 import UserProfile from "../views/UserProfile.vue";
 import PrivateChat from "../views/PrivateChat.vue";
+import CargaPartido from "../views/CargaPartido.vue";
 
 const routes = [
     { path: "/",                    component: Splash,},
     { path: "/iniciar-sesion",      component: Login,},
     { path: "/registro",            component: Register,},
-    { path: "/home",                component: Home,        meta: { requiresAuth: true, }},
-    { path: "/chat",                component: Chat,        meta: { requiresAuth: true, }},
-    { path: "/perfil",              component: MyProfile,   meta: { requiresAuth: true, }},
-    { path: "/usuario/:id",         component: UserProfile, meta: { requiresAuth: true, }},
-    { path: "/usuario/:id/chat",    component: PrivateChat, meta: { requiresAuth: true, }},
+    { path: "/home",                component: Home,            meta: { requiresAuth: true, }},
+    { path: "/chat",                component: Chat,            meta: { requiresAuth: true, }},
+    { path: "/perfil",              component: MyProfile,       meta: { requiresAuth: true, }},
+    { path: "/usuario/:id",         component: UserProfile,     meta: { requiresAuth: true, }},
+    { path: "/usuario/:id/chat",    component: PrivateChat,     meta: { requiresAuth: true, }},
+    { path: "/carga-partidos",      component: CargaPartido,    meta: { requiresAuth: true, }},
 ]
 
 const router = createRouter ({
