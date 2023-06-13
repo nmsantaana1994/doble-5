@@ -19,7 +19,7 @@ const routes = [
     { path: "/perfil",              component: MyProfile,       meta: { requiresAuth: true, }},
     { path: "/usuario/:id",         component: UserProfile,     meta: { requiresAuth: true, }},
     { path: "/usuario/:id/chat",    component: PrivateChat,     meta: { requiresAuth: true, }},
-    { path: "/carga-partidos",       component: CargaPartido,    meta: { requiresAuth: true, }},
+    { path: "/carga-partidos",      component: CargaPartido,    meta: { requiresAuth: true, }},
 ]
 
 const router = createRouter ({
