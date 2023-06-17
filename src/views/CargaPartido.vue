@@ -1,49 +1,49 @@
 <script setup>
-import {ref} from "vue";
+import { ref } from "vue";
 import { useAuth } from "../composition/useAuth.js";
 import { useRouter } from "vue-router";
 import { cargarPartido } from "../services/partidos.js";
 
 //const {user} = useAuth();
-const {fields, user, loading, handleSubmit} = useCargaPartido();
+const { fields, user, loading, handleSubmit } = useCargaPartido();
 
 function useCargaPartido() {
-    const {user} = useAuth();
-    const router = useRouter();
+  const { user } = useAuth();
+  const router = useRouter();
 
-    const fields = ref({
-        nombre: "",
-        complejo: "",
-        fecha: "",
-        hora: "",
-        cantidadJ: "",
-        //vacantes: "",
-        cambios: "",
-        tipo: "",
-        valorCancha: "",
-    });
+  const fields = ref({
+    nombre: "",
+    complejo: "",
+    fecha: "",
+    hora: "",
+    cantidadJ: "",
+    //vacantes: "",
+    cambios: "",
+    tipo: "",
+    valorCancha: "",
+  });
 
-    const loading = ref(false);
+  const loading = ref(false);
 
-    async function handleSubmit() {
-        loading.value = true;
+  async function handleSubmit() {
+    loading.value = true;
 
         await cargarPartido({
             ...fields.value,
             id,
         });
 
-        loading.value = false;
+    loading.value = false;
 
-        router.push('/home');
-    }
+    router.push("/home");
+  }
 
-    return {
-        fields,
-        user,
-        loading,
-        handleSubmit
-    }
+  return {
+    fields,
+    user,
+    loading,
+    handleSubmit,
+  };
 }
 </script>
 
@@ -148,5 +148,8 @@ function useCargaPartido() {
                 <button type="submit" class="btn btn-secondary">Cargar</button>
             </form>
         </div>
-    </section>
+        <button type="submit" class="btn btn-secondary">Cargar</button>
+      </form>
+    </div>
+  </section>
 </template>

@@ -22,6 +22,4 @@ export async function cargarPartido(data/*{nombre, complejo, fecha, hora, cantid
                 
         
     }
-    
-   
 }
