@@ -29,7 +29,8 @@ function useCargaPartido() {
         loading.value = true;
 
         await cargarPartido({
-            ...fields.value
+            ...fields.value,
+            id,
         });
 
         loading.value = false;
@@ -54,7 +55,7 @@ function useCargaPartido() {
             <form
                 action="#"
                 method="POST"
-                @submit="handleSubmit"
+                @submit.prevent="handleSubmit"
             >
                 <h3 class="mb-3">Datos del partido</h3>
                 <div class="mb-3">
