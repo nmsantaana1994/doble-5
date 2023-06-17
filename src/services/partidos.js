@@ -1,16 +1,25 @@
 import { doc, collection, serverTimestamp, setDoc, addDoc } from "@firebase/firestore";
 import { db } from "./firebase";
 
-export async function cargarPartido(data) {
-    const partidoRef = collection(db, "partidos");
-
+export async function cargarPartido(data/*{nombre, complejo, fecha, hora, cantidadJ, cambios, tipo, valorCancha}*/) {
     try {
-        await addDoc(partidoRef, {
-          ...data,
-          created_at: serverTimestamp(),
-        });
-      } catch (err) {
-        console.error("[partidos.js cargaPartido] Ocurrió un error al cargar el partido.", err);
-        throw err;
-      }
+        const partidoRef = collection(db, "partidos");
+
+        return addDoc(partidoRef, {
+            ...data,
+            // nombre,
+            // complejo,
+            // fecha,
+            // hora,
+            // cantidadJ,
+            // cambios,
+            // tipo,
+            // valorCancha,
+            created_at: serverTimestamp(),
+        })
+        
+    } catch (err) {
+                
+        
+    }
 }

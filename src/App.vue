@@ -27,28 +27,30 @@
 
     <template v-if="user.id !== null">
     <nav class="navbar fixed-bottom bg-dark">
-            <div class="container-fluid align-items-center">
-                <ul class="row m-0 justify-content-center">
+            <div class="container-fluid align-items-center p-0">
+                <ul class="row m-0 p-0 justify-content-center">
                     <li class="col-2 p-0 mx-1">
-                        <a class="col-2 w-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                        <a class="col-2 w-auto d-flex justify-content-center" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
                             <img src="./assets/img/menu-hamburguesa.png" alt="Sobre para mandar mensajes" class="icono-nav" />
                         </a>
                     </li>
-                    <li class="col-2  p-0 mx-1">
-                        <router-link :to="'/chat'">
+                    <li class="col-2 p-0 mx-1">
+                        <router-link :to="'/chat'" class="d-flex justify-content-center">
                             <img src="./assets/img/sobre.png" alt="Sobre para mandar mensajes" class="icono-nav" />
                         </router-link>
                     </li>
-                    <li class="col-2  p-0 mx-1">
-                        <router-link :to="`/carga-partidos`"  class="fondo-plus">
+                    <li class="col-2 p-0 mx-1">
+                        <router-link :to="`/carga-partidos`"  class="fondo-plus d-flex justify-content-center">
                             <img src="./assets/img/plus.png" alt="Icono de agregar partido" class="icono-nav" />
                         </router-link>
                     </li>
-                    <li class="col-2  p-0 mx-1">
-                        <a><img src="./assets/img/campanas.png" alt="Campanas de notificaciones" class="icono-nav" /></a>
+                    <li class="col-2 p-0 mx-1">
+                        <router-link :to="'/chat'" class="d-flex justify-content-center">
+                            <img src="./assets/img/campanas.png" alt="Campanas de notificaciones" class="icono-nav" />
+                        </router-link>
                     </li>
-                    <li class="col-2  p-0 mx-1">
-                        <router-link :to="'/perfil'">
+                    <li class="col-2 p-0 mx-1">
+                        <router-link :to="'/perfil'" class="d-flex justify-content-center">
                             <img src="./assets/img/usuario.png" alt="Icono de usuario" class="icono-nav" />
                         </router-link>
                     </li>
