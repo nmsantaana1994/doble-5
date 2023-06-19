@@ -30,7 +30,7 @@ function useCargaPartido() {
 
         await cargarPartido({
             ...fields.value,
-            id,
+            // id,
         });
 
     loading.value = false;
@@ -149,7 +149,5 @@ function useCargaPartido() {
             </form>
         </div>
         <button type="submit" class="btn btn-secondary">Cargar</button>
-      </form>
-    </div>
   </section>
 </template>
