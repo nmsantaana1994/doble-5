@@ -9,6 +9,7 @@ const {fields, user, loading, handleSubmit} = useCargaPartido();
 
 function useCargaPartido() {
     const {user} = useAuth();
+    // const userId = user.value.uid;
     const router = useRouter();
 
     const fields = ref({
@@ -30,7 +31,7 @@ function useCargaPartido() {
 
         await cargarPartido({
             ...fields.value,
-            id,
+            userId: user.value.id,
         });
 
         loading.value = false;

@@ -43,17 +43,28 @@
                     <img src="../assets/img/hogar.png" alt="Icono home" class="icono-card m-auto">
                     <p class="m-0">Home</p>
                 </router-link>
-
                 <!-- <ButtonHome route="Home" icon="hogar.png" /> -->
             </div>
-            <div class="col-3">
-                <ButtonHome route="Feed" icon="red-social.png" />
+            <div class="col-3 m-auto justify-content-center botonera-home">
+                <router-link :to="'/feed'">
+                    <img src="../assets/img/red-social.png" alt="Icono feed" class="icono-card m-auto">
+                    <p class="m-0">Feed</p>
+                </router-link>
+                <!-- <ButtonHome route="Feed" icon="red-social.png" /> -->
             </div>
-            <div class="col-3">
-                <ButtonHome route="Partidos" icon="pelota.png" />
+            <div class="col-3 m-auto justify-content-center botonera-home">
+                <router-link :to="'/partidos'">
+                    <img src="../assets/img/pelota.png" alt="Icono pelota" class="icono-card m-auto">
+                    <p class="m-0">Partidos</p>
+                </router-link>
+                <!-- <ButtonHome route="Partidos" icon="pelota.png" />> -->
             </div>
-            <div class="col-3">
-                <ButtonHome route="Red" icon="usuarios.png" />
+            <div class="col-3 m-auto justify-content-center botonera-home">
+                <router-link :to="'/red'">
+                    <img src="../assets/img/usuarios.png" alt="Icono red" class="icono-card m-auto">
+                    <p class="m-0">Red</p>
+                </router-link>
+                <!-- <ButtonHome route="Red" icon="usuarios.png" /> -->
             </div>
         </div>
     </section>
@@ -128,7 +139,7 @@
     .botonera-home {
         width:4.5rem;
         height: 4.5rem;
-        background-color: #73a812;
+        background-color: #e6e6e6;
         border-radius: 10px;
         display: flex;
         align-items: center;
@@ -141,7 +152,7 @@
 
     a {
         text-decoration: none;
-        color: white;
+        color: black;
     }
 
     .card-body {

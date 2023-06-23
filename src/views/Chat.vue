@@ -63,61 +63,69 @@
 </script>
 
 <template>
-    <h1 class="text-4xl mb-4">Chat</h1>
-
-    <div class="flex justify-between gap-4">
-          <div class="w-9/12">
-            <p v-if="initialLoading">Cargando...</p>
-            <ul v-else>
-                <li
-                    v-for="message in messages"
-                    class="mb-3"
-                >
-                    <b>
-                        <template v-if="message.userId !== user.id">
-                            <router-link
-                                :to="`/usuario/${message.userId}`"
-                                class="text-blue-400 underline"
-                            >{{ message.displayName }}</router-link>
-                        </template>
-                        <template v-else>
-                            {{ message.displayName }}
-                        </template>
-                        dijo:
-                    </b>
-                    {{ message.message }}
-                    <div
-                        v-if="message.created_at"
-                        class="text-xs"
-                    >{{ dateToString(message.created_at) }}</div>
-                </li>
-            </ul>
-          </div>
-          <div class="w-3/12">
-              <form
-                action="#"
-                method="POST"
-                id="form-message"
-                @submit.prevent="handleSubmit"
-              >
-                  <div class="mb-3">
-                      <p class="mb-2">Usuario</p>
-                      <p>{{ user.email }}</p>
-                  </div>
-                  <div class="mb-3">
-                      <Label for="message">Mensaje</Label>
-                      <Textarea
-                        id="message"
-                        v-model="form.message"
-                      ></Textarea>
-                  </div>
-                  <Button full />
-              </form>
-
-              <div 
-                v-if="formLoading"  
+    <section class="row p-1 m-0">
+        <h1 class="mb-3">Chat</h1>
+        
+        <div class="col-12">
+        <p v-if="initialLoading">Cargando...</p>
+        <ul v-else class="list-unstyled">
+            <li
+                v-for="message in messages"
                 class="mb-3"
-              > Enviando mensaje...</div>
-          </div>
-      </div>
+            >
+                <b>
+                    <template v-if="message.userId !== user.id">
+                        <router-link
+                            :to="`/usuario/${message.userId}`"
+                            class="text-blue-400 underline"
+                        >{{ message.displayName }}</router-link>
+                    </template>
+                    <template v-else>
+                        {{ message.displayName }}
+                    </template>
+                    dijo:
+                </b>
+                {{ message.message }}
+                <div
+                    v-if="message.created_at"
+                    class="text-xs"
+                >{{ dateToString(message.created_at) }}</div>
+            </li>
+        </ul>
+        </div>
+    </section>
+    <section class="row p-1 m-0 fixed-bottom">
+        <div class="col-12 m-bottom">
+            <form
+            action="#"
+            method="POST"
+            id="form-message"
+            @submit.prevent="handleSubmit"
+            >
+                <div class="mb-3">
+                    <p class="mb-2">Usuario</p>
+                    <p>{{ user.email }}</p>
+                </div>
+                <div class="mb-3">
+                    <Label for="message">Mensaje</Label>
+                    <Textarea
+                    id="message"
+                    v-model="form.message"
+                    ></Textarea>
+                </div>
+                <Button full />
+            </form>
+
+            <div 
+            v-if="formLoading"  
+            class="mb-3"
+            > Enviando mensaje...</div>
+        </div>
+    </section>
 </template>
+
+<style scoped>
+    .m-bottom {
+        margin-bottom: 4em;
+    }
+</style>

@@ -10,15 +10,27 @@
 
 <template>
     <LoadingContext :loading="loading">
-        <h1 class="mb-3 text-4xl">Perfil de {{ user.email }}</h1>
-
-        <UserProfileData :user="user" />
-
-        <h2 class="mb-3 text 3x1">Chat privado</h2>
-
-        <router-link
-            :to="`/usuario/${user.id}/chat`"
-            class="text-blue-400 underline"
-        >Iniciar chat privado con {{ user.email }}</router-link>
+        <section class="row p-1 m-0">
+            <div class="col-12">
+                <h1 class="mb-3 fs-4 text-center">Perfil de {{ user.displayName ? user.displayName : user.nombre }}</h1>
+        
+                <UserProfileData :user="user" />
+            </div>
+    
+            <div class="col-12 m-bottom">
+                <h2 class="mb-3 fs-4">Chat privado</h2>
+        
+                <router-link
+                    :to="`/usuario/${user.id}/chat`"
+                    class="text-blue-400 underline"
+                >Iniciar chat privado con {{ user.displayName ? user.displayName : user.nombre }}</router-link>
+            </div>
+        </section>
     </LoadingContext>
 </template>
+
+<style scoped>
+    .m-bottom {
+        margin-bottom: 5em;
+    }
+</style>

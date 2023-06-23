@@ -64,32 +64,32 @@
 </script>
 
 <template>
-    <div class="flex gap-3">
-        <div class="w-3/12">
-            <Image :src="user.photoURL" />
+    <div class="row d-flex">
+        <div class="col-12 mb-3 d-flex justify-content-center">
+            <Image :src="user.photoURL" class="rounded-circle foto-perfil"/>
         </div>
-        <div class="w-9/12">
+        <div class="col-12">
             <form
                 action="#"
                 method="POST"
                 @submit.prevent="handleSubmit"
             >
                 <div class="mb-3">
-                    <Label for="displayName">Nombre de Usuario</Label>
+                    <Label for="displayName" class="me-3 fw-bold">Nombre de Usuario: </Label>
                     <Input 
                         id="displayName"
                         v-model="form.displayName"
                     />
                 </div>
                 <div class="mb-3">
-                    <Label for="career">Carrera</Label>
+                    <Label for="career" class="me-3 fw-bold">Carrera: </Label>
                     <Input 
                         id="career"
                         v-model="form.career"
                     />
                 </div>
                 <div class="mb-3">
-                    <Label for="photoURL">Foto de Perfil</Label>
+                    <Label for="photoURL" class="fw-bold">Foto de Perfil: </Label>
                     <Input 
                         type="file"
                         id="photoURL"
@@ -113,3 +113,9 @@
         </div>
     </div>
 </template>
+
+<style scoped>
+    .foto-perfil {
+        width: 80%;
+    }
+</style>
