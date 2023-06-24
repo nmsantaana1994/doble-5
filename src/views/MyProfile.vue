@@ -11,7 +11,7 @@
 </script>
 
 <template>
-    <section class="p-3">
+    <section class="p-3 mb-5">
         <h1 class="mb-3">Mi Perfil</h1>
     
         <div class="mb-3">

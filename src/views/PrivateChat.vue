@@ -81,7 +81,7 @@ function usePrivateChatForm(authUser, otherUser) {
 <template>
     <section class="px-3">
         <LoadingContext :loading="loading">
-            <h1 class="mb-3 text-4xl">Chat privado con {{ otherUser.email }}</h1>
+            <h1 class="mb-3">Chat privado con {{ otherUser.displayName ? otherUser.displayName : otherUser.nombre }}</h1>
     
             <div class="mb-3">
                 <LoadingContext :loading="loadingMessages">
