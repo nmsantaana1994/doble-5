@@ -70,6 +70,10 @@
                                             <img src="./assets/img/hogar.png" alt="Icono de home" class="icono-nav" />
                                             <p>Home</p>
                                         </router-link>
+                                        <router-link :to="'/mis-partidos'" class="col-2 text-decoration-none text-black">
+                                            <img src="./assets/img/hogar.png" alt="Icono de home" class="icono-nav" />
+                                            <p>Mis partidos</p>
+                                        </router-link>
                                     </div>
                                 </li>
                                 <li>
