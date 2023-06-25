@@ -18,9 +18,14 @@ function useHome() {
 async function getPartidosFromService(){
     const partidos = await getPartidos();
     console.log(partidos);
+    return partidos;
 }
 
-getPartidosFromService();
+const partidos = ref([]);
+
+onMounted(async () => {
+  partidos.value = await getPartidosFromService();
+});
 </script>
 
 <template>
@@ -102,7 +107,7 @@ getPartidosFromService();
     </div>
   </section>
 
-  <section class="px-3 pb-3">
+  <section class="px-3 pb-3 my-5">
     <div class="row mb-3">
       <div class="col-10">
         <h2 class="text-start h3">
@@ -119,61 +124,71 @@ getPartidosFromService();
         </router-link>
       </div>
     </div>
-    <div class="row px-3">
-      <div class="card p-3">
-        <div class="card-body">
-          <div class="row mb-3">
-            <div class="col-10">
-              <p class="card-title h3 text-start">Lunes 30/05 22hs</p>
-            </div>
-            <div class="col-2 d-flex justify-content-end">
-              <img
-                src="../assets/img/arrows-right.png"
-                alt="Icono flechas dobles"
-                class="icono-h2"
-              />
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-2 d-flex justify-content-start">
-              <img
-                src="../assets/img/reloj.png"
-                alt="Icono flechas dobles"
-                class="icono-h2"
-              />
-            </div>
-            <div class="col-10 d-flex align-items-end">
-              <p class="card-subtitle h6 text-body-secondary text-start">
-                30/05/2023 22:00hs
-              </p>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-2 d-flex justify-content-start">
-              <img
-                src="../assets/img/alfiler.png"
-                alt="Icono flechas dobles"
-                class="icono-h2"
-              />
-            </div>
-            <div class="col-10 d-flex align-items-end">
-              <p class="card-subtitle h6 text-body-secondary text-start">
-                Club Ferro Carril Oeste
-              </p>
-            </div>
-          </div>
-
-          <div class="row justify-content-around">
-            <div class="col-6 fondo-boton-card-negro rounded">
-              <a href="#" class="text-white">Ver más</a>
-            </div>
-            <div class="col-6 fondo-boton-card rounded">
-              <a href="#" class="text-white">Inscribirme</a>
+    <template v-if="partidos.length > 0">
+        <div class="row px-3">
+          <div class="card p-3" v-for="partido in partidos" :key="partido.id">
+            <div class="card-body">
+              <div class="row mb-3">
+                <div class="col-10">
+                  <p class="card-title h3 text-start">{{ partido.nombre }}</p>
+                </div>
+                <div class="col-2 d-flex justify-content-end">
+                  <img
+                    src="../assets/img/arrows-right.png"
+                    alt="Icono flechas dobles"
+                    class="icono-h2"
+                  />
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-2 d-flex justify-content-start">
+                  <img
+                    src="../assets/img/reloj.png"
+                    alt="Icono flechas dobles"
+                    class="icono-h2"
+                  />
+                </div>
+                <div class="col-10 d-flex align-items-end">
+                  <p class="card-subtitle h6 text-body-secondary text-start">
+                    {{partido.fecha}} {{partido.hora}}
+                  </p>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-2 d-flex justify-content-start">
+                  <img
+                    src="../assets/img/alfiler.png"
+                    alt="Icono flechas dobles"
+                    class="icono-h2"
+                  />
+                </div>
+                <div class="col-10 d-flex align-items-end">
+                  <p class="card-subtitle h6 text-body-secondary text-start">
+                    {{ partido.complejo }}
+                  </p>
+                </div>
+              </div>
+    
+              <div class="row justify-content-around">
+                <div class="col-6 fondo-boton-card-negro rounded">
+                  <a href="#" class="text-white">Ver más</a>
+                </div>
+                <div class="col-6 fondo-boton-card rounded">
+                  <a href="#" class="text-white">Inscribirme</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+    </template>
+
+    <template v-else>
+        <div class="row px-3">
+            <div class="col-12">
+                <p>No hay partidos para mostrar</p>
+            </div>
+        </div>
+    </template>
   </section>
 </template>
 

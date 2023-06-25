@@ -9,6 +9,7 @@ import MyProfile from "../views/MyProfile.vue";
 import UserProfile from "../views/UserProfile.vue";
 import PrivateChat from "../views/PrivateChat.vue";
 import CargaPartido from "../views/CargaPartido.vue";
+import MisPartidos from "../views/MisPartidos.vue";
 
 const routes = [
     { path: "/",                    component: Splash,},
@@ -20,6 +21,7 @@ const routes = [
     { path: "/usuario/:id",         component: UserProfile,     meta: { requiresAuth: true, }},
     { path: "/usuario/:id/chat",    component: PrivateChat,     meta: { requiresAuth: true, }},
     { path: "/carga-partidos",      component: CargaPartido,    meta: { requiresAuth: true, }},
+    { path: "/mis-partidos",      component: MisPartidos,    meta: { requiresAuth: true, }},
 ]
 
 const router = createRouter ({
