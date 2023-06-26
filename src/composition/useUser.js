@@ -7,7 +7,7 @@ export function useUser(id) {
         id: null,
         email: null,
         displayName: null,
-        career: null,
+        // career: null,
         photoURL: null,
         nombre: null,
         apellido: null,

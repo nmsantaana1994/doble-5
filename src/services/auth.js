@@ -8,7 +8,7 @@ let user = {
     id: null,
     email: null,
     displayName: null,
-    career: null,
+    // career: null,
     photoURL: null, 
     nombre: null,
     apellido: null,
@@ -50,7 +50,7 @@ onAuthStateChanged(auth, async newUser => {
         getUserById(newUser.uid)
             .then(userData => {
                 setUser({
-                    career: userData.career,
+                    // career: userData.career,
                     nombre: userData.nombre,
                     apellido: userData.apellido,
                     nacimiento: userData.nacimiento,
@@ -144,11 +144,11 @@ export function logout() {
  * 
  * @param {string} id 
  * @param {string} displayName 
- * @param {string} career
+ * //@param {string} career
  * @param {string|null} photoURL
  * @returns {Promise<Awaited<unknown>[]>}
  */
-export async function updateUserProfile(id, {displayName, career, photoURL}) {
+export async function updateUserProfile(id, {displayName, /*career,*/ photoURL}) {
     const promises = [];
     
     let photoPath = user.photoURL;
@@ -159,13 +159,13 @@ export async function updateUserProfile(id, {displayName, career, photoURL}) {
     }
     
     promises.push(updateProfile(auth.currentUser, {displayName, photoURL: photoPath}));
-    promises.push(updateUser(id, {displayName, career, photoURL: photoPath}));
+    promises.push(updateUser(id, {displayName, /*career,*/ photoURL: photoPath}));
 
     return Promise.all(promises)
         .then(() => {
             setUser({
                 displayName,
-                career,
+                // career,
                 photoURL: photoPath,
             });
 
@@ -191,7 +191,7 @@ function clearUser() {
         id: null,
         email: null,
         displayName: null,
-        career: null,
+        // career: null,
         nombre: null,
         apellido: null,
         nacimiento: null,

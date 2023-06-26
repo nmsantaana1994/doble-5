@@ -27,16 +27,16 @@ export function createUser(id, {email, nombre, apellido, nacimiento, genero, niv
  * 
  * @param {string} id 
  * @param {string|null} displayName
- * @param {string|null} career
+ * //@param {string|null} career
  * @param {string|null} photoURL
  * @returns {Promise<void>}
  */
-export async function updateUser(id, {displayName, career, photoURL}) {
+export async function updateUser(id, {displayName, /*career,*/ photoURL}) {
     return updateDoc(
         doc(db, "users", id),
         {
             displayName,
-            career,
+            // career,
             photoURL,
         }
     )
@@ -60,7 +60,7 @@ export async function getUserById(id) {
         id,
         email: user.data().email,
         displayName: user.data().displayName,
-        career: user.data().career,
+        // career: user.data().career,
         photoURL: user.data().photoURL,
         nombre: user.data().nombre,
         apellido: user.data().apellido,

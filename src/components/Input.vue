@@ -5,7 +5,7 @@
 
 <template>
     <input
-        class="w-full p-2 border border-slate-400 rounded-xl"
+        class="w-100 p-2 border border-slate-400 rounded-xl"
         :value="modelValue"
         @input="$emit ('update:modelValue', $event.target.value)"
     >

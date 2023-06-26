@@ -17,7 +17,7 @@
 <template>
     <button
         type="submit"
-        class="p-1"
+        class="btn"
         :class="{
             'w-full':full,
         }"

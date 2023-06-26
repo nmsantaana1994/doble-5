@@ -97,10 +97,11 @@ function usePrivateChatForm(authUser, otherUser) {
 
                             <!-- TODO: Ver bien la logica para mostrar el nombre correcto de quien envia los mensajes -->
                             <template v-if="message.userId !== otherUser">
-                                {{ authUser.displayName }}
+                                <!-- {{ authUser.displayName }} -->
+                                {{ otherUser.displayName ? otherUser.displayName : otherUser.nombre }}
                             </template>
                             <template v-else>
-                                {{ otherUser.displayName }}
+                                {{ authUser.displayName ? authUser.displayName : authUser.nombre }}
                             </template>
                            
                             dijo:
@@ -108,7 +109,7 @@ function usePrivateChatForm(authUser, otherUser) {
                         {{ message.message }}
                         <div
                             v-if="message.created_at"
-                            class="text-xs"
+                            class="font-date"
                         >{{ dateToString(message.created_at) }}</div>
                     </li>
                 </ul>
@@ -128,7 +129,7 @@ function usePrivateChatForm(authUser, otherUser) {
                         v-model="fields.message"
                         ></Textarea>
                     </div>
-                    <Button full />
+                    <Button class="btn btn-primary w-100" />
                 </form>
                 <div 
                     v-if="formLoading"  
@@ -143,5 +144,9 @@ function usePrivateChatForm(authUser, otherUser) {
     ul {
         list-style: none;
         padding: 0;
+    }
+
+    .font-date {
+        font-size: 0.7rem;
     }
 </style>

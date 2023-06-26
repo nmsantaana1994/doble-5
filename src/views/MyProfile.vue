@@ -15,7 +15,7 @@
         <h1 class="mb-3">Mi Perfil</h1>
     
         <div class="mb-3">
-            <Button @click="toggleEditing">{{ editing ? "Dejar de Editar" : "Editar mi Perfil" }}</Button>
+            <Button class="btn btn-primary w-100" @click="toggleEditing">{{ editing ? "Dejar de Editar" : "Editar mi Perfil" }}</Button>
         </div>
     
         <template v-if="editing">
@@ -26,3 +26,4 @@
         </template>
     </section>
 </template>
+

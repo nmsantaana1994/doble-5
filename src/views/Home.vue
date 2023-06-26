@@ -63,7 +63,7 @@ onMounted(async () => {
       <div class="col-3 m-auto justify-content-center botonera-home">
         <router-link :to="'/home'">
           <img
-            src="../assets/img/hogar.png"
+            src="../assets/img/home-offcanvas.png"
             alt="Icono home"
             class="icono-card m-auto"
           />
@@ -107,7 +107,7 @@ onMounted(async () => {
     </div>
   </section>
 
-  <section class="px-3 pb-3 my-5">
+  <section class="px-3 pb-3 mb-5">
     <div class="row mb-3">
       <div class="col-10">
         <h2 class="text-start h3">

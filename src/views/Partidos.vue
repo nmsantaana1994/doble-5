@@ -70,7 +70,7 @@ onMounted(async () => {
     <div class="row mb-3">
       <div class="col-10">
         <h2 class="text-start h3">
-          <span class="text-decoration-underline">Mis</span> partidos
+          <span class="text-decoration-underline">Próximos</span> partidos
         </h2>
       </div>
       <div class="col-2">

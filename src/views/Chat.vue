@@ -7,6 +7,7 @@
     import {ref, onMounted, onUnmounted} from "vue";
     import {useAuth} from "../composition/useAuth.js";
     import Loader from "../components/Loader.vue";
+    import Image from "../components/Image.vue";
 
     const {messages, initialLoading} = useChat();
     const {handleSubmit, formLoading, form, user} = useChatForm();
@@ -76,12 +77,16 @@
                 >
                     <b>
                         <template v-if="message.userId !== user.id">
+                            <!-- <div class="col-12 mb-3 d-flex justify-content-center h-auto"> -->
+                                <Image :src="message.photoURL" class="rounded-circle foto-perfil img-thumbnail" />
+                            <!-- </div> -->
                             <router-link
                                 :to="`/usuario/${message.userId}`"
                                 class="text-blue-400 underline"
                             >{{ message.displayName }}</router-link>
                         </template>
                         <template v-else>
+                            <Image :src="user.photoURL" class="rounded-circle foto-perfil img-thumbnail" />
                             {{ message.displayName }}
                         </template>
                         dijo:
@@ -89,7 +94,7 @@
                     {{ message.message }}
                     <div
                         v-if="message.created_at"
-                        class="text-xs"
+                        class="font-date"
                     >{{ dateToString(message.created_at) }}</div>
                 </li>
             </ul>
@@ -104,17 +109,17 @@
             @submit.prevent="handleSubmit"
             >
                 <div class="mb-3">
-                    <p class="mb-2">Usuario</p>
+                    <p class="mb-2 fw-bold">Usuario</p>
                     <p>{{ user.email }}</p>
                 </div>
                 <div class="mb-3">
-                    <Label for="message">Mensaje</Label>
+                    <Label for="message" class="fw-bold">Mensaje</Label>
                     <Textarea
                     id="message"
                     v-model="form.message"
                     ></Textarea>
                 </div>
-                <Button full />
+                <Button class="btn btn-primary w-100" />
             </form>
 
             <div 
@@ -128,5 +133,13 @@
 <style scoped>
     .m-bottom {
         margin-bottom: 4em;
+    }
+
+    .font-date {
+        font-size: 0.7rem;
+    }
+
+    .foto-perfil {
+        width: 20%;
     }
 </style>

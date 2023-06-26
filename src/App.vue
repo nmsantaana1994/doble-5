@@ -104,13 +104,17 @@
                         <div class="offcanvas-body">
                             <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                                 <li>
-                                    <div class="d-flex justify-content-between">
+                                    <div class="d-flex justify-content-end">
                                         <router-link :to="'/home'" class="col-2 text-decoration-none text-black">
                                             <img src="./assets/img/home-offcanvas.png" alt="Icono de home" class="icono-nav" />
                                             <p>Home</p>
                                         </router-link>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="d-flex justify-content-end">
                                         <router-link :to="'/mis-partidos'" class="col-2 text-decoration-none text-black">
-                                            <img src="./assets/img/home-offcanvas.png" alt="Icono de home" class="icono-nav" />
+                                            <img src="./assets/img/pelota.png" alt="Icono de home" class="icono-nav" />
                                             <p>Mis partidos</p>
                                         </router-link>
                                     </div>
@@ -121,7 +125,10 @@
                                         method="post"
                                         @submit.prevent="handleLogout"
                                     >
-                                        <button type="submit">{{ user.email }} (Cerrar Sesión)</button>
+                                        <button type="submit" class="btn btn-secondary w-100">
+                                            <img src="./assets/img/logout.png" alt="Icono de home" class="icono-nav w-25" />
+                                            Cerrar Sesión
+                                        </button>
                                     </form>
                                 </li>
                             </ul>
