@@ -126,7 +126,7 @@ onMounted(async () => {
     </div>
     <template v-if="partidos.length > 0">
         <div class="row px-3">
-          <div class="card p-3" v-for="partido in partidos" :key="partido.id">
+          <div class="card p-3 mb-3" v-for="partido in partidos" :key="partido.id">
             <div class="card-body">
               <div class="row mb-3">
                 <div class="col-10">

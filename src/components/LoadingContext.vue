@@ -1,10 +1,12 @@
 <script setup>
-defineProps({
-    loading: {
-        type: Boolean,
-        default: false
-    }
-})
+    import Loader from "./Loader.vue";
+
+    defineProps({
+        loading: {
+            type: Boolean,
+            default: false
+        }
+    })
 </script>
 
 <template>
@@ -12,7 +14,6 @@ defineProps({
         <slot />
     </template>
     <template v-else>
-        <!--TODO: Reemplazar con un loader-->
-        Cargando...
+        <Loader />
     </template>
 </template>

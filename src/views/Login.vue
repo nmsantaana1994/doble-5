@@ -2,8 +2,11 @@
     import Button from "../components/Button.vue";
     import Input from "../components/Input.vue";
     import {login} from "../services/auth.js";
-    import {ref} from "vue";
+    import {inject, ref} from "vue";
     import { useRouter } from "vue-router";
+    import { notificationProvider } from "../symbols/symbols.js";
+
+    const {feedback, setFeedbackMessage, clearFeedbackMessage} = inject(notificationProvider);
     
     const {fields, loading, handleSubmit} = useLogin();
 
@@ -19,14 +22,30 @@
     
         async function handleSubmit() {
             loading.value = true;
-    
-            await login({
-                ...fields.value,
-            })
 
-            loading.value = false,
+            clearFeedbackMessage();
+
+            try {
+                await login({
+                    ...fields.value,
+                })
+
+                loading.value = false,
+
+                setFeedbackMessage({
+                    type: "succes",
+                    message: "¡Hola de nuevo! Te extrañamos.",
+                });
         
-            router.push('/home')               
+                router.push('/home')
+            } catch (err) {
+                setFeedbackMessage({
+                    type: "error",
+                    message: err,
+                });
+            }
+    
+                          
         }
 
         return {
