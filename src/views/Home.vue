@@ -107,7 +107,7 @@ onMounted(async () => {
     </div>
   </section>
 
-  <section class="px-3 pb-3 my-5">
+  <section class="px-3 pb-3 mb-5">
     <div class="row mb-3">
       <div class="col-10">
         <h2 class="text-start h3">
