@@ -171,7 +171,7 @@ onMounted(async () => {
     
               <div class="row justify-content-around">
                 <div class="col-6 fondo-boton-card-negro rounded">
-                  <a href="#" class="text-white">Ver más</a>
+                  <router-link :to="`/info-partido/${partido.nombre}`" class="text-white">Ver más</router-link>
                 </div>
                 <div class="col-6 fondo-boton-card rounded">
                   <a href="#" class="text-white">Inscribirme</a>
