@@ -40,12 +40,12 @@
                             </router-link>
                         </li>
                         <li class="col-2 p-0 mx-1">
-                            <router-link :to="`/carga-partidos`"  class="fondo-plus d-flex justify-content-center">
+                            <router-link :to="`/carga-partidos`"  class="d-flex justify-content-center">
                                 <img src="./assets/img/plus.png" alt="Icono de agregar partido" class="icono-nav" />
                             </router-link>
                         </li>
                         <li class="col-2 p-0 mx-1">
-                            <router-link :to="'/chat'" class="d-flex justify-content-center">
+                            <router-link :to="'/list-private-chats'" class="d-flex justify-content-center">
                                 <img src="./assets/img/campanas.png" alt="Campanas de notificaciones" class="icono-nav" />
                             </router-link>
                         </li>
@@ -67,11 +67,11 @@
                                 <li>
                                     <div class="d-flex justify-content-between">
                                         <router-link :to="'/home'" class="col-2 text-decoration-none text-black">
-                                            <img src="./assets/img/hogar.png" alt="Icono de home" class="icono-nav" />
+                                            <img src="./assets/img/home-offcanvas.png" alt="Icono de home" class="icono-nav" />
                                             <p>Home</p>
                                         </router-link>
                                         <router-link :to="'/mis-partidos'" class="col-2 text-decoration-none text-black">
-                                            <img src="./assets/img/hogar.png" alt="Icono de home" class="icono-nav" />
+                                            <img src="./assets/img/home-offcanvas.png" alt="Icono de home" class="icono-nav" />
                                             <p>Mis partidos</p>
                                         </router-link>
                                     </div>
@@ -128,9 +128,5 @@
     
     .icono-nav {
         width: 75%;
-    }
-
-    .fondo-plus {
-        background-color: #5d880d;
     }
 </style>

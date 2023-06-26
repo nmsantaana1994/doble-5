@@ -1,7 +1,9 @@
 import {db} from "./firebase.js";
 import { 
     addDoc,
+    getDoc,
     collection,
+    collectionGroup,
     serverTimestamp,
     query,
     where,
@@ -69,7 +71,7 @@ export async function sendPrivateMessage(from, to, message) {
  * @param {string} user2 
  * @returns {Promise<QueryDocumentSnapshot<DocumentData>|DocumentReference<{users: {} | {}}>>}
  */
-async function getPrivateChatRef(user1, user2) {
+export async function getPrivateChatRef(user1, user2) {
     const cachedRef = getFromCache(user1, user2);
     if(cachedRef) return cachedRef;
 
@@ -85,7 +87,7 @@ async function getPrivateChatRef(user1, user2) {
  * @param {string} user2 
  * @returns {Promise<QueryDocumentSnapshot<DocumentData>|null>}
  */
-async function searchPrivateChat(user1, user2) {
+export async function searchPrivateChat(user1, user2) {
         const users = {
             [user1]: true,
             [user2]: true,
