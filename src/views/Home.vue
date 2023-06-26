@@ -63,7 +63,7 @@ onMounted(async () => {
       <div class="col-3 m-auto justify-content-center botonera-home">
         <router-link :to="'/home'">
           <img
-            src="../assets/img/hogar.png"
+            src="../assets/img/home-offcanvas.png"
             alt="Icono home"
             class="icono-card m-auto"
           />

@@ -149,6 +149,6 @@ function useCargaPartido() {
                 <button type="submit" class="btn btn-secondary">Cargar</button>
             </form>
         </div>
-        <button type="submit" class="btn btn-secondary">Cargar</button>
+        <!-- <button type="submit" class="btn btn-secondary">Cargar</button> -->
   </section>
 </template>

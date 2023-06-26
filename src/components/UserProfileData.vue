@@ -23,8 +23,8 @@
                 <dd class="mb-3">{{ user.nombre || "No especificado" }}</dd>
                 <dt class="font-bold">Apellido</dt>
                 <dd class="mb-3">{{ user.apellido || "No especificado" }}</dd>
-                <dt class="font-bold">Carrera</dt>
-                <dd class="mb-3">{{ user.career || "No especificado" }}</dd>
+                <!-- <dt class="font-bold">Carrera</dt>
+                <dd class="mb-3">{{ user.career || "No especificado" }}</dd> -->
                 <dt class="font-bold">Nivel de juego</dt>
                 <dd class="mb-3">{{ user.nivel || "No especificado" }}</dd>
             </dl>

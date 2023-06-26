@@ -31,11 +31,11 @@ onMounted(async () => {
     <div class="row mb-3">
       <div class="col-10">
         <h2 class="text-start h3">
-          <span class="text-decoration-underline">Próximos</span> partidos
+          <span class="text-decoration-underline">Mis</span> partidos
         </h2>
       </div>
       <div class="col-2">
-        <router-link to="/partidos">
+        <router-link to="/mis-partidos">
           <img
             src="../assets/img/arrows-right.png"
             alt="Icono flechas dobles"
@@ -47,11 +47,11 @@ onMounted(async () => {
     <div class="row mb-3">
       <div class="col-10">
         <h2 class="text-start h3">
-          <span class="text-decoration-underline">Mis</span> partidos
+          <span class="text-decoration-underline">Próximos</span> partidos
         </h2>
       </div>
       <div class="col-2">
-        <router-link to="/mis-partidos">
+        <router-link to="/partidos">
           <img
             src="../assets/img/arrows-right.png"
             alt="Icono flechas dobles"

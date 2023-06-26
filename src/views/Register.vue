@@ -150,9 +150,9 @@
     <div class="mb-3">
       <select name="nivel" id="nivel" v-model="fields.nivel">
         <option value="" disabled>Nivel de juego</option>
-        <option value="alto">Alto</option>
-        <option value="medio">Medio</option>
-        <option value="bajo">Bajo</option>
+        <option value="Alto">Alto</option>
+        <option value="Medio">Medio</option>
+        <option value="Bajo">Bajo</option>
       </select>
       <span v-if="formSubmitted && v$?.nivel?.$invalid" class="text-danger">Por favor, seleccione un nivel.</span>
     </div>

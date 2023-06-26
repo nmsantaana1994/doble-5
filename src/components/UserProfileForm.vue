@@ -16,7 +16,7 @@
     function useEditProfile(user) {
         const form = ref({
             displayName: "",
-            career: "",
+            // career: "",
             photoURL: null,
         });
 
@@ -29,9 +29,9 @@
         
         watch(user, newUser => {
             form.value.displayName = newUser.displayName;
-            if (form.value.career === "" || newUser.career !== "") {
-                form.value.career = newUser.career;
-            }
+            // if (form.value.career === "" || newUser.career !== "") {
+            //     form.value.career = newUser.career;
+            // }
         });
 
         async function handleSubmit() {
@@ -83,7 +83,7 @@
 </script>
 
 <template>
-    <div class="row d-flex">
+    <section class="row d-flex">
         <div class="col-12 mb-3 d-flex justify-content-center">
             <Image :src="user.photoURL" class="rounded-circle foto-perfil"/>
         </div>
@@ -100,13 +100,13 @@
                         v-model="form.displayName"
                     />
                 </div>
-                <div class="mb-3">
+                <!-- <div class="mb-3">
                     <Label for="career" class="me-3 fw-bold">Carrera: </Label>
                     <Input 
                         id="career"
                         v-model="form.career"
                     />
-                </div>
+                </div> -->
                 <div class="mb-3">
                     <Label for="photoURL" class="fw-bold">Foto de Perfil: </Label>
                     <Input 
@@ -119,18 +119,18 @@
                     v-if="form.photoURL !== null"
                     class="mb-3"
                 >
-                    <p class="mb-3">Previsualización de la imagen</p>
-                    <img :src="form.photoURL" alt="">
+                    <p class="mb-3 fw-bold">Previsualización de la imagen:</p>
+                    <img :src="form.photoURL" alt="Previsualización foto de perfil" class="w-100">
                     <!--<Button type="button" @click="() => form.photoURL = null">Limpiar la imagen</Button>-->
                 </div>
-                <Button full>
+                <Button class="btn btn-primary w-100">
                     <LoadingContext :loading="loading">
                         Actualizar mis datos
                     </LoadingContext>
                 </Button>
             </form>
         </div>
-    </div>
+    </section>
 </template>
 
 <style scoped>
