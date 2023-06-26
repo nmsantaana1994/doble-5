@@ -2,9 +2,43 @@
     import { logout } from "./services/auth";
     import {useRouter} from "vue-router";
     import {useAuth} from "./composition/useAuth.js"
+    import { provide, ref } from "vue";
+    import Notification from "./components/Notification.vue";
+    import { notificationProvider } from "./symbols/symbols.js";
 
     const {user} = useAuth();
     const {handleLogout} = useLogout();
+
+    const feedback = ref({
+        message: "",
+        type: "",
+        title: "",
+        closable: true,
+    });
+
+    function setFeedbackMessage({message, type = "succes", title = ""}) {
+        feedback.value = {
+            ...feedback.value,
+            message,
+            type,
+            title,
+        }
+    }
+
+    function clearFeedbackMessage() {
+        feedback.value = {
+            ...feedback.value,
+            message: "",
+            type: "",
+            title: "",
+        }
+    }
+
+    provide(notificationProvider, {
+        feedback,
+        setFeedbackMessage,
+        clearFeedbackMessage,
+    });
 
     function useLogout() {
         const router = useRouter();
@@ -22,6 +56,11 @@
 <template>
 
     <main class="container-full h-full m-auto">
+        <Notification
+            :data="feedback"
+            @close="clearFeedbackMessage"
+        />
+
         <router-view />
     </main>
 

@@ -1,9 +1,16 @@
 <script setup>
+    import LoadingContext from "./LoadingContext.vue";
+
     defineProps({
         full: {
             type: Boolean,
             default: false,
-        }
+        },
+
+        loading: {
+            type: Boolean,
+            default: false,
+        },
     })
 </script>
 
@@ -15,6 +22,8 @@
             'w-full':full,
         }"
     >
-        <slot>Enviar</slot>
+        <LoadingContext :loading="loading">
+            <slot>Enviar</slot>
+        </LoadingContext>
     </button>
 </template>

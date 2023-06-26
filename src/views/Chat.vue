@@ -5,7 +5,8 @@
     import Label from "../components/Label.vue";
     import Textarea from "../components/Textarea.vue";
     import {ref, onMounted, onUnmounted} from "vue";
-    import {useAuth} from "../composition/useAuth.js"
+    import {useAuth} from "../composition/useAuth.js";
+    import Loader from "../components/Loader.vue";
 
     const {messages, initialLoading} = useChat();
     const {handleSubmit, formLoading, form, user} = useChatForm();
@@ -67,31 +68,31 @@
         <h1 class="mb-3">Chat</h1>
         
         <div class="col-12">
-        <p v-if="initialLoading">Cargando...</p>
-        <ul v-else class="list-unstyled">
-            <li
-                v-for="message in messages"
-                class="mb-3"
-            >
-                <b>
-                    <template v-if="message.userId !== user.id">
-                        <router-link
-                            :to="`/usuario/${message.userId}`"
-                            class="text-blue-400 underline"
-                        >{{ message.displayName }}</router-link>
-                    </template>
-                    <template v-else>
-                        {{ message.displayName }}
-                    </template>
-                    dijo:
-                </b>
-                {{ message.message }}
-                <div
-                    v-if="message.created_at"
-                    class="text-xs"
-                >{{ dateToString(message.created_at) }}</div>
-            </li>
-        </ul>
+            <Loader v-if="initialLoading" />
+            <ul v-else class="list-unstyled">
+                <li
+                    v-for="message in messages"
+                    class="mb-3"
+                >
+                    <b>
+                        <template v-if="message.userId !== user.id">
+                            <router-link
+                                :to="`/usuario/${message.userId}`"
+                                class="text-blue-400 underline"
+                            >{{ message.displayName }}</router-link>
+                        </template>
+                        <template v-else>
+                            {{ message.displayName }}
+                        </template>
+                        dijo:
+                    </b>
+                    {{ message.message }}
+                    <div
+                        v-if="message.created_at"
+                        class="text-xs"
+                    >{{ dateToString(message.created_at) }}</div>
+                </li>
+            </ul>
         </div>
     </section>
     <section class="row p-1 m-0 fixed-bottom">
