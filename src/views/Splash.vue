@@ -7,10 +7,10 @@
             <img src="../assets/img/logo-original.png" alt="Logo Doble-5" class="ancho-logo"/>
         </div>
         <div class="row justify-content-around mt-5">
-            <div class="col-6 boton-inicio d-flex justify-content-center">
+            <div class="col-6 boton-inicio d-flex justify-content-center px-6">
                 <router-link to="/iniciar-sesion" class="text-white text-decoration-none fw-semibold">INICIAR SESIÓN</router-link>
             </div>
-            <div class="col-6 boton-registro d-flex justify-content-center">
+            <div class="col-6 boton-registro d-flex justify-content-center px-6">
                 <router-link to="/registro" class="text-white text-decoration-none fw-semibold">REGISTRARME</router-link>
             </div>
         </div>
@@ -26,14 +26,16 @@
         background-color: #5d880d;
         width: 45%;
         padding: 10px;
-        border-radius: 18px;
+        border-radius: 10px;
+        margin-right: 1em;
     }
 
     .boton-registro {
         background-color: #000000;
         width: 45%;
         padding: 10px;
-        border-radius: 18px;
+        border-radius: 10px;
+        margin-left: 1em;
     }
 
     .background-inicio {

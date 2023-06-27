@@ -96,13 +96,13 @@
                     </ul>
 
                     <!-- Offcanvas -->
-                    <div class="offcanvas offcanvas-start w-75" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                    <div class="offcanvas offcanvas-start ancho-offcanvas rounded-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                         <div class="offcanvas-header">
                             <p class="offcanvas-title h5" id="offcanvasNavbarLabel">Menú</p>
                             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>
                         <div class="offcanvas-body">
-                            <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
+                            <ul class="navbar-nav justify-content-start flex-grow-1 pe-3 pb-5">
                                 <li class="row">
                                     <div class="col-4 mb-3 d-flex justify-content-center">
                                         <Image :src="user.photoURL" class="rounded-circle foto-perfil" />
@@ -114,20 +114,53 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="d-flex justify-content-start">
-                                        <router-link :to="'/home'" class="col-2 text-decoration-none text-black">
-                                            <img src="./assets/img/home-offcanvas.png" alt="Icono de home" class="icono-nav" />
-                                            <p>Home</p>
-                                        </router-link>
-                                    </div>
+                                    <router-link :to="'/home'" class="col-12 text-decoration-none d-flex my-3">
+                                        <img src="./assets/img/home-offcanvas.png" alt="Icono de home" class="icono-nav-offcanvas" />
+                                        <p class="m-auto text-start">Home</p>
+                                    </router-link>
                                 </li>
                                 <li>
-                                    <div class="d-flex justify-content-start">
-                                        <router-link :to="'/mis-partidos'" class="col-2 text-decoration-none text-black">
-                                            <img src="./assets/img/pelota.png" alt="Icono de home" class="icono-nav" />
-                                            <p>Mis partidos</p>
-                                        </router-link>
-                                    </div>
+                                    <router-link :to="'/feed'" class="col-12 text-decoration-none d-flex mb-3">
+                                        <img src="./assets/img/red-social.png" alt="Icono de home" class="icono-nav-offcanvas" />
+                                        <p class="m-auto text-start">Feed</p>
+                                    </router-link>
+                                </li>
+                                <li>
+                                    <router-link :to="'/mis-partidos'" class="col-12 text-decoration-none d-flex mb-3">
+                                        <img src="./assets/img/pelota.png" alt="Icono de home" class="icono-nav-offcanvas" />
+                                        <p class="m-auto text-start">Mis partidos</p>
+                                    </router-link>
+                                </li>
+                                <li>
+                                    <router-link :to="'/red'" class="col-12 text-decoration-none d-flex mb-3">
+                                        <img src="./assets/img/usuarios.png" alt="Icono de home" class="icono-nav-offcanvas" />
+                                        <p class="m-auto text-start">Red</p>
+                                    </router-link>
+                                </li>
+                                <li>
+                                    <router-link :to="'/chat'" class="col-12 text-decoration-none d-flex mb-3">
+                                        <img src="./assets/img/sobre.png" alt="Icono de home" class="icono-nav-offcanvas" />
+                                        <p class="m-auto text-start">Mensajes</p>
+                                    </router-link>
+                                </li>
+                                <li>
+                                    <router-link :to="'/notificaciones'" class="col-12 text-decoration-none d-flex mb-3">
+                                        <img src="./assets/img/campanas.png" alt="Icono de home" class="icono-nav-offcanvas" />
+                                        <p class="m-auto text-start">Notificaciones</p>
+                                    </router-link>
+                                </li>
+                                <hr />
+                                <li>
+                                    <router-link :to="'/ajustes'" class="col-12 text-decoration-none d-flex my-3">
+                                        <img src="./assets/img/campanas.png" alt="Icono de home" class="icono-nav-offcanvas" />
+                                        <p class="m-auto text-start">Ajustes</p>
+                                    </router-link>
+                                </li>
+                                <li>
+                                    <router-link :to="'/ayuda'" class="col-12 text-decoration-none d-flex mb-3">
+                                        <img src="./assets/img/campanas.png" alt="Icono de home" class="icono-nav-offcanvas" />
+                                        <p class="m-auto text-start">Ayuda</p>
+                                    </router-link>
                                 </li>
                                 <li>
                                     <form
@@ -135,13 +168,16 @@
                                         method="post"
                                         @submit.prevent="handleLogout"
                                     >
-                                        <button type="submit" class="btn btn-secondary w-100">
-                                            <img src="./assets/img/logout.png" alt="Icono de home" class="icono-nav w-25" />
-                                            Cerrar Sesión
+                                        <button type="submit" class="btn col-12 text-decoration-none d-flex mb-3">
+                                            <img src="./assets/img/logout.png" alt="Icono de logout" class="icono-nav-offcanvas" />
+                                            <p class="m-auto text-start">Cerrar Sesión</p>
                                         </button>
                                     </form>
                                 </li>
                             </ul>
+                            <div class="row d-flex justify-content-center pt-5">
+                                <img src="./assets/img/logo-original.png" alt="Logo Doble-5" class="ancho-logo"/>
+                            </div>
                         </div>
                     </div>
                 </div>   
@@ -154,16 +190,27 @@
 </template>
 
 <style scoped>
+    a {
+        text-decoration: none;
+        color: black;
+    }
     ul {
         list-style: none;
     }
     
     .icono-nav {
-        width: 75%;
+        width: 60%;
     }
 
-    .foto-perfil {
+    .icono-nav-offcanvas {
+        width: 10%;
+    }
+
+    .ancho-offcanvas {
         width: 80%;
-        height: 75%;
+    }
+
+    .ancho-logo {
+        width: 80%;
     }
 </style>
