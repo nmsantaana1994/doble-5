@@ -102,10 +102,10 @@
                             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>
                         <div class="offcanvas-body">
-                            <ul class="navbar-nav justify-content-start flex-grow-1 pe-3 pb-5">
+                            <ul class="navbar-nav justify-content-start flex-grow-1">
                                 <li class="row">
                                     <div class="col-4 mb-3 d-flex justify-content-center">
-                                        <Image :src="user.photoURL" class="rounded-circle foto-perfil" />
+                                        <Image :src="user.photoURL" class="rounded-circle foto-perfil " />
                                     </div>
                                     <div class="col-8">
                                         <p class="text-start h4">
@@ -126,7 +126,7 @@
                                     </router-link>
                                 </li>
                                 <li>
-                                    <router-link :to="'/mis-partidos'" class="col-12 text-decoration-none d-flex mb-3">
+                                    <router-link :to="'/partidos'" class="col-12 text-decoration-none d-flex mb-3">
                                         <img src="./assets/img/pelota.png" alt="Icono de home" class="icono-nav-offcanvas" />
                                         <p class="m-auto text-start">Mis partidos</p>
                                     </router-link>
@@ -139,26 +139,26 @@
                                 </li>
                                 <li>
                                     <router-link :to="'/chat'" class="col-12 text-decoration-none d-flex mb-3">
-                                        <img src="./assets/img/sobre.png" alt="Icono de home" class="icono-nav-offcanvas" />
+                                        <img src="./assets/img/sobre-offcanvas.png" alt="Icono de home" class="icono-nav-offcanvas" />
                                         <p class="m-auto text-start">Mensajes</p>
                                     </router-link>
                                 </li>
                                 <li>
                                     <router-link :to="'/notificaciones'" class="col-12 text-decoration-none d-flex mb-3">
-                                        <img src="./assets/img/campanas.png" alt="Icono de home" class="icono-nav-offcanvas" />
+                                        <img src="./assets/img/campanas-offcanvas.png" alt="Icono de home" class="icono-nav-offcanvas" />
                                         <p class="m-auto text-start">Notificaciones</p>
                                     </router-link>
                                 </li>
                                 <hr />
                                 <li>
                                     <router-link :to="'/ajustes'" class="col-12 text-decoration-none d-flex my-3">
-                                        <img src="./assets/img/campanas.png" alt="Icono de home" class="icono-nav-offcanvas" />
+                                        <img src="./assets/img/ajustes.png" alt="Icono de home" class="icono-nav-offcanvas" />
                                         <p class="m-auto text-start">Ajustes</p>
                                     </router-link>
                                 </li>
                                 <li>
                                     <router-link :to="'/ayuda'" class="col-12 text-decoration-none d-flex mb-3">
-                                        <img src="./assets/img/campanas.png" alt="Icono de home" class="icono-nav-offcanvas" />
+                                        <img src="./assets/img/ayuda.png" alt="Icono de home" class="icono-nav-offcanvas" />
                                         <p class="m-auto text-start">Ayuda</p>
                                     </router-link>
                                 </li>
@@ -168,7 +168,7 @@
                                         method="post"
                                         @submit.prevent="handleLogout"
                                     >
-                                        <button type="submit" class="btn col-12 text-decoration-none d-flex mb-3">
+                                        <button type="submit" class="btn col-12 text-decoration-none d-flex mb-3 p-0">
                                             <img src="./assets/img/logout.png" alt="Icono de logout" class="icono-nav-offcanvas" />
                                             <p class="m-auto text-start">Cerrar Sesión</p>
                                         </button>
@@ -212,5 +212,9 @@
 
     .ancho-logo {
         width: 80%;
+    }
+
+    .foto-perfil {
+        width: 100%;
     }
 </style>

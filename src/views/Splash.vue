@@ -6,7 +6,7 @@
         <div class="col-12 mt-5 d-flex justify-content-center">
             <img src="../assets/img/logo-original.png" alt="Logo Doble-5" class="ancho-logo"/>
         </div>
-        <div class="row justify-content-around mt-5">
+        <div class="row justify-content-evenly mt-5">
             <div class="col-6 boton-inicio d-flex justify-content-center px-6">
                 <router-link to="/iniciar-sesion" class="text-white text-decoration-none fw-semibold">INICIAR SESIÓN</router-link>
             </div>
@@ -27,7 +27,7 @@
         width: 45%;
         padding: 10px;
         border-radius: 10px;
-        margin-right: 1em;
+
     }
 
     .boton-registro {
@@ -35,7 +35,7 @@
         width: 45%;
         padding: 10px;
         border-radius: 10px;
-        margin-left: 1em;
+
     }
 
     .background-inicio {
