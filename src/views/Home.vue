@@ -49,9 +49,7 @@ onMounted(async () => {
       </div>
       <div class="col-8 d-flex align-items-center">
         <p class="text-start h3">
-          {{ user.displayName ? user.displayName : user.nombre }} <br /><span
-            class="h4 bienvenida"
-            >¡Bienvenido!</span
+          {{ user.displayName ? user.displayName : user.nombre }} <br /><span class="h4 bienvenida">¡Bienvenido!</span
           >
         </p>
       </div>

@@ -5,10 +5,8 @@ import { ref, onMounted } from "vue";
 
 const auth = getAuth();
 
-// Crea una referencia reactiva a `partidos`
 const partidos = ref([]);
 
-// Observa los cambios de autenticación
 onAuthStateChanged(auth, (user) => {
   if (user) {
     const uid = user.uid;
@@ -23,7 +21,7 @@ async function getPartidosForUser(UsuarioId) {
   const partidosData = await getPartidos();
   console.log(partidosData);
 
-  // Filtrar los partidos por ID del creador coincidente con el ID del usuario autenticado
+
   const filteredPartidos = partidosData.filter(
     (partido) => partido.userId === UsuarioId
   );
@@ -50,11 +48,7 @@ onMounted(async () => {
       </div>
       <div class="col-2">
         <router-link to="/partidos">
-          <img
-            src="../assets/img/arrows-right.png"
-            alt="Icono flechas dobles"
-            class="icono-h2"
-          />
+          <img src="../assets/img/arrows-right.png" alt="Icono flechas dobles" class="icono-h2" />
         </router-link>
       </div>
     </div>

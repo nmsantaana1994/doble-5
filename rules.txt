@@ -1,0 +1,12 @@
+Usuarios alumnos: 
+
+email: sartori@admin.com
+password: 12345678
+
+
+email: santa@admin.com
+password: 12345678
+
+
+email: vallejos@admin.com
+password: 12345678

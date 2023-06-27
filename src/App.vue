@@ -96,15 +96,25 @@
                     </ul>
 
                     <!-- Offcanvas -->
-                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                    <div class="offcanvas offcanvas-start w-75" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                         <div class="offcanvas-header">
-                            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
+                            <p class="offcanvas-title h5" id="offcanvasNavbarLabel">Menú</p>
                             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>
                         <div class="offcanvas-body">
-                            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                            <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
+                                <li class="row">
+                                    <div class="col-4 mb-3 d-flex justify-content-center">
+                                        <Image :src="user.photoURL" class="rounded-circle foto-perfil" />
+                                    </div>
+                                    <div class="col-8">
+                                        <p class="text-start h4">
+                                            {{ user.displayName ? user.displayName : user.nombre }} 
+                                        </p>
+                                    </div>
+                                </li>
                                 <li>
-                                    <div class="d-flex justify-content-end">
+                                    <div class="d-flex justify-content-start">
                                         <router-link :to="'/home'" class="col-2 text-decoration-none text-black">
                                             <img src="./assets/img/home-offcanvas.png" alt="Icono de home" class="icono-nav" />
                                             <p>Home</p>
@@ -112,7 +122,7 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="d-flex justify-content-end">
+                                    <div class="d-flex justify-content-start">
                                         <router-link :to="'/mis-partidos'" class="col-2 text-decoration-none text-black">
                                             <img src="./assets/img/pelota.png" alt="Icono de home" class="icono-nav" />
                                             <p>Mis partidos</p>
@@ -134,31 +144,7 @@
                             </ul>
                         </div>
                     </div>
-                </div>
-
-                <!-- <router-link to="/" class="text-2xl">DV-Chat</router-link>
-                <ul class="sm:flex gap-4">
-                    <li>
-                        <router-link class="block py-2 sm:p-0" to="/home">Home</router-link>
-                    </li>
-                        
-                        <li>
-                            <router-link class="block py-2 sm:p-0" to="/chat">Chat</router-link>
-                        </li>
-                        <li>
-                            <router-link class="block py-2 sm:p-0" to="/perfil">Mi Perfil</router-link>
-                        </li>
-                        <li>
-                            <form
-                                action="#"
-                                method="post"
-                                @submit.prevent="handleLogout"
-                            >
-                                <button type="submit">{{ user.email }} (Cerrar Sesión)</button>
-                            </form>
-                        </li>
-                </ul> -->
-            
+                </div>   
         </nav>
     </template>
     <!-- <footer class="flex justify-center items-center h-[150px] bg-gray-900 text-white">
@@ -167,12 +153,17 @@
 
 </template>
 
-<style>
+<style scoped>
     ul {
         list-style: none;
     }
     
     .icono-nav {
         width: 75%;
+    }
+
+    .foto-perfil {
+        width: 80%;
+        height: 75%;
     }
 </style>
