@@ -30,7 +30,7 @@
 
 <template>
     <section class="p-3">
-        <div class="row align-items-center mb-3">
+        <div class="row align-items-center my-3">
             <div class="col-8">
                 <h1 class="text-start h3">Home</h1>
             </div>
@@ -117,10 +117,10 @@
                             </div>
                         </div>
                         <div class="row justify-content-around">
-                            <div class="col-6 fondo-boton-card-negro rounded">
+                            <div class="col-6 fondo-boton-card-negro rounded d-flex justify-content-center">
                                 <router-link :to="`/info-partido/${partido.nombre}`" class="text-white">Ver más</router-link>
                             </div>
-                            <div class="col-6 fondo-boton-card rounded">
+                            <div class="col-6 fondo-boton-card rounded d-flex justify-content-center">
                                 <a href="#" class="text-white">Inscribirme</a>
                             </div>
                         </div>
@@ -177,11 +177,11 @@ a {
 
 .fondo-boton-card {
   background-color: #5d880d;
-  width: 45%;
+  width: 35%;
 }
 
 .fondo-boton-card-negro {
   background-color: #000000;
-  width: 45%;
+  width: 35%;
 }
 </style>

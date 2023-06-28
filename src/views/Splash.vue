@@ -4,7 +4,7 @@
 <template>
     <section class="row m-auto d-flex justify-content-center align-items-center vh-100 background-inicio">
         <div class="col-12 mt-5 d-flex justify-content-center">
-            <img src="../assets/img/logo-original.png" alt="Logo Doble-5" class="ancho-logo"/>
+            <img src="../assets/img/logo-blanco.png" alt="Logo Doble-5" class="ancho-logo"/>
         </div>
         <div class="row justify-content-evenly mt-5">
             <div class="col-6 boton-inicio d-flex justify-content-center px-6">

@@ -12,46 +12,45 @@ function useCargaPartido() {
     // const userId = user.value.uid;
     const router = useRouter();
 
-  const fields = ref({
-    nombre: "",
-    complejo: "",
-    fecha: "",
-    hora: "",
-    cantidadJ: "",
-    //vacantes: "",
-    cambios: "",
-    tipo: "",
-    valorCancha: "",
-  });
+    const fields = ref({
+        nombre: "",
+        complejo: "",
+        fecha: "",
+        hora: "",
+        cantidadJ: "",
+        //vacantes: "",
+        cambios: "",
+        tipo: "",
+        valorCancha: "",
+    });
 
-  const loading = ref(false);
+    const loading = ref(false);
 
-  async function handleSubmit() {
-    loading.value = true;
+    async function handleSubmit() {
+        loading.value = true;
 
-        await cargarPartido({
-            ...fields.value,
-            userId: user.value.id,
-        });
+            await cargarPartido({
+                ...fields.value,
+                userId: user.value.id,
+            });
 
-    loading.value = false;
+        loading.value = false;
 
-    router.push("/home");
-  }
+        router.push("/home");
+    }
 
-  return {
-    fields,
-    user,
-    loading,
-    handleSubmit,
-  };
+    return {
+        fields,
+        user,
+        loading,
+        handleSubmit,
+    };
 }
 </script>
 
 <template>
     <section class="p-3">
-        <h2>Crear partido</h2>
-    
+        <h2 class="text-center mb-3">Crear partido</h2>
         <div class="row">
             <form
                 action="#"
@@ -79,7 +78,6 @@ function useCargaPartido() {
                         <option>Cancha 2</option>
                         <option>Cancha 3</option>
                     </select>
-                    <!-- <input type="text" class="form-control" id="nombre" placeholder="Nombre del partido"> -->
                 </div>
                 <div class="mb-3">
                     <input
@@ -146,9 +144,28 @@ function useCargaPartido() {
                         v-model="fields.valorCancha"
                     >
                 </div>
-                <button type="submit" class="btn btn-secondary">Cargar</button>
+                <button type="submit" class="btn cargar-button fw-semibold text-white">Cargar</button>
             </form>
         </div>
-        <!-- <button type="submit" class="btn btn-secondary">Cargar</button> -->
   </section>
 </template>
+
+<style scoped>
+    form{
+        display: flex;
+        flex-direction: column;
+    }
+
+    input, select{
+        width: 100%;
+        padding: .5rem;
+        border: .2px solid rgb(203, 203, 203);
+        border-radius: 20px;
+    }
+    .cargar-button {
+        border-radius: 18px;
+        background-color: #73a812;
+        width: 100%;
+        display: inline-block;
+    }
+</style>
