@@ -103,13 +103,14 @@ function useCargaPartido() {
                         class="form-select"
                         v-model="fields.cantidadJ"
                     >
-                        <option disabled value="">Cantidad de jugadores por equipo</option>
-                        <option>5</option>
-                        <option>6</option>
-                        <option>7</option>
-                        <option>8</option>
-                        <option>9</option>
-                        <option>10</option>
+                        <option disabled value="">Cantidad de jugadores</option>
+                        <option value="5">5 vs 5</option>
+                        <option value="6">6 vs 6</option>
+                        <option value="7">7 vs 7</option>
+                        <option value="8">8 vs 8</option>
+                        <option value="9">9 vs 9</option>
+                        <option value="10">10 vs 10</option>
+                        <option value="11">11 vs 11</option>
                     </select>
                 </div>
                 <div class="mb-3">
