@@ -121,7 +121,7 @@
                                 <router-link :to="`/info-partido/${partido.nombre}`" class="text-white">Ver más</router-link>
                             </div>
                             <div class="col-6 fondo-boton-card rounded d-flex justify-content-center">
-                                <a href="#" class="text-white">Inscribirme</a>
+                                <router-link :to="`/inscription/${partido.nombre}`" class="text-white">Inscribirme</router-link>
                             </div>
                         </div>
                     </div>
