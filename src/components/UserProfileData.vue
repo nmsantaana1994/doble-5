@@ -33,7 +33,7 @@
     </section>
 </template>
 
-<style>
+<style scoped>
     .foto-perfil {
         width: 80%;
     }

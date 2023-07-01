@@ -5,6 +5,7 @@
     import { provide, ref } from "vue";
     import Notification from "./components/Notification.vue";
     import { notificationProvider } from "./symbols/symbols.js";
+    import Image from "./components/Image.vue";
 
     const {user} = useAuth();
     const {handleLogout} = useLogout();
@@ -96,28 +97,70 @@
                     </ul>
 
                     <!-- Offcanvas -->
-                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                        <div class="offcanvas-header">
-                            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
+                    <div class="offcanvas offcanvas-start ancho-offcanvas rounded-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                        <!-- <div class="offcanvas-header">
+                            <p class="offcanvas-title h5" id="offcanvasNavbarLabel">Menú</p>
                             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                        </div>
-                        <div class="offcanvas-body">
-                            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                                <li>
-                                    <div class="d-flex justify-content-end">
-                                        <router-link :to="'/home'" class="col-2 text-decoration-none text-black">
-                                            <img src="./assets/img/home-offcanvas.png" alt="Icono de home" class="icono-nav" />
-                                            <p>Home</p>
-                                        </router-link>
+                        </div> -->
+                        <div class="offcanvas-body pt-5">
+                            <ul class="navbar-nav justify-content-start flex-grow-1 px-3 pt-4">
+                                <li class="row d-flex align-items-center mb-3">
+                                    <div class="col-5">
+                                        <Image :src="user.photoURL" class="rounded-circle foto-perfil " />
+                                    </div>
+                                    <div class="col-7">
+                                        <p class="text-start h4 m-0">{{ user.displayName ? user.displayName : user.nombre }}</p>
+                                        <p class="text-start m-0">{{ user.email }}</p>
                                     </div>
                                 </li>
                                 <li>
-                                    <div class="d-flex justify-content-end">
-                                        <router-link :to="'/mis-partidos'" class="col-2 text-decoration-none text-black">
-                                            <img src="./assets/img/pelota.png" alt="Icono de home" class="icono-nav" />
-                                            <p>Mis partidos</p>
-                                        </router-link>
-                                    </div>
+                                    <router-link :to="'/home'" class="row text-decoration-none d-flex align-items-center my-3">
+                                        <img src="./assets/img/home-offcanvas.png" alt="Icono de home" class="col-4 icono-nav-offcanvas px-2" />
+                                        <p class="text-start col-8 m-0">Home</p>
+                                    </router-link>
+                                </li>
+                                <li>
+                                    <router-link :to="'/feed'" class="row text-decoration-none d-flex mb-3">
+                                        <img src="./assets/img/red-social.png" alt="Icono de home" class="col-4 icono-nav-offcanvas px-2" />
+                                        <p class="text-start col-8 m-0">Feed</p>
+                                    </router-link>
+                                </li>
+                                <li>
+                                    <router-link :to="'/partidos'" class="row text-decoration-none d-flex mb-3">
+                                        <img src="./assets/img/pelota.png" alt="Icono de home" class="col-4 icono-nav-offcanvas px-2" />
+                                        <p class="text-start col-8 m-0">Mis partidos</p>
+                                    </router-link>
+                                </li>
+                                <li>
+                                    <router-link :to="'/red'" class="row text-decoration-none d-flex mb-3">
+                                        <img src="./assets/img/usuarios.png" alt="Icono de home" class="col-4 icono-nav-offcanvas px-2" />
+                                        <p class="text-start col-8 m-0">Red</p>
+                                    </router-link>
+                                </li>
+                                <li>
+                                    <router-link :to="'/chat'" class="row text-decoration-none d-flex mb-3">
+                                        <img src="./assets/img/sobre-offcanvas.png" alt="Icono de home" class="col-4 icono-nav-offcanvas px-2" />
+                                        <p class="text-start col-8 m-0">Mensajes</p>
+                                    </router-link>
+                                </li>
+                                <li>
+                                    <router-link :to="'/notificaciones'" class="row text-decoration-none d-flex mb-3">
+                                        <img src="./assets/img/campanas-offcanvas.png" alt="Icono de home" class="col-4 icono-nav-offcanvas px-2" />
+                                        <p class="text-start col-8 m-0">Notificaciones</p>
+                                    </router-link>
+                                </li>
+                                <hr />
+                                <li>
+                                    <router-link :to="'/ajustes'" class="row text-decoration-none d-flex my-3">
+                                        <img src="./assets/img/ajustes.png" alt="Icono de home" class="col-4 icono-nav-offcanvas px-2" />
+                                        <p class="text-start col-8 m-0">Ajustes</p>
+                                    </router-link>
+                                </li>
+                                <li>
+                                    <router-link :to="'/ayuda'" class="row text-decoration-none d-flex mb-3">
+                                        <img src="./assets/img/ayuda.png" alt="Icono de home" class="col-4 icono-nav-offcanvas px-2" />
+                                        <p class="text-start col-8 m-0">Ayuda</p>
+                                    </router-link>
                                 </li>
                                 <li>
                                     <form
@@ -125,40 +168,19 @@
                                         method="post"
                                         @submit.prevent="handleLogout"
                                     >
-                                        <button type="submit" class="btn btn-secondary w-100">
-                                            <img src="./assets/img/logout.png" alt="Icono de home" class="icono-nav w-25" />
-                                            Cerrar Sesión
+                                        <button type="submit" class="btn row text-decoration-none d-flex mb-3 p-0">
+                                            <img src="./assets/img/logout.png" alt="Icono de logout" class="col-4 icono-nav-offcanvas px-2" />
+                                            <p class="text-start col-8 m-0">Cerrar Sesión</p>
                                         </button>
                                     </form>
                                 </li>
                             </ul>
+                            <div class="row d-flex justify-content-center pt-5">
+                                <img src="./assets/img/logo-original.png" alt="Logo Doble-5" class="ancho-logo"/>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- <router-link to="/" class="text-2xl">DV-Chat</router-link>
-                <ul class="sm:flex gap-4">
-                    <li>
-                        <router-link class="block py-2 sm:p-0" to="/home">Home</router-link>
-                    </li>
-                        
-                        <li>
-                            <router-link class="block py-2 sm:p-0" to="/chat">Chat</router-link>
-                        </li>
-                        <li>
-                            <router-link class="block py-2 sm:p-0" to="/perfil">Mi Perfil</router-link>
-                        </li>
-                        <li>
-                            <form
-                                action="#"
-                                method="post"
-                                @submit.prevent="handleLogout"
-                            >
-                                <button type="submit">{{ user.email }} (Cerrar Sesión)</button>
-                            </form>
-                        </li>
-                </ul> -->
-            
+                </div>   
         </nav>
     </template>
     <!-- <footer class="flex justify-center items-center h-[150px] bg-gray-900 text-white">
@@ -167,12 +189,33 @@
 
 </template>
 
-<style>
+<style scoped>
+    a {
+        text-decoration: none;
+        color: black;
+    }
     ul {
         list-style: none;
     }
     
     .icono-nav {
-        width: 75%;
+        width: 60%;
+    }
+
+    .icono-nav-offcanvas {
+        width: 15%;
+        height: 15%;
+    }
+
+    .ancho-offcanvas {
+        width: 80%;
+    }
+
+    .ancho-logo {
+        width: 80%;
+    }
+
+    .foto-perfil {
+        width: 100%;
     }
 </style>

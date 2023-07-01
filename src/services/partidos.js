@@ -11,70 +11,44 @@ import {
 } from "@firebase/firestore";
 import { db } from "./firebase";
 
-export async function cargarPartido(
-  data /*{nombre, complejo, fecha, hora, cantidadJ, cambios, tipo, valorCancha}*/
-) {
-  try {
-    const partidoRef = collection(db, "partidos");
+export async function cargarPartido(data /*{nombre, complejo, fecha, hora, cantidadJ, cambios, tipo, valorCancha}*/) {
+    try {
+        const partidoRef = collection(db, "partidos");
 
-    return addDoc(partidoRef, {
-      ...data,
-      // nombre,
-      // complejo,
-      // fecha,
-      // hora,
-      // cantidadJ,
-      // cambios,
-      // tipo,
-      // valorCancha,
-      created_at: serverTimestamp(),
-    });
-  } catch (err) {
-    console.log(err);
-  }
+        return addDoc(partidoRef, {
+            ...data,
+            // nombre,
+            // complejo,
+            // fecha,
+            // hora,
+            // cantidadJ,
+            // cambios,
+            // tipo,
+            // valorCancha,
+            created_at: serverTimestamp(),
+        });
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 export async function getPartidos() {
-  const q = query(collection(db, "partidos"));
-  const snapshot = await getDocs(q);
-  return snapshot.docs.map((doc) => doc.data());
+    const q = query(collection(db, "partidos"));
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((doc) => doc.data());
 }
 
-// ==========================
 
-  export async function getPartidoByNombre(nombre) {
+export async function getPartidoByNombre(nombre) {
     const q = query(collection(db, "partidos"), where("nombre", "==", nombre));
     const snapshot = await getDocs(q);
-  
-    if (snapshot.empty) {
+
+  if (snapshot.empty) {
       throw new Error("No existe el partido con el nombre proporcionado");
-    }
-  
-    const partido = snapshot.docs[0].data();
-    return partido;
   }
-  // const partidoRef = doc(collection(db, "partidos"), nombre);
 
-  // const partido = await getDoc(partidoRef);
-
-  // console.log(partido)
-  // if (!partido.exists()) {
-  //   throw new Error(
-  //     "[users.js getPartidoById] No existe el partido con el nombre provisto"
-  //   );
-  // }
-
-  // const data = partido.data();
-
-  // return {
-  //   nombre: data.nombre,
-  //   complejo: data.complejo,
-  //   fecha: data.fecha,
-  //   hora: data.hora,
-  //   cantidadJ: data.cantidadJ,
-  //   cambios: data.cambios,
-  //   tipo: data.tipo,
-  //   valorCancha: data.valorCancha,
-  // };
+  const partido = snapshot.docs[0].data();
+  return partido;
+}
 
 

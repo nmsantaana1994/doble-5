@@ -90,7 +90,7 @@
                         v-model="fields.password"
                     />
                 </div>
-                <Button class="fw-semibold text-white p-2 my-4">INICIAR SESIÓN</Button>
+                <Button class="fw-semibold text-white py-3 my-4">INICIAR SESIÓN</Button>
             </form>
         </div>
         
@@ -98,8 +98,8 @@
             <div class="col-12 text-center mb-4">
                 <a href="" class="fw-semibold">¿Olvidaste tu contraseña?</a>
             </div>
-            <div class="col-12 mt-4">
-                <router-link to="/registro" class="mt-4"><Button class="fw-semibold text-white p-2 register-button">CREA UNA CUENTA</Button></router-link>
+            <div class="col-12 mt-4 d-flex justify-content-center">
+                <router-link to="/registro" class="mt-4"><Button class="fw-semibold text-white py-3 px-5 register-button">CREA UNA CUENTA</Button></router-link>
             </div>
         </div>
     </section>
