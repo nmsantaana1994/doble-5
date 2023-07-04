@@ -102,7 +102,7 @@ onMounted(async () => {
                 <a href="#" class="text-white">Ver más</a>
               </div>
               <div class="col-6 fondo-boton-card rounded">
-                <a href="#" class="text-white">Inscribirme</a>
+                <router-link :to="`/inscription/${partido.nombre}`" class="text-white">Inscribirme</router-link>
               </div>
             </div>
           </div>
