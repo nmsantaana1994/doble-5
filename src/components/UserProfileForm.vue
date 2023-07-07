@@ -16,6 +16,14 @@
     function useEditProfile(user) {
         const form = ref({
             displayName: "",
+            nombre: "",
+            apellido:"",
+            email: "",
+            nacimiento: "",
+            nivel: "",
+            genero: "",
+            barrio: "",
+            telefono: "",
             // career: "",
             photoURL: null,
         });
@@ -29,6 +37,14 @@
         
         watch(user, newUser => {
             form.value.displayName = newUser.displayName;
+            form.value.nombre = newUser.nombre;
+            form.value.apellido = newUser.apellido;
+            form.value.email = newUser.email;
+            form.value.nacimiento = newUser.nacimiento;
+            form.value.nivel = newUser.nivel;
+            form.value.genero = newUser.genero;
+            form.value.barrio = newUser.barrio;
+            form.value.telefono = newUser.telefono;
             // if (form.value.career === "" || newUser.career !== "") {
             //     form.value.career = newUser.career;
             // }
@@ -98,6 +114,63 @@
                     <Input 
                         id="displayName"
                         v-model="form.displayName"
+                    />
+                </div>
+                <div class="mb-3">
+                    <Label for="nombre" class="me-3 fw-bold">Nombre: </Label>
+                    <Input 
+                        id="nombre"
+                        v-model="form.nombre"
+                    />
+                </div>
+                <div class="mb-3">
+                    <Label for="apellido" class="me-3 fw-bold">Apellido: </Label>
+                    <Input 
+                        id="apellido"
+                        v-model="form.apellido"
+                    />
+                </div>
+                <div class="mb-3">
+                    <Label for="email" class="me-3 fw-bold">Email: </Label>
+                    <Input 
+                        id="Email"
+                        v-model="form.email"
+                    />
+                </div>
+                <div class="mb-3">
+                    <Label for="nacimiento" class="me-3 fw-bold">Fecha de Nacimiento: </Label>
+                    <Input
+                        type="date" 
+                        id="nacimiento"
+                        v-model="form.nacimiento"
+                    />
+                </div>
+                <div class="mb-3">
+                    <Label for="nivel" class="me-3 fw-bold">Nivel de Juego: </Label>
+                    <Input 
+                        id="nivel"
+                        v-model="form.nivel"
+                    />
+                </div>
+                <div class="mb-3">
+                    <Label for="genero" class="me-3 fw-bold">Genero: </Label>
+                    <Input 
+                        id="genero"
+                        v-model="form.genero"
+                    />
+                </div>
+                <div class="mb-3">
+                    <Label for="barrio" class="me-3 fw-bold">Barrio: </Label>
+                    <Input 
+                        id="barrio"
+                        v-model="form.barrio"
+                    />
+                </div>
+                <div class="mb-3">
+                    <Label for="telefono" class="me-3 fw-bold">Teléfono: </Label>
+                    <Input 
+                        id="telefono"
+                        v-model="form.telefono"
                     />
                 </div>
                 <!-- <div class="mb-3">

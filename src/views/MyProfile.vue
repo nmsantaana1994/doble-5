@@ -21,7 +21,7 @@
             <UserProfileData :user="user" />
         </template>
 
-        <div class="mb-3">
+        <div class="my-3">
             <Button class="btn btn-primary w-100" @click="toggleEditing">{{ editing ? "Dejar de Editar" : "Editar mi Perfil" }}</Button>
         </div>
     </section>
