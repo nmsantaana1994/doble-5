@@ -12,11 +12,7 @@
 
 <template>
     <section class="p-3 mb-5">
-        <h1 class="mb-3">Mi Perfil</h1>
-    
-        <div class="mb-3">
-            <Button class="btn btn-primary w-100" @click="toggleEditing">{{ editing ? "Dejar de Editar" : "Editar mi Perfil" }}</Button>
-        </div>
+        <h1 class="mb-3 text-center">Mi Perfil</h1>
     
         <template v-if="editing">
             <UserProfileForm />
@@ -24,6 +20,10 @@
         <template v-else>
             <UserProfileData :user="user" />
         </template>
+
+        <div class="my-3">
+            <Button class="btn btn-primary w-100" @click="toggleEditing">{{ editing ? "Dejar de Editar" : "Editar mi Perfil" }}</Button>
+        </div>
     </section>
 </template>
 
