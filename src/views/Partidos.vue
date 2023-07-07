@@ -51,8 +51,9 @@
         // Filtrar los partidos por ID del creador coincidente con el ID del usuario autenticado
         const filteredPartidos = partidosData.filter(
             (partido) => partido.userId === UsuarioId
+            
         );
-
+        console.log('partido filtrado',filteredPartidos)
         Mispartidos.value = filteredPartidos;
     }
 
