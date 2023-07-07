@@ -2,12 +2,12 @@
 import { useRoute } from "vue-router";
 import { usePartido } from "../composition/usePartidos";
 import LoadingContext from "../components/LoadingContext.vue";
-import { getAuth } from "firebase/auth";
-import { ref } from "vue";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { ref, onMounted } from "vue";
 import { getFirestore, doc, updateDoc } from "firebase/firestore";
-import { cargarPartido } from "../services/partidos";
 
 const auth = getAuth();
+const db = getFirestore();
 const contadorInscriptos = ref([]);
 
 const route = useRoute();
@@ -21,23 +21,21 @@ function InscriptionGame() {
   if (user) {
     const uid = user.uid;
     contadorInscriptos.value.push(uid); // Agrega el ID del usuario al array contadorInscriptos
-    updateFirestore(uid); // Actualiza Firestore con el usuario inscrito
+    updateFirestore(contadorInscriptos.value); // Actualiza Firestore con el nuevo array
   }
 }
 
-// Función para actualizar Firestore con los usuarios inscritos
-async function updateFirestore(uid) {
+async function updateFirestore(inscriptos) {
   try {
-    const partidoRef = doc(db, "partidos", partido.id);
+    const partidoRef = doc(db, "partidos", partido.id); // Utiliza partido.id en lugar de uid
     await updateDoc(partidoRef, {
-      inscriptos: contadorInscriptos.value,
+      inscriptos: inscriptos, // Actualiza la propiedad "inscriptos" en Firestore
     });
     console.log("Firestore actualizado correctamente");
   } catch (error) {
     console.error("Error al actualizar Firestore:", error);
   }
 }
-
 </script>
 
 <template>
