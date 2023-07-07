@@ -5,7 +5,7 @@
 
     const route = useRoute();
     const {partido, loading} = usePartido(route.params.nombre);
-
+    
 </script>
 
 <template>
