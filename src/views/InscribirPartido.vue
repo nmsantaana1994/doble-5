@@ -19,7 +19,10 @@ function InscriptionGame() {
   console.log("Inscribiéndome al partido...");
   const user = auth.currentUser;
   if (user) {
-    const uid = user.uid;
+    const uid = {
+      ...user
+    }
+    console.log(uid)
     contadorInscriptos.value.push(uid); // Agrega el ID del usuario al array contadorInscriptos
     updateFirestore(contadorInscriptos.value); // Actualiza Firestore con el nuevo array
   }
@@ -48,7 +51,7 @@ async function updateFirestore(inscriptos) {
         <p>{{ partido.totalJ }}</p>
         <ul>
           <li v-for="jugadorId of contadorInscriptos" :key="jugadorId">
-            {{ jugadorId }}
+            {{ jugadorId.displayName }}
           </li>
         </ul>
         <button @click="InscriptionGame">Sumarme al partido</button>
