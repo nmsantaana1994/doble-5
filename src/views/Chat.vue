@@ -66,6 +66,18 @@
 
 <template>
     <section class="row p-1 m-0">
+        <div class="col-3 d-flex justify-content-center align-items-center">
+        <router-link :to="`/home`">
+            <img src="../assets/img/flecha-izquierda.png" />
+            <i class="fi fi-sr-angle-left"></i>
+        </router-link>
+        </div>
+        <div class="col-9 d-flex align-items-center">
+            <h1 class="text-center">En construcción <!--Chat--></h1>
+        </div>
+    </section>
+    <!-- <section class="row p-1 m-0">
+
         <h1 class="mb-3">Chat</h1>
         
         <div class="col-12">
@@ -76,10 +88,8 @@
                     class="mb-3"
                 >
                     <b>
-                        <template v-if="message.userId !== user.id">
-                            <!-- <div class="col-12 mb-3 d-flex justify-content-center h-auto"> -->
-                                <Image :src="message.photoURL" class="rounded-circle foto-perfil img-thumbnail" />
-                            <!-- </div> -->
+                        <template v-if="message.userId !== user.id">  
+                            <Image :src="message.photoURL" class="rounded-circle foto-perfil img-thumbnail" />
                             <router-link
                                 :to="`/usuario/${message.userId}`"
                                 class="text-blue-400 underline"
@@ -127,10 +137,13 @@
             class="mb-3"
             > Enviando mensaje...</div>
         </div>
-    </section>
+    </section> -->
 </template>
 
 <style scoped>
+    img {
+        width: 80%;
+    }
     .m-bottom {
         margin-bottom: 4em;
     }

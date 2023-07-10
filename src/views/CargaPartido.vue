@@ -51,9 +51,19 @@ function useCargaPartido() {
 </script>
 
 <template>
-    <section class="p-3">
-        <h2 class="text-center mb-3">Crear partido</h2>
-        <div class="row">
+    <section class="row">
+        <div class="col-3 d-flex justify-content-center align-items-center">
+            <router-link :to="`/home`">
+                <img src="../assets/img/flecha-izquierda.png" />
+                <i class="fi fi-sr-angle-left"></i>
+            </router-link>
+        </div>
+        <div class="col-9 d-flex align-items-center">
+            <h1 class="text-center">Crear partido</h1>
+        </div>
+  </section>
+    <section class=" row p-3">
+        <div class="col-12">
             <form
                 action="#"
                 method="POST"
@@ -112,7 +122,6 @@ function useCargaPartido() {
                         <option value="8">8 vs 8</option>
                         <option value="9">9 vs 9</option>
                         <option value="10">10 vs 10</option>
-                        <option value="11">11 vs 11</option>
                     </select>
                 </div>
                 <div class="mb-3">
@@ -147,13 +156,17 @@ function useCargaPartido() {
                         v-model="fields.valorCancha"
                     >
                 </div>
-                <button type="submit" class="btn cargar-button fw-semibold text-white">Cargar</button>
+                <button type="submit" class="btn cargar-button fw-semibold text-white py-2">CREAR PARTIDO</button>
             </form>
         </div>
   </section>
 </template>
 
 <style scoped>
+    img {
+        width: 80%;
+    }
+
     form{
         display: flex;
         flex-direction: column;

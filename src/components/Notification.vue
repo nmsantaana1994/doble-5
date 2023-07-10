@@ -14,7 +14,7 @@
     const notificationClasses = computed(() => {
         switch(props.data.type) {
             case "succes":
-                return "bg-success";
+                return "background-noti";
 
             case "error":
                 return "bg-danger";
@@ -32,15 +32,21 @@
         :class="notificationClasses"
     >
         <div class="d-flex justify-content-between align-items-center">
-            <div>{{ data.message }}</div>
+            <div class="text-white">{{ data.message }}</div>
 
             <button
                 v-if="data.closable"
                 type="button"
-                class="px-3"
+                class="px-3 btn text-white"
                 @click="$emit('close')"
             >&times;</button>
         </div>
         
     </div>
 </template>
+
+<style scoped>
+    .background-noti {
+        background-color: #73a812;
+    }
+</style>

@@ -212,7 +212,7 @@
     }
 
     .ancho-logo {
-        width: 80%;
+        width: 60%;
     }
 
     .foto-perfil {
