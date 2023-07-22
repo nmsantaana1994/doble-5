@@ -35,7 +35,7 @@ export async function getPartidos() {
     return snapshot.docs.map((doc) => doc.data());
 }
 
-export async function getPartidoByNombre(nombre) {
+export async function getPartidoByI(nombre) {
     const q = query(collection(db, "partidos"), where("nombre", "==", nombre));
     const snapshot = await getDocs(q);
 
