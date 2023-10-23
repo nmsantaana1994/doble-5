@@ -73,15 +73,12 @@
         </router-link>
         </div>
         <div class="col-9 d-flex align-items-center">
-            <h1 class="text-center">En construcción <!--Chat--></h1>
+            <h1 class="text-center">Mensajes</h1>
         </div>
     </section>
-    <!-- <section class="row p-1 m-0">
-
-        <h1 class="mb-3">Chat</h1>
-        
+    <section class="row p-1 m-0">
         <div class="col-12">
-            <Loader v-if="initialLoading" />
+            <Loader v-if="initialLoading"/>
             <ul v-else class="list-unstyled">
                 <li
                     v-for="message in messages"
@@ -137,7 +134,7 @@
             class="mb-3"
             > Enviando mensaje...</div>
         </div>
-    </section> -->
+    </section>
 </template>
 
 <style scoped>
