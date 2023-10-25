@@ -14,6 +14,7 @@ import ListaChatsPrivados from "../views/ListaChatsPrivados.vue";
 import InfoPartidos from "../views/InfoPartidos.vue";
 import Partidos from "../views/Partidos.vue";
 import InscribirPartido from "../views/InscribirPartido.vue";
+import Feed from "../views/Feed.vue";
 
 const routes = [
     { path: "/",                            component: Splash,},
@@ -29,7 +30,8 @@ const routes = [
     { path: "/carga-partidos",              component: CargaPartido,        meta: { requiresAuth: true, }},
     { path: "/mis-partidos",                component: MisPartidos,         meta: { requiresAuth: true, }},
     { path: "/info-partido/:nombre",        component: InfoPartidos,        meta: { requiresAuth: true, }},
-    { path: "/inscription/:nombre",        component: InscribirPartido,        meta: { requiresAuth: true, }},
+    { path: "/inscription/:nombre",         component: InscribirPartido,    meta: { requiresAuth: true, }},
+    { path: "/feed",                        component: Feed,                meta: { requiresAuth: true, }},
 ]
 
 const router = createRouter ({
