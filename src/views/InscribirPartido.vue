@@ -24,27 +24,10 @@ function InscriptionGame() {
   if (user) {
     const uidName = user.displayName;
   console.log("user",user)
-    contadorInscriptos.value.push(uidName); // Agrega el ID del usuario al array contadorInscriptos
-    // console.log(partido.value.nombre)
-    // updateFirestore(contadorInscriptos.value); // Actualiza Firestore con el nuevo array
+    contadorInscriptos.value.push(uidName); 
     actualizarContadorInscriptosPorNombre(partido.value.nombre,contadorInscriptos.value);
   }
 }
-
-// async function updateFirestore(inscriptos) {
-//   try {
-
-//     const partidoRef = doc(db, "partidos", partido.value.nombre); // Utiliza partido.id en lugar de uid
-//     await updateDoc(partidoRef, {
-//       inscriptos: inscriptos, // Actualiza la propiedad "inscriptos" en Firestore
-//     });
-//     console.log("Firestore actualizado correctamente");
-//   } catch (error) {
-//     console.error("Error al actualizar Firestore:", error);
-//   }
-// }
-// import { getFirestore, collection, query, where, getDocs, updateDoc, doc } from "firebase/firestore";
-
 async function actualizarContadorInscriptosPorNombre(nombre, nuevoContador) {
   try {
     const partidosRef = collection(db, "partidos");
