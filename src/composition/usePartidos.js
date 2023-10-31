@@ -10,6 +10,7 @@ export function usePartido(nombre) {
         cantidadJ: null,
         cambios: null,
         tipo: null,
+        userId: null,
         valorCancha: null,
         contadorInscriptos: [],
     });
@@ -29,6 +30,7 @@ export function usePartido(nombre) {
             partido.value.cantidadJ = partidoData.cantidadJ;
             partido.value.cambios = partidoData.cambios;
             partido.value.tipo = partidoData.tipo;
+            partido.value.userId = partidoData.userId;
             partido.value.valorCancha = partidoData.valorCancha;
             partido.value.contadorInscriptos = partidoData.contadorInscriptos;
             loading.value = false;

@@ -71,7 +71,18 @@ async function actualizarContadorInscriptosPorNombre(nombre, nuevoContador) {
 
 <template>
   <LoadingContext :loading="loading">
-    <section class="row p-1 m-0">
+    <section class="row py-3 m-0">
+            <div class="col-3 d-flex justify-content-center align-items-center">
+            <router-link :to="`/home`">
+                <img src="../assets/img/flecha-izquierda.png" />
+                <i class="fi fi-sr-angle-left"></i>
+            </router-link>
+            </div>
+            <div class="col-9 d-flex align-items-center">
+                <h1 class="text-center">En construcción <!--Información--></h1>
+            </div>
+    </section>
+    <!-- <section class="row p-1 m-0">
       <div class="col-12">
         <h2>Inscripcion a partido</h2>
         <h3 class="mb-3 fs-4 text-center">{{ partido.nombre }}</h3>
@@ -84,8 +95,12 @@ async function actualizarContadorInscriptosPorNombre(nombre, nuevoContador) {
         </ul>
         <button @click="InscriptionGame">Sumarme al partido</button>
       </div>
-    </section>
+    </section> -->
   </LoadingContext>
 </template>
 
-<style scoped></style>
+<style scoped>
+  img {
+    width: 80%;
+  }
+</style>

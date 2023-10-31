@@ -12,8 +12,11 @@
 <template>
     <section class="row">
         
-        <div class="col-12 mb-3 d-flex justify-content-center">
-            <Image :src="user.photoURL" class="rounded-circle foto-perfil" />
+        <div class="col-12 mb-3">
+            <div class="d-flex justify-content-center mb-3">
+                <Image :src="user.photoURL" class="rounded-circle foto-perfil" />
+            </div>
+            <p class="h2 text-center m-0">{{ user.nombre }} {{ user.apellido }}</p>
         </div>
         <div class="col-12 mt-3">
             <dl class="d-flex flex-column justify-content-center ps-3">
