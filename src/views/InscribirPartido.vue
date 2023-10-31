@@ -2,54 +2,69 @@
 import { useRoute } from "vue-router";
 import { usePartido } from "../composition/usePartidos";
 import LoadingContext from "../components/LoadingContext.vue";
-import { getAuth } from "firebase/auth";
-import { ref } from "vue";
-import { getFirestore, doc, collection, getDocs } from "firebase/firestore";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { ref, onMounted } from "vue";
+import { getFirestore, updateDoc, doc } from "firebase/firestore";
+import { getPartidoByNombre } from "../services/partidos";
+import { collection, query, where, getDocs } from "firebase/firestore";
+
 
 const auth = getAuth();
 const db = getFirestore();
+const contadorInscriptos = ref([]);
 
 const route = useRoute();
 const { partido, loading } = usePartido(route.params.nombre);
 
-async function obtenerNombreDocumentoPorAlgunaCondicion() {
-  const collectionRef = collection(db, "partidos");
-
-  try {
-    const querySnapshot = await getDocs(collectionRef);
-    const nombresDocumentos = querySnapshot.docs.map((doc) => doc.id);
-    console.log('querySnapshot',querySnapshot)
-    console.log('nombresDocumentos',nombresDocumentos)
-    return nombresDocumentos;
-  } catch (error) {
-    console.error("Error al obtener nombres de documentos:", error);
-    return [];
-  }
-}
-
-function mostrarInfoPartidoEUsuario() {
+function InscriptionGame() {
+  partido.totalJ = partido.cantidadJ * 2;
+  console.log("total de jugadores: ", partido.totalJ);
+  console.log("Inscribiéndome al partido...");
   const user = auth.currentUser;
-  let uid = null;
-  if(user){
-    uid = user.uid;
-    console.log("USER ID: ", uid)
+  if (user) {
+    const uidName = user.displayName;
+  console.log("user",user)
+    contadorInscriptos.value.push(uidName); // Agrega el ID del usuario al array contadorInscriptos
+    // console.log(partido.value.nombre)
+    // updateFirestore(contadorInscriptos.value); // Actualiza Firestore con el nuevo array
+    actualizarContadorInscriptosPorNombre(partido.value.nombre,contadorInscriptos.value);
   }
-  partido.value.contadorInscriptos.push(uid);
-  console.log("partido", partido);
-  console.log("user", user);
-  console.log("user name", user.displayName);
-  console.log("usuarios inscriptos", partido.value.contadorInscriptos);
-  obtenerNombreDocumentoPorAlgunaCondicion();
-  updateDocument(partido.value.contadorInscriptos,); // Actualiza Firestore con el nuevo array
 }
 
-async function updateDocument (arrayPartidos, ) {
-  const partidoRef = doc(db, "partidos", );
-  
-  await updateDoc(partidoRef, {
-    contadorInscriptos: arrayPartidos
-  });
+// async function updateFirestore(inscriptos) {
+//   try {
+
+//     const partidoRef = doc(db, "partidos", partido.value.nombre); // Utiliza partido.id en lugar de uid
+//     await updateDoc(partidoRef, {
+//       inscriptos: inscriptos, // Actualiza la propiedad "inscriptos" en Firestore
+//     });
+//     console.log("Firestore actualizado correctamente");
+//   } catch (error) {
+//     console.error("Error al actualizar Firestore:", error);
+//   }
+// }
+// import { getFirestore, collection, query, where, getDocs, updateDoc, doc } from "firebase/firestore";
+
+async function actualizarContadorInscriptosPorNombre(nombre, nuevoContador) {
+  try {
+    const partidosRef = collection(db, "partidos");
+    const q = query(partidosRef, where("nombre", "==", nombre));
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach(async (partido) => {
+      const partidoRef = doc(db, "partidos", partido.id);
+
+      await updateDoc(partidoRef, {
+        contadorInscriptos: nuevoContador,
+      });
+
+      console.log("Contador de inscriptos actualizado correctamente");
+    });
+  } catch (error) {
+    console.error("Error al actualizar contador de inscriptos:", error);
+  }
 }
+
 
 
 </script>
@@ -63,11 +78,11 @@ async function updateDocument (arrayPartidos, ) {
         <p>{{ partido.fecha }}</p>
         <p>{{ partido.totalJ }}</p>
         <ul>
-          <li v-for="jugadorId of partido.contadorInscriptos" :key="jugadorId">
-            {{ jugadorId.displayName }}
+          <li v-for="nombreJugador of contadorInscriptos" :key="nombreJugador">
+            {{ nombreJugador }}
           </li>
         </ul>
-        <button @click="mostrarInfoPartidoEUsuario">Sumarme al partido</button>
+        <button @click="InscriptionGame">Sumarme al partido</button>
       </div>
     </section>
   </LoadingContext>
