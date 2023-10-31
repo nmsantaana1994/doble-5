@@ -24,7 +24,6 @@
             genero: "",
             barrio: "",
             telefono: "",
-            // career: "",
             photoURL: null,
         });
 
@@ -45,17 +44,14 @@
             form.value.genero = newUser.genero;
             form.value.barrio = newUser.barrio;
             form.value.telefono = newUser.telefono;
-            // if (form.value.career === "" || newUser.career !== "") {
-            //     form.value.career = newUser.career;
-            // }
         });
 
         async function handleSubmit() {
             loading.value = true;
-
+            
             try {
                 clearFeedbackMessage();
-                
+                console.log("Valores en form:", form.value);
                 await updateUserProfile(user.value.id, {
                     ...form.value
                 });
@@ -173,13 +169,6 @@
                         v-model="form.telefono"
                     />
                 </div>
-                <!-- <div class="mb-3">
-                    <Label for="career" class="me-3 fw-bold">Carrera: </Label>
-                    <Input 
-                        id="career"
-                        v-model="form.career"
-                    />
-                </div> -->
                 <div class="mb-3">
                     <Label for="photoURL" class="fw-bold">Foto de Perfil: </Label>
                     <Input 

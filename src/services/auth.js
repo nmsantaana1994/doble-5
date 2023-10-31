@@ -148,7 +148,7 @@ export function logout() {
  * @param {string|null} photoURL
  * @returns {Promise<Awaited<unknown>[]>}
  */
-export async function updateUserProfile(id, {displayName, /*career,*/ photoURL}) {
+export async function updateUserProfile(id, {displayName, nombre, apellido, email, nacimiento, nivel, genero, barrio, telefono, photoURL}) {
     const promises = [];
     
     let photoPath = user.photoURL;
@@ -158,14 +158,21 @@ export async function updateUserProfile(id, {displayName, /*career,*/ photoURL})
         promises.push(uploadFileUsingString(photoPath, photoURL));
     }
     
-    promises.push(updateProfile(auth.currentUser, {displayName, photoURL: photoPath}));
-    promises.push(updateUser(id, {displayName, /*career,*/ photoURL: photoPath}));
+    promises.push(updateProfile(auth.currentUser, {displayName, nombre, apellido, email, nacimiento, nivel, genero, barrio, telefono, photoURL: photoPath}));
+    promises.push(updateUser(id, {displayName, nombre, apellido, email, nacimiento, nivel, genero, barrio, telefono, photoURL: photoPath}));
 
     return Promise.all(promises)
         .then(() => {
             setUser({
                 displayName,
-                // career,
+                nombre,
+                apellido,
+                email,
+                nacimiento,
+                nivel,
+                genero,
+                barrio,
+                telefono,
                 photoURL: photoPath,
             });
 
