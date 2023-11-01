@@ -1,6 +1,7 @@
 <script setup>
     import Image from "../components/Image.vue";
     import { useAuth } from "../composition/useAuth.js";
+    import { useUser } from "../composition/useUser.js";
     import { ref, onMounted, onBeforeUnmount } from "vue";
     import { publishPost, getPosts, startRealtimePostListener } from "../services/feed.js";
     import { dateToString } from "../helpers/date.js";
@@ -104,8 +105,9 @@
     <section class="p-3">
         <div v-for="post in posts" :key="post.id">
             <p>
-                <strong>{{ post.userDisplayName }}</strong> - {{ dateToString(post.created_at) }}<br>
-                {{ post.content }}
+                {{ post.content }} 
+                <br>
+                <strong>{{ post.userDisplayName }}</strong> - {{ dateToString(post.created_at) }}
             </p>
         </div>
     </section>
