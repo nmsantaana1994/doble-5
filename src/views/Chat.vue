@@ -8,6 +8,7 @@
     import {useAuth} from "../composition/useAuth.js";
     import Loader from "../components/Loader.vue";
     import Image from "../components/Image.vue";
+    import { getFileURL } from "../services/storage.js";
 
     const {messages, initialLoading} = useChat();
     const {handleSubmit, formLoading, form, user} = useChatForm();
@@ -48,6 +49,7 @@
                 email: user.value.email,
                 displayName: user.value.displayName || user.value.email,
                 message: form.value.message,
+                photoURL: getFileURL(user.value.photoURL),
             })
                 .then (() => {
                     formLoading.value = false;

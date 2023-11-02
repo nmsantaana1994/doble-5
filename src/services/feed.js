@@ -1,5 +1,5 @@
 import { db } from "./firebase";
-import { collection, addDoc, getDocs, query, orderBy, serverTimestamp, onSnapshot } from "firebase/firestore";
+import { collection, doc, updateDoc, arrayUnion, arrayRemove, addDoc, getDocs, getDoc, query, orderBy, serverTimestamp } from "firebase/firestore";
 
 // Función para publicar una nueva publicación
 export async function publishPost(postData, userId) {
@@ -31,26 +31,49 @@ export async function getPosts() {
     }
 }
 
-export async function startRealtimePostListener(callback) {
-    const postsRef = collection(db, "publicaciones");
-    const q = query(postsRef, orderBy("timestamp", "desc"));
-  
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-        const newPosts = [];
-        snapshot.forEach((doc) => {
-            const postData = doc.data();
-            newPosts.push({
-                id: doc.id,
-                userDisplayName: postData.userDisplayName,
-                timestamp: postData.timestamp.toDate(),
-                content: postData.content,
-                // Otros campos que desees mostrar
-            });
-        });
+// Función para obtener una publicación por su ID
+export async function getPostById(postId) {
+    try {
+        const postRef = doc(db, "publicaciones", postId);
+        const postSnapshot = await getDoc(postRef);
+
+        if (postSnapshot.exists()) {
+            return { id: postSnapshot.id, ...postSnapshot.data() };
+        } else {
+            throw new Error("La publicación no existe.");
+        }
+    } catch (error) {
+        console.error("Error al obtener la publicación por ID:", error);
+        throw error;
+    }
+}
+
+// Función para agregar un "Me gusta" a una publicación
+export async function addLike(postId, userId) {
+    try {
+        const postRef = doc(db, "publicaciones", postId);
     
-        // Llama a la función de callback con los nuevos posts
-        callback(newPosts);
-    });
+        // Agregar el ID de usuario a la lista de "Me gusta"
+        await updateDoc(postRef, {
+            likes: arrayUnion(userId),
+        });
+    } catch (error) {
+        console.error("Error al agregar el 'Me gusta':", error);
+        throw error;
+    }
+}
   
-    return unsubscribe; // Para detener la escucha si es necesario
+// Función para quitar un "Me gusta" de una publicación
+export async function removeLike(postId, userId) {
+    try {
+        const postRef = doc(db, "publicaciones", postId);
+    
+        // Quitar el ID de usuario de la lista de "Me gusta"
+        await updateDoc(postRef, {
+            likes: arrayRemove(userId),
+        });
+    } catch (error) {
+        console.error("Error al quitar el 'Me gusta':", error);
+        throw error;
+    }
 }

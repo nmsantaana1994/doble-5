@@ -1,9 +1,9 @@
 <script setup>
     import Image from "../components/Image.vue";
     import { useAuth } from "../composition/useAuth.js";
-    import { useUser } from "../composition/useUser.js";
-    import { ref, onMounted, onBeforeUnmount } from "vue";
-    import { publishPost, getPosts, startRealtimePostListener } from "../services/feed.js";
+    //import { useUser } from "../composition/useUser.js";
+    import { ref, onMounted, /*onBeforeUnmount*/ } from "vue";
+    import { publishPost, getPosts, addLike, removeLike /*startRealtimePostListener*/ } from "../services/feed.js";
     import { dateToString } from "../helpers/date.js";
 
     const { user } = useAuth();
@@ -24,10 +24,13 @@
             if (newPostContent.value.trim() !== "" && user.value.id) {
                 await publishPost(
                     {
-                    content: newPostContent.value,
-                    userId: user.value.id,
-                    userDisplayName: user.value.displayName,
-                    // Otros campos que desees agregar
+                        content: newPostContent.value,
+                        userId: user.value.id,
+                        userDisplayName: user.value.displayName,
+                        photoURL: user.value.photoURL,
+                        likes: [],
+                        comments: [],
+                        // Otros campos que desees agregar
                     }
                 );
 
@@ -42,23 +45,47 @@
         loading.value = false;
     };
 
-    const handleNewPosts = (newPosts) => {
-        console.log('Nuevos posts:', newPosts);
-        posts.value = newPosts;
-    };
+    const toggleLike = async (post) => {
+        if (!user.value.id) {
+            console.error("El ID del usuario no está definido o es inválido.");
+            return;
+        }
 
-    const unsubscribe = startRealtimePostListener(handleNewPosts); // Inicia la escucha en tiempo real
+        const postId = post.id;
+        const userLiked = post.likes.includes(user.value.id);
 
-    onBeforeUnmount(() => {
-        // Detén la escucha al salir del componente para evitar fugas de memoria
-        unsubscribe();
-    });
+        try {
+            // Agregar o quitar el "Me gusta" según el estado actual
+            if (userLiked) {
+                // Quitar el "Me gusta"
+                post.likes = post.likes.filter((userId) => userId !== user.value.id);
+                // Llamar a la función para eliminar el "Me gusta" en tu servicio
+                // Debes implementar esta función en feed.js
+                await removeLike(postId, user.value.id);
+            } else {
+                // Agregar el "Me gusta"
+                post.likes.push(user.value.id);
+                // Llamar a la función para agregar el "Me gusta" en tu servicio
+                // Debes implementar esta función en feed.js
+                await addLike(postId, user.value.id);
+            }
+            // Actualizar el estado del "Me gusta" en la publicación
+            post.liked = !userLiked;
+        } catch (error) {
+            console.error("Error al manejar el 'Me gusta':", error);
+        }
+    }
 
     onMounted(async () => {
         try {
             // Recupera las publicaciones desde el servicio al cargar el componente
             const postSnapshot = await getPosts();
-            posts.value = postSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            posts.value = postSnapshot.docs.map(doc => {
+                const postData = doc.data();
+                // Inicializa 'likes' como una matriz vacía si no está presente en la publicación
+                postData.likes = postData.likes || [];
+                return { id: doc.id, ...postData };
+            });
         } catch (error) {
             console.error('Error al obtener las publicaciones:', error);
         }
@@ -103,12 +130,43 @@
     </section>
     <hr>
     <section class="p-3">
-        <div v-for="post in posts" :key="post.id">
-            <p>
-                {{ post.content }} 
-                <br>
-                <strong>{{ post.userDisplayName }}</strong> - {{ dateToString(post.created_at) }}
-            </p>
+        <div class="card p-3 mb-3" v-for="post in posts" :key="post.id">
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-2">
+                        <Image :src="post.photoURL" class="rounded-circle foto-perfil" />
+                    </div>
+                    <div class="col-10">
+                        <p class="m-0"><strong>{{ post.userDisplayName }}</strong></p>
+                        <p class="font-date">{{ dateToString(post.created_at) }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <p class="font-content">{{ post.content }}</p>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-6">
+                        <button @click="toggleLike(post)" class="icono-publicar">
+                            <div class="d-flex align-items-center">
+                                <img :src="post.liked ? '../src/assets/img/like-filled.png' : '../src/assets/img/like.png'" alt="Icono Me Gusta" class="publicar" />
+                                <p class="m-0 ps-2 fw-bold">{{ post.likes ? post.likes.length : 0 }}</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="col-6">
+                        <router-link :to="`/comments/${post.id}`">
+                            <button @click="viewComments(post)" class="icono-publicar">
+                                <div class="d-flex align-items-center">
+                                    <img src="../assets/img/comment.png" alt="Icono Comentarios" class="publicar" />
+                                    <p class="m-0 ps-2 fw-bold">{{ post.comments.length }} Comentarios</p>
+                                </div>
+                            </button>
+                        </router-link>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 </template>
@@ -139,5 +197,14 @@
     .publicar {
         width: 25px;
         height: 25px;
+    }
+
+    .font-date {
+        font-size: 0.7rem;
+    }
+
+    .font-content {
+        color: #828282;
+        font-weight: 500;
     }
 </style>
