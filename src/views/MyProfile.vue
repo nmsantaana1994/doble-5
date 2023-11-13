@@ -12,15 +12,15 @@
 
 <template>
     <section class="row py-3 m-0">
-            <div class="col-3 d-flex justify-content-center">
+        <div class="col-3 d-flex justify-content-center">
             <router-link :to="`/home`">
                 <img src="../assets/img/flecha-izquierda.png" style="width: 80%;" />
                 <i class="fi fi-sr-angle-left"></i>
             </router-link>
-            </div>
-            <div class="col-9 d-flex align-items-center">
-                <h1 class="text-center m-0 ps-4">Mi Perfil</h1>
-            </div>
+        </div>
+        <div class="col-9 d-flex align-items-center">
+            <h1 class="text-center m-0 ps-4">Mi Perfil</h1>
+        </div>
     </section>
     <section class="p-3 mb-5">
         <template v-if="editing">

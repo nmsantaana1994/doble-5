@@ -8,8 +8,8 @@ export async function publishPost(postData, userId) {
   
         await addDoc(publicacionesRef, {
             ...postData,
-            // content: postData.content, // Contenido del post
-            // userId: postData.userId, // ID del usuario
+            likes: postData.likes || [],
+            comments: postData.comments || [],
             created_at: serverTimestamp(),
         });
     } catch (error) {
@@ -48,12 +48,25 @@ export async function getPostById(postId) {
     }
 }
 
+// Esta función actualiza los comentarios de una publicación en la base de datos
+export const updatePostComments = async (postId, comments) => {
+    try {
+        await db.collection('publicaciones').doc(postId).update({
+            comments: comments,
+        });
+    
+        console.log('Comentarios actualizados con éxito.');
+    } catch (error) {
+        console.error('Error al actualizar comentarios:', error);
+        throw error;
+    }
+};
+
 // Función para agregar un "Me gusta" a una publicación
 export async function addLike(postId, userId) {
     try {
         const postRef = doc(db, "publicaciones", postId);
-    
-        // Agregar el ID de usuario a la lista de "Me gusta"
+
         await updateDoc(postRef, {
             likes: arrayUnion(userId),
         });
@@ -67,8 +80,7 @@ export async function addLike(postId, userId) {
 export async function removeLike(postId, userId) {
     try {
         const postRef = doc(db, "publicaciones", postId);
-    
-        // Quitar el ID de usuario de la lista de "Me gusta"
+
         await updateDoc(postRef, {
             likes: arrayRemove(userId),
         });

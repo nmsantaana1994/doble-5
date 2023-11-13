@@ -1,9 +1,8 @@
 <script setup>
     import Image from "../components/Image.vue";
     import { useAuth } from "../composition/useAuth.js";
-    //import { useUser } from "../composition/useUser.js";
-    import { ref, onMounted, /*onBeforeUnmount*/ } from "vue";
-    import { publishPost, getPosts, addLike, removeLike /*startRealtimePostListener*/ } from "../services/feed.js";
+    import { ref, onMounted } from "vue";
+    import { publishPost, getPosts, addLike, removeLike } from "../services/feed.js";
     import { dateToString } from "../helpers/date.js";
 
     const { user } = useAuth();
@@ -15,8 +14,6 @@
     const posts = ref([]);
 
     const handleSubmit = async () => {
-        //console.log("Datos del usuario:", user);
-        //console.log("ID del usuario:", user.value.id);
 
         loading.value = true;
 
@@ -35,6 +32,15 @@
                 );
 
                 newPostContent.value = "";
+
+                // Después de publicar, actualiza la lista de posts
+                const updatedPostSnapshot = await getPosts();
+                posts.value = updatedPostSnapshot.docs.map(doc => {
+                    const postData = doc.data();
+                    postData.likes = postData.likes || [];
+                    postData.liked = postData.likes.includes(user.value.id);
+                    return { id: doc.id, ...postData };
+                });
             } else {
                 console.error("El ID del usuario no está definido o es inválido.");
             }
@@ -59,14 +65,10 @@
             if (userLiked) {
                 // Quitar el "Me gusta"
                 post.likes = post.likes.filter((userId) => userId !== user.value.id);
-                // Llamar a la función para eliminar el "Me gusta" en tu servicio
-                // Debes implementar esta función en feed.js
                 await removeLike(postId, user.value.id);
             } else {
                 // Agregar el "Me gusta"
                 post.likes.push(user.value.id);
-                // Llamar a la función para agregar el "Me gusta" en tu servicio
-                // Debes implementar esta función en feed.js
                 await addLike(postId, user.value.id);
             }
             // Actualizar el estado del "Me gusta" en la publicación
@@ -82,8 +84,8 @@
             const postSnapshot = await getPosts();
             posts.value = postSnapshot.docs.map(doc => {
                 const postData = doc.data();
-                // Inicializa 'likes' como una matriz vacía si no está presente en la publicación
                 postData.likes = postData.likes || [];
+                postData.liked = postData.likes.includes(user.value.id);
                 return { id: doc.id, ...postData };
             });
         } catch (error) {
@@ -93,15 +95,27 @@
 </script>
 
 <template>
+    <section class="row py-3 m-0">
+        <div class="col-3 d-flex justify-content-center">
+            <router-link :to="`/home`">
+                <img src="../assets/img/flecha-izquierda.png" style="width: 80%;" />
+                <i class="fi fi-sr-angle-left"></i>
+            </router-link>
+        </div>
+        <div class="col-9 d-flex align-items-center">
+            <h1 class="text-center m-0 ps-4">Feed</h1>
+        </div>
+    </section>
+    <hr>
     <section class="p-3">
-        <div class="row align-items-center my-3">
+        <!-- <div class="row align-items-center my-3">
             <div class="col-8">
                 <h1 class="text-start h3">Feed</h1>
             </div>
             <div class="col-4 d-flex justify-content-end">
                 <img src="../assets/img/arrows-right.png" alt="Icono flechas dobles" class="icono-h2" />
             </div>
-        </div>
+        </div> -->
         <div class="row mb-3">
             <div class="col-2">
                 <Image :src="user.photoURL" class="rounded-circle foto-perfil" />
@@ -157,7 +171,7 @@
                     </div>
                     <div class="col-6">
                         <router-link :to="`/comments/${post.id}`">
-                            <button @click="viewComments(post)" class="icono-publicar">
+                            <button class="icono-publicar">
                                 <div class="d-flex align-items-center">
                                     <img src="../assets/img/comment.png" alt="Icono Comentarios" class="publicar" />
                                     <p class="m-0 ps-2 fw-bold">{{ post.comments.length }} Comentarios</p>
@@ -188,10 +202,10 @@
     }
 
     .icono-publicar {
-        border: none; /* Elimina el borde del botón */
-        background: none; /* Elimina el fondo del botón */
-        padding: 0; /* Elimina el espacio interno del botón */
-        cursor: pointer; /* Cambia el cursor a una mano al pasar el mouse sobre la imagen */
+        border: none;
+        background: none;
+        padding: 0;
+        cursor: pointer;
     }
 
     .publicar {
