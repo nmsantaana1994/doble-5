@@ -1,5 +1,5 @@
 import { db } from "./firebase";
-import { collection, doc, updateDoc, arrayUnion, arrayRemove, addDoc, getDocs, getDoc, query, orderBy, serverTimestamp } from "firebase/firestore";
+import { collection, doc, updateDoc, arrayUnion, arrayRemove, addDoc, getDocs, getDoc, query, orderBy, serverTimestamp, Timestamp } from "firebase/firestore";
 
 // Función para publicar una nueva publicación
 export async function publishPost(postData, userId) {
@@ -12,6 +12,7 @@ export async function publishPost(postData, userId) {
             comments: postData.comments || [],
             created_at: serverTimestamp(),
         });
+
     } catch (error) {
         console.error("Error al publicar la publicación:", error);
         throw error;
@@ -48,19 +49,44 @@ export async function getPostById(postId) {
     }
 }
 
-// Esta función actualiza los comentarios de una publicación en la base de datos
-export const updatePostComments = async (postId, comments) => {
+export async function addComment(postId, user, newComment) {
     try {
-        await db.collection('publicaciones').doc(postId).update({
-            comments: comments,
-        });
-    
-        console.log('Comentarios actualizados con éxito.');
+        const postRef = doc(db, "publicaciones", postId);
+        const postSnapshot = await getDoc(postRef);
+
+        if (postSnapshot.exists()) {
+            const post = { id: postSnapshot.id, ...postSnapshot.data() };
+
+            // Agregar el nuevo comentario a la publicación
+            post.comments.push({
+                userId: user.id,
+                userDisplayName: user.displayName,
+                content: newComment,
+                created_at: Timestamp.now(),
+            });
+
+            // Actualizar la publicación en la base de datos
+            await updateDoc(postRef, {
+                comments: post.comments,
+            });
+
+            // Devolver la publicación actualizada
+            return post;
+
+            // console.log('Comentario: ', post.comments);
+            // console.log('Comentario agregado con éxito.');
+        } else {
+            throw new Error("La publicación no existe.");
+        }
     } catch (error) {
-        console.error('Error al actualizar comentarios:', error);
+        console.error("Error al agregar el comentario:", error);
         throw error;
     }
-};
+}
+
+
+// Esta función actualiza los comentarios de una publicación en la base de datos
+
 
 // Función para agregar un "Me gusta" a una publicación
 export async function addLike(postId, userId) {

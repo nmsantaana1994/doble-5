@@ -1,7 +1,7 @@
 <script setup>
     import Image from "../components/Image.vue";
     import { ref, onMounted } from "vue";
-    import { getPostById, addLike, removeLike, updatePostComments } from "../services/feed.js";
+    import { getPostById, addLike, removeLike, addComment, /*updatePostComments*/ } from "../services/feed.js";
     import { useRoute } from "vue-router";
     import { dateToString } from "../helpers/date.js";
     import { useAuth } from "../composition/useAuth.js";
@@ -34,29 +34,14 @@
         }
     });
 
-    const addComment = async () => {
+    const addCommentView = async () => {
         if (!post || !post.value || !post.value.comments || !newComment || newComment.value.trim() === "") {
             console.error("No se puede agregar el comentario. Datos insuficientes.");
             return;
         }
 
         try {
-            // Copia reactiva de los comentarios
-            const commentsCopy = [...post.value.comments];
-
-            // Agregar el nuevo comentario a la copia
-            commentsCopy.push({
-                userId: user.value.id,
-                userDisplayName: user.value.displayName,
-                content: newComment.value,
-                created_at: serverTimestamp(),
-            });
-
-            // Actualizar la propiedad 'comments' de 'post.value' con la copia modificada
-            post.value.comments = commentsCopy;
-
-            // Actualizar la publicación en la base de datos
-            await updatePostComments(post.value.id, post.value.comments);
+            post.value = await addComment(post.value.id, user.value, newComment.value);
 
             // Limpia el campo del comentario
             newComment.value = "";
@@ -139,9 +124,49 @@
                     </button>
                 </div>
                 <!-- Sección para agregar comentarios -->
-                <div class="mt-3">
+                <div class="row mb-3">
+                    <div class="col-2">
+                        <Image :src="user.photoURL" class="rounded-circle foto-perfil" />
+                    </div>
+                    <div class="col-10">
+                        <form 
+                            action=""
+                            method="post"
+                            @submit.prevent="addCommentView"
+                        >
+                            <div class="row">
+                                <div class="col-10">
+                                    <textarea
+                                        name="post"
+                                        id="post"
+                                        cols="40"
+                                        rows="1"
+                                        placeholder="Deja un comentario"
+                                        v-model="newComment"
+                                    >
+                                    </textarea>
+                                </div>
+                                <div class="col-2">
+                                    <button type="submit" class="icono-publicar">
+                                        <img src="../assets/img/publicar.png" alt="Icono Publicar" class="publicar" />
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- <div class="mt-3">
                     <textarea v-model="newComment" placeholder="Deja un comentario"></textarea>
-                    <button @click="addComment" class="btn btn-primary mt-2">Comentar</button>
+                    <button @click="addCommentView" class="btn btn-primary mt-2">Comentar</button>
+                </div> -->
+                <!-- Sección para mostrar comentarios -->
+                <div class="mt-3" v-if="post.comments && post.comments.length > 0">
+                    <div v-for="comment in post.comments" :key="comment.created_at">
+                        <p>
+                            <strong>{{ comment.userDisplayName }}</strong>: {{ comment.content }}
+                        </p>
+                        <p class="font-date">{{ dateToString(comment.created_at) }}</p>
+                    </div>
                 </div>
             </div>
         <!-- Otros detalles de la publicación, si es necesario -->
