@@ -85,7 +85,47 @@ export async function addComment(postId, user, newComment) {
 }
 
 
-// Esta función actualiza los comentarios de una publicación en la base de datos
+// Función para manejar tanto la adición como la eliminación del "Me gusta"
+export async function toggleLike(postId, userId) {
+    try {
+        const postRef = doc(db, "publicaciones", postId);
+        const postSnapshot = await getDoc(postRef);
+
+        if (postSnapshot.exists()) {
+            const post = { id: postSnapshot.id, ...postSnapshot.data() };
+
+            // Verifica si el usuario ya dio like
+            const userLiked = post.likes.includes(userId);
+
+            // Agregar o quitar el "Me gusta" según el estado actual
+            if (userLiked) {
+                // Quitar el "Me gusta"
+                post.likes = post.likes.filter((likedUserId) => likedUserId !== userId);
+                await removeLike(postId, userId);
+            } else {
+                // Agregar el "Me gusta"
+                post.likes.push(userId);
+                await addLike(postId, userId);
+            }
+            
+            // Actualizar el estado del "Me gusta" en la publicación
+            post.liked = !userLiked;
+
+            // Actualizar la publicación en la base de datos
+            await updateDoc(postRef, {
+                likes: post.likes,
+            });
+
+            // Devolver la publicación actualizada
+            return post;
+        } else {
+            throw new Error("La publicación no existe.");
+        }
+    } catch (error) {
+        console.error("Error al manejar el 'Me gusta':", error);
+        throw error;
+    }
+}
 
 
 // Función para agregar un "Me gusta" a una publicación

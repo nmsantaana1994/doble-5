@@ -1,7 +1,7 @@
 <script setup>
     import Image from "../components/Image.vue";
     import { ref, onMounted } from "vue";
-    import { getPostById, addLike, removeLike, addComment, /*updatePostComments*/ } from "../services/feed.js";
+    import { getPostById, toggleLike, addComment } from "../services/feed.js";
     import { useRoute } from "vue-router";
     import { dateToString } from "../helpers/date.js";
     import { useAuth } from "../composition/useAuth.js";
@@ -50,35 +50,14 @@
         }
     };
 
-    const toggleLike = async (post) => {
-        if (!user.value.id) {
-            console.error("El ID del usuario no está definido o es inválido.");
-            return;
+    const toggleLikeView = async () => {
+        try {
+            const updatedPost = await toggleLike(post.value.id, user.value.id);
+            post.value = updatedPost;
+        } catch (error) {
+            console.error("Error al manejar el 'Me gusta':", error);
         }
-
-        // Verifica si post está definido antes de acceder a sus propiedades
-        if (post) {
-            const postId = post.id;
-            const userLiked = post.likes.includes(user.value.id);
-
-            try {
-                // Agregar o quitar el "Me gusta" según el estado actual
-                if (userLiked) {
-                    // Quitar el "Me gusta"
-                    post.likes = post.likes.filter((userId) => userId !== user.value.id);
-                    await removeLike(postId, user.value.id);
-                } else {
-                    // Agregar el "Me gusta"
-                    post.likes.push(user.value.id);
-                    await addLike(postId, user.value.id);
-                }
-                // Actualizar el estado del "Me gusta" en la publicación
-                post.liked = !userLiked;
-            } catch (error) {
-                console.error("Error al manejar el 'Me gusta':", error);
-            }
-        }
-    }
+    };
 </script>
 
 <template>
@@ -108,7 +87,7 @@
             <p>{{ post.content }}</p>
             <div class="row mt-3">
                 <div class="col-6">
-                    <button @click="toggleLike(post)" class="icono-publicar">
+                    <button @click="toggleLikeView(post)" class="icono-publicar">
                         <div class="d-flex align-items-center">
                             <img :src="post.liked ? '../src/assets/img/like-filled.png' : '../src/assets/img/like.png'" alt="Icono Me Gusta" class="publicar" />
                             <p class="m-0 ps-2 fw-bold">{{ post.likes ? post.likes.length : 0 }} Me gusta</p>
@@ -155,10 +134,6 @@
                         </form>
                     </div>
                 </div>
-                <!-- <div class="mt-3">
-                    <textarea v-model="newComment" placeholder="Deja un comentario"></textarea>
-                    <button @click="addCommentView" class="btn btn-primary mt-2">Comentar</button>
-                </div> -->
                 <!-- Sección para mostrar comentarios -->
                 <div class="mt-3" v-if="post.comments && post.comments.length > 0">
                     <div v-for="comment in post.comments" :key="comment.created_at">

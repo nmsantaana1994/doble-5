@@ -2,7 +2,7 @@
     import Image from "../components/Image.vue";
     import { useAuth } from "../composition/useAuth.js";
     import { ref, onMounted } from "vue";
-    import { publishPost, getPosts, addLike, removeLike } from "../services/feed.js";
+    import { publishPost, getPosts, toggleLike } from "../services/feed.js";
     import { dateToString } from "../helpers/date.js";
 
     const { user } = useAuth();
@@ -51,32 +51,20 @@
         loading.value = false;
     };
 
-    const toggleLike = async (post) => {
-        if (!user.value.id) {
-            console.error("El ID del usuario no está definido o es inválido.");
-            return;
-        }
-
-        const postId = post.id;
-        const userLiked = post.likes.includes(user.value.id);
-
+    const toggleLikeView = async (post) => {
         try {
-            // Agregar o quitar el "Me gusta" según el estado actual
-            if (userLiked) {
-                // Quitar el "Me gusta"
-                post.likes = post.likes.filter((userId) => userId !== user.value.id);
-                await removeLike(postId, user.value.id);
-            } else {
-                // Agregar el "Me gusta"
-                post.likes.push(user.value.id);
-                await addLike(postId, user.value.id);
+            // Llama a la función del servicio para manejar el "Me gusta"
+            const updatedPost = await toggleLike(post.id, user.value.id);
+
+            // Actualiza el post en la lista con los nuevos datos
+            const postIndex = posts.value.findIndex((p) => p.id === updatedPost.id);
+            if (postIndex !== -1) {
+                posts.value[postIndex] = updatedPost;
             }
-            // Actualizar el estado del "Me gusta" en la publicación
-            post.liked = !userLiked;
         } catch (error) {
             console.error("Error al manejar el 'Me gusta':", error);
         }
-    }
+    };
 
     onMounted(async () => {
         try {
@@ -108,14 +96,6 @@
     </section>
     <hr>
     <section class="p-3">
-        <!-- <div class="row align-items-center my-3">
-            <div class="col-8">
-                <h1 class="text-start h3">Feed</h1>
-            </div>
-            <div class="col-4 d-flex justify-content-end">
-                <img src="../assets/img/arrows-right.png" alt="Icono flechas dobles" class="icono-h2" />
-            </div>
-        </div> -->
         <div class="row mb-3">
             <div class="col-2">
                 <Image :src="user.photoURL" class="rounded-circle foto-perfil" />
@@ -162,7 +142,7 @@
                 </div>
                 <div class="row mt-3">
                     <div class="col-6">
-                        <button @click="toggleLike(post)" class="icono-publicar">
+                        <button @click="toggleLikeView(post)" class="icono-publicar">
                             <div class="d-flex align-items-center">
                                 <img :src="post.liked ? '../src/assets/img/like-filled.png' : '../src/assets/img/like.png'" alt="Icono Me Gusta" class="publicar" />
                                 <p class="m-0 ps-2 fw-bold">{{ post.likes ? post.likes.length : 0 }}</p>
