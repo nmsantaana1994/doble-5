@@ -19,7 +19,9 @@ export function createUser(id, {email, nombre, apellido, nacimiento, genero, niv
         nivel,
         barrio,
         telefono,
-        terminos
+        terminos,
+        followers: [], // Agregamos el campo followers
+        following: [], // Agregamos el campo following
     });
 }
 
@@ -77,6 +79,8 @@ export async function getUserById(id) {
         nivel: user.data().nivel,
         barrio: user.data().barrio,
         telefono: user.data().telefono,
+        followers: user.data().followers || [], // Agregamos el campo followers
+        following: user.data().following || [], // Agregamos el campo following
     }
 }
 

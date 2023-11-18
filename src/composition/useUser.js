@@ -17,6 +17,8 @@ export function useUser(id) {
         barrio: null,
         telefono: null,
         terminos: false,
+        followers: [],
+        following: [],
     });
 
     const loading = ref(true);
