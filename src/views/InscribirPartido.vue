@@ -6,7 +6,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { ref, onMounted } from "vue";
 import { getFirestore, updateDoc, doc } from "firebase/firestore";
 import { getPartidoByNombre } from "../services/partidos";
-import { collection, query, where, getDocs, onSnapshot } from "firebase/firestore";
+import { collection, query, where, getDocs, onSnapshot, setDoc } from "firebase/firestore";
 
 const auth = getAuth();
 const db = getFirestore();
@@ -37,6 +37,28 @@ function InscriptionGame() {
   }
 }
 
+// async function actualizarListaInscriptos(nombre, nuevaLista) {
+//   try {
+//     const partidosRef = collection(db, "partidos");
+//     const q = query(partidosRef, where("nombre", "==", nombre));
+//     const querySnapshot = await getDocs(q);
+
+//     querySnapshot.forEach(async (partido) => {
+//       const partidoRef = doc(db, "partidos", partido.id);
+//       await updateDoc(partidoRef, {
+//         contadorInscriptos: nuevaLista,
+//       });
+//       console.log("lista actualizada correctamente");
+//       console.log(
+//         "usuarios inscriptos en partido:",
+//         partido.value
+//       );
+//     });
+//   } catch (error) {
+//     console.error("Error al actualizar contador de inscriptos:", error);
+//   }
+// }
+
 async function actualizarListaInscriptos(nombre, nuevaLista) {
   try {
     const partidosRef = collection(db, "partidos");
@@ -48,16 +70,21 @@ async function actualizarListaInscriptos(nombre, nuevaLista) {
       await updateDoc(partidoRef, {
         contadorInscriptos: nuevaLista,
       });
-      console.log("lista actualizada correctamente");
-      console.log(
-        "usuarios inscriptos en partido:",
-        partido.value
-      );
+      console.log("Lista actualizada correctamente");
+      console.log("Usuarios inscriptos en partido:", nuevaLista);
+
+      // Agregar listener para cambios en este documento específico
+      onSnapshot(partidoRef, (docSnapshot) => {
+        const updatedPartido = docSnapshot.data();
+        console.log("Cambios detectados:", updatedPartido);
+        // Puedes actualizar la interfaz o realizar acciones adicionales aquí
+      });
     });
   } catch (error) {
     console.error("Error al actualizar contador de inscriptos:", error);
   }
 }
+
 </script>
 
 <template>
