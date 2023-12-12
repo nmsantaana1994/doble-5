@@ -17,7 +17,14 @@ export async function obtenerSeguidores(userId) {
   
       if (userDoc.exists()) {
         const followers = userDoc.data().followers || [];
-        return followers;
+        const usuariosFollowers = [];
+
+        for (const follower of followers) {
+          const usuarioFollower = await getUserById(follower);
+          usuariosFollowers.push(usuarioFollower);
+        }
+
+        return usuariosFollowers;
       } else {
         console.error('[red.js obtenerSeguidores] El usuario no existe:', userId);
         return [];
@@ -36,7 +43,14 @@ export async function obtenerSiguiendo(userId) {
   
       if (userDoc.exists()) {
         const following = userDoc.data().following || [];
-        return following;
+        const usuariosFollowing = [];
+
+        for (const follow of following) {
+          const usuarioFollowing = await getUserById(follow);
+          usuariosFollowing.push(usuarioFollowing);
+        }
+        
+        return usuariosFollowing;
       } else {
         console.error('[red.js obtenerSiguiendo] El usuario no existe:', userId);
         return [];
