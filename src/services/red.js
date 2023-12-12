@@ -1,117 +1,116 @@
-import { db } from "./firebase.js";
-import { doc, arrayUnion, arrayRemove, updateDoc, getDocs, query, where } from "firebase/firestore";
+import { db } from "./firebase"; // Asegúrate de importar correctamente el archivo
+import {
+    doc,
+    updateDoc,
+    arrayUnion,
+    arrayRemove,
+    getDoc,
+    onSnapshot,
+} from "firebase/firestore";
+import { getUserById } from "./users.js";
 
-// Función para seguir a un usuario
-export async function followUser(userId, followUserId) {
+// Obtener seguidores de un usuario
+export async function obtenerSeguidores(userId) {
     try {
-        const userRef = doc(db, "users", userId);
-        const followUserRef = doc(db, "users", followUserId);
-
-        // Asegúrate de que las propiedades existan e inicialízalas como arrays si es necesario
-        await updateDoc(userRef, { following: arrayUnion(followUserId), followers: [] });
-        await updateDoc(followUserRef, { followers: arrayUnion(userId), following: [] });
-    } catch (error) {
-        console.error('Error al seguir al usuario:', error);
-        throw error;
-    }
-}
-
-// Función para dejar de seguir a un usuario
-export async function unfollowUser(userId, unfollowUserId) {
-    try {
-        const userRef = doc(db, "users", userId);
-        const unfollowUserRef = doc(db, "users", unfollowUserId);
-
-        // Asegúrate de que las propiedades existan e inicialízalas como arrays si es necesario
-        await updateDoc(userRef, { following: arrayRemove(unfollowUserId), followers: [] });
-        await updateDoc(unfollowUserRef, { followers: arrayRemove(userId), following: [] });
-    } catch (error) {
-        console.error('Error al dejar de seguir al usuario:', error);
-        throw error;
-    }
-}
-
-// Obtener la lista de seguidores de un usuario
-export async function getFollowers(userId) {
-    try {
-        const userRef = doc(db, 'users', userId);
-        const followersQuery = query(
-            db.collection('users'),
-            where('following', 'array-contains', userRef)
-        );
-
-        const followersSnapshot = await getDocs(followersQuery);
-
-        const followers = [];
-
-        followersSnapshot.forEach((doc) => {
-            const userData = doc.data();
-            followers.push({
-                id: doc.id,
-                displayName: userData.displayName,
-            });
-        });
-
+      const userRef = doc(db, 'users', userId);
+      const userDoc = await getDoc(userRef);
+  
+      if (userDoc.exists()) {
+        const followers = userDoc.data().followers || [];
         return followers;
+      } else {
+        console.error('[red.js obtenerSeguidores] El usuario no existe:', userId);
+        return [];
+      }
     } catch (error) {
-        console.error('Error al obtener seguidores:', error);
-        throw error;
+      console.error('[red.js obtenerSeguidores] Error:', error);
+      return [];
     }
 }
 
-// Obtener la lista de usuarios a los que un usuario sigue
-export async function getFollowing(userId) {
+// Obtener usuarios seguidos por un usuario
+export async function obtenerSiguiendo(userId) {
     try {
-        const userRef = doc(db, 'users', userId);
-        const followingQuery = query(
-            db.collection('users'),
-            where('followers', 'array-contains', userRef)
-        );
-
-        const followingSnapshot = await getDocs(followingQuery);
-
-        const following = [];
-
-        followingSnapshot.forEach((doc) => {
-            const userData = doc.data();
-            // Verificar si 'followers' es un array antes de usar 'indexOf'
-            if (Array.isArray(userData.followers) && userData.followers.indexOf(userId) !== -1) {
-                following.push({
-                    id: doc.id,
-                    displayName: userData.displayName,
-                });
-            }
-        });
-
+      const userRef = doc(db, 'users', userId);
+      const userDoc = await getDoc(userRef);
+  
+      if (userDoc.exists()) {
+        const following = userDoc.data().following || [];
         return following;
+      } else {
+        console.error('[red.js obtenerSiguiendo] El usuario no existe:', userId);
+        return [];
+      }
     } catch (error) {
-        console.error('Error al obtener usuarios seguidos:', error);
-        throw error;
+      console.error('[red.js obtenerSiguiendo] Error:', error);
+      return [];
     }
+  }
+
+// Obtener seguidores de un usuario y escuchar cambios en tiempo real
+export function seguirCambioSeguidores(userId, callback) {
+  const userRef = doc(db, 'users', userId);
+  const unsubscribe = onSnapshot(userRef, (snapshot) => {
+      const followers = snapshot.data()?.followers || [];
+      callback(followers);
+  });
+
+  return unsubscribe;
 }
 
-// Obtener la lista de usuarios disponibles para seguir
-export async function getAvailableUsers(currentUserId) {
-    try {
-        const usersRef = db.collection('users');
-        const usersSnapshot = await getDocs(usersRef);
-    
-        const availableUsers = [];
-    
-        usersSnapshot.forEach((doc) => {
-            const userData = doc.data();
-            // Verificar si el usuario actual ya sigue a este usuario
-            if (doc.id !== currentUserId && !userData.followers?.includes(currentUserId)) {
-            availableUsers.push({
-                id: doc.id,
-                displayName: userData.displayName,
-            });
-            }
-        });
-    
-        return availableUsers;
-    } catch (error) {
-        console.error('Error al obtener usuarios disponibles:', error);
-        throw error;
-    }
+// Seguir a un usuario
+export async function seguirUsuario(userId, usuarioASeguirId) {
+  try {
+      const userRef = doc(db, "users", userId);
+      const usuarioASeguirRef = doc(db, "users", usuarioASeguirId);
+
+      await updateDoc(userRef, {
+          following: arrayUnion(usuarioASeguirId),
+      });
+
+      await updateDoc(usuarioASeguirRef, {
+          followers: arrayUnion(userId),
+      });
+
+      console.log(
+          "[red.js seguirUsuario] Usuario seguido con éxito:",
+          usuarioASeguirId
+      );
+
+      return await getUserById(usuarioASeguirId);
+  } catch (error) {
+      console.error("[red.js seguirUsuario] Error al seguir usuario:", error);
+  }
+}
+
+// Dejar de seguir a un usuario
+export async function dejarDeSeguirUsuario(userId, usuarioADejarDeSeguirId) {
+  try {
+      const userRef = doc(db, "users", userId);
+      const usuarioADejarDeSeguirRef = doc(
+          db,
+          "users",
+          usuarioADejarDeSeguirId
+      );
+
+      await updateDoc(userRef, {
+          following: arrayRemove(usuarioADejarDeSeguirId),
+      });
+
+      await updateDoc(usuarioADejarDeSeguirRef, {
+          followers: arrayRemove(userId),
+      });
+
+      console.log(
+          "[red.js dejarDeSeguirUsuario] Usuario dejado de seguir con éxito:",
+          usuarioADejarDeSeguirId
+      );
+
+      return await getUserById(usuarioADejarDeSeguirId);
+  } catch (error) {
+      console.error(
+          "[red.js dejarDeSeguirUsuario] Error al dejar de seguir usuario:",
+          error
+      );
+  }
 }

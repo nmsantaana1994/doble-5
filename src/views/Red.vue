@@ -1,68 +1,43 @@
 <script setup>
     import { ref, onMounted } from 'vue';
-    import { useAuth } from '../composition/useAuth.js';
-    import { useUser } from '../composition/useUser.js';
-    import { followUser, unfollowUser, getFollowers, getFollowing, getAvailableUsers } from '../services/red.js';
+    import { useAuth } from '../composition/useAuth';
+    import { obtenerSeguidores, obtenerSiguiendo } from '../services/red';
 
     const { user } = useAuth();
-    const { user: currentUser, loading } = useUser(user.value.id);
-
-    const followers = ref([]);
-    const following = ref([]);
-    const availableUsers = ref([]);
+    const userId = ref(null);
+    const seguidores = ref([]);
+    const siguiendo = ref([]);
+    console.log(user);
 
     onMounted(async () => {
-        // Obtener la lista de seguidores y seguidos del usuario actual
-        followers.value = (await getFollowers(currentUser.id)) || [];
-        following.value = (await getFollowing(currentUser.id)) || [];
+        // Asegúrate de tener el ID del usuario actual disponible, probablemente obtenido al iniciar sesión.
+        userId.value = user.value ? user.value.id : null;
+        console.log(userId);
 
-        // Obtener la lista de usuarios disponibles para seguir
-        availableUsers.value = (await getAvailableUsers(currentUser.id)) || [];
+        // Verifica que userId no sea null o undefined antes de realizar las consultas.
+        if (userId.value) {
+            try {
+                seguidores.value = await obtenerSeguidores(userId.value);
+                siguiendo.value = await obtenerSiguiendo(userId.value);
+            } catch (error) {
+                console.error("Error al obtener seguidores y siguiendo:", error);
+            }
+        } else {
+            console.warn("ID de usuario no disponible.");
+        }
     });
-
-    async function followUserView(userId) {
-        await followUser(currentUser.id, userId);
-        // Actualizar las listas después de seguir a un usuario
-        followers.value = (await getFollowers(currentUser.id)) || [];
-        following.value = (await getFollowing(currentUser.id)) || [];
-        availableUsers.value = (await getAvailableUsers(currentUser.id)) || [];
-    }
-
-    async function unfollowUserView(userId) {
-        await unfollowUser(currentUser.id, userId);
-        // Actualizar las listas después de dejar de seguir a un usuario
-        followers.value = (await getFollowers(currentUser.id)) || [];
-        following.value = (await getFollowing(currentUser.id)) || [];
-        availableUsers.value = (await getAvailableUsers(currentUser.id)) || [];
-    }
 </script>
 
 <template>
     <div>
-        <h1>Red de Usuarios</h1>
-    
-        <h2>Seguidores</h2>
-        <ul>
-            <li v-for="follower in followers" :key="follower.id">
-            {{ follower.displayName }}
-            <button @click="unfollowUserView(follower.id)">Dejar de seguir</button>
-            </li>
-        </ul>
-    
-        <h2>Siguiendo</h2>
-        <ul>
-            <li v-for="following in following" :key="following.id">
-            {{ following.displayName }}
-            <button @click="unfollowUserView(following.id)">Dejar de seguir</button>
-            </li>
-        </ul>
-    
-        <h2>Usuarios Disponibles</h2>
-        <ul>
-            <li v-for="user in availableUsers" :key="user.id">
-            {{ user.displayName }}
-            <button @click="followUser(user.id)">Seguir</button>
-            </li>
-        </ul>
+      <h2>Seguidores</h2>
+      <ul>
+        <li v-for="seguidor in seguidores" :key="seguidor">{{ seguidor }}</li>
+      </ul>
+  
+      <h2>Siguiendo</h2>
+      <ul>
+        <li v-for="seguido in siguiendo" :key="seguido">{{ seguido }}</li>
+      </ul>
     </div>
-  </template>
+</template>

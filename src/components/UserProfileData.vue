@@ -5,18 +5,58 @@
         user: {
             type: Object,
             required: true,
-        }
+        },
+        totalSeguidores: {
+            type: Number,
+            default: 0,
+        },
+        totalSiguiendo: {
+            type: Number,
+            default: 0,
+        },
+        seguirDejarSeguir: {
+            type: Function,
+            //required: true,
+        },
+        userFollowing: {
+            type: Boolean,
+            //required: true,
+        },
+        mostrarBoton: {
+            type: Boolean,
+            default: true,
+        },
     })
 </script>
 
 <template>
-    <section class="row">
+    <div class="row">
         
         <div class="col-12 mb-3">
             <div class="d-flex justify-content-center mb-3">
                 <Image :src="user.photoURL" class="rounded-circle foto-perfil" />
             </div>
             <p class="h2 text-center m-0">{{ user.nombre }} {{ user.apellido }}</p>
+        </div>
+        <div class="col-12 mb-3">
+            <div class="row">
+                <div class="col-6">
+                    <p class="text-center fw-bold">{{ totalSeguidores }}</p>
+                    <p class="text-center fw-bold">Seguidores</p>
+                </div>
+                <div class="col-6">
+                    <p class="text-center fw-bold">{{ totalSiguiendo }}</p>
+                    <p class="text-center fw-bold">Siguiendo</p>
+                </div>
+            </div>
+            <!-- Mostrar botón de seguir/dejar de seguir -->
+            <div class="d-grid gap-2">
+                <!-- Botón para seguir o dejar de seguir -->
+                <button v-if="mostrarBoton" @click="seguirDejarSeguir" class="btn btn-primary w-auto">
+                    {{ userFollowing ? 'Dejar de seguir' : 'Seguir' }}
+                </button>
+                
+            </div>
         </div>
         <div class="col-12 mt-3">
             <dl class="d-flex flex-column justify-content-center ps-3">
@@ -43,7 +83,7 @@
             </dl>
         </div>
 
-    </section>
+    </div>
 </template>
 
 <style scoped>

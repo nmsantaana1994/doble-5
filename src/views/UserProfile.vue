@@ -1,44 +1,58 @@
 <script setup>
-    import { ref, onMounted } from 'vue';
+    import { ref, onMounted, watch } from 'vue';
     import { useRoute } from 'vue-router';
     import { useUser } from '../composition/useUser';
+    import { useAuth } from '../composition/useAuth';
+    import { seguirUsuario, dejarDeSeguirUsuario, obtenerSeguidores, obtenerSiguiendo } from '../services/red.js';
     import LoadingContext from '../components/LoadingContext.vue';
     import UserProfileData from '../components/UserProfileData.vue';
-    import { followUser, unfollowUser, getFollowing } from '../services/red.js';
-    import { useAuth } from '../composition/useAuth'; // Agrega la importación
 
     const route = useRoute();
     const { user, loading } = useUser(route.params.id);
-    const { user: currentUser } = useAuth(); // Obten el usuario actual
-    const isFollowing = ref(false);
+    const { user: userAuth } = useAuth();
+    const totalSeguidores = ref(0);
+    const totalSiguiendo = ref(0);
+    const userFollowing = ref(false);
 
     onMounted(async () => {
-        // Verificar si el usuario actual sigue al usuario de la vista
-        isFollowing.value = await checkIfFollowing(user.id);
+      const fetchUserData = async () => {
+        if (user.value && userAuth.value) {
+          try {
+            const seguidores = await obtenerSeguidores(user.value.id);
+            const siguiendo = await obtenerSiguiendo(user.value.id);
+
+            totalSeguidores.value = seguidores.length;
+            totalSiguiendo.value = siguiendo.length;
+
+            // Verificar si el usuario actual está siguiendo al usuario cuyo perfil se visualiza
+            userFollowing.value = seguidores.includes(userAuth.value.id);
+          } catch (error) {
+            console.error("Error al obtener seguidores y siguiendo:", error);
+          }
+        }
+      };
+
+      // Llama a fetchUserData cuando el componente se monta y cuando hay cambios en user o userAuth
+      watch([user, userAuth], fetchUserData);
+
+      // También llama a fetchUserData cuando se sigue o deja de seguir a un usuario
+      watch(userFollowing, fetchUserData);
     });
 
-    const toggleFollowStatus = async () => {
-        if (isFollowing.value) {
-        // Dejar de seguir al usuario
-        await unfollowUser(currentUser.id, user.id);
-        } else {
-        // Seguir al usuario
-        await followUser(currentUser.id, user.id);
+    const seguirDejarSeguir = async () => {
+        try {
+            if (userFollowing.value) {
+                // Dejar de seguir
+                await dejarDeSeguirUsuario(userAuth.value.id, user.value.id);
+                userFollowing.value = false;
+            } else {
+                // Seguir
+                await seguirUsuario(userAuth.value.id, user.value.id);
+                userFollowing.value = true;
+            }
+        } catch (error) {
+            console.error("Error al seguir/dejar de seguir usuario:", error);
         }
-
-        // Actualizar el estado después de seguir/dejar de seguir
-        isFollowing.value = !isFollowing.value;
-    };
-
-    // Función para verificar si el usuario actual sigue al usuario de la vista
-    const checkIfFollowing = async (userId) => {
-        // Implementa la lógica para verificar si el usuario actual sigue a userId
-        // Puedes usar la función getFollowing del servicio red.js para obtener los usuarios seguidos por el usuario actual
-        // y luego verificar si userId está en esa lista.
-        // Retorna true si el usuario actual sigue a userId, de lo contrario, retorna false.
-        // Ejemplo:
-        const followingUsers = await getFollowing(currentUser.id);
-        return followingUsers.some((u) => u.id === userId);
     };
 </script>
 
@@ -47,12 +61,8 @@
         <section class="row p-1 m-0">
             <div class="col-12">
                 <h1 class="mb-3 fs-4 text-center">Perfil de {{ user.displayName ? user.displayName : user.nombre }}</h1>
-                <!-- Botón de seguir/dejar de seguir -->
-                <button @click="toggleFollowStatus">
-                    {{ isFollowing ? 'Dejar de seguir' : 'Seguir' }}
-                </button>
-        
-                <UserProfileData :user="user" />
+
+                <UserProfileData :user="user" :totalSeguidores="totalSeguidores" :totalSiguiendo="totalSiguiendo" :seguirDejarSeguir="seguirDejarSeguir" :userFollowing="userFollowing" />
             </div>
     
             <div class="col-12 m-bottom">
