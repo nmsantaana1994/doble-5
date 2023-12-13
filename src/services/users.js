@@ -1,5 +1,6 @@
 import { db } from "./firebase.js";
 import { setDoc, doc, getDoc, updateDoc } from "firebase/firestore";
+import { getFileURL } from "./storage.js";
 
 /**
  * 
@@ -67,6 +68,15 @@ export async function getUserById(id) {
     if (!user.exists) {
         throw new Error ("[users.js getUserById] No existe el usuario con el id provisto");
     }
+    //console.log("Usuario sin loadPhoto:", user.photoURL);
+    
+    // loadPhoto();
+    
+    // console.log("Usuario:", user);
+
+    // async function loadPhoto() {
+    //     user.photoURL = await getFileURL(user.data().photoURL);
+    // }
 
     return {
         id,
