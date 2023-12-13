@@ -31,7 +31,6 @@
 
 <template>
     <div class="row">
-        
         <div class="col-12 mb-3">
             <div class="d-flex justify-content-center mb-3">
                 <Image :src="user.photoURL" class="rounded-circle foto-perfil" />
@@ -82,7 +81,6 @@
                 <dd class="mb-3 fw-bold">{{ user.telefono || "No especificado" }}</dd>
             </dl>
         </div>
-
     </div>
 </template>
 

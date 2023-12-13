@@ -95,7 +95,7 @@
 </script>
 
 <template>
-    <section class="row d-flex">
+    <div class="row d-flex">
         <div class="col-12 mb-3 d-flex justify-content-center">
             <Image :src="user.photoURL" class="rounded-circle foto-perfil"/>
         </div>
@@ -192,7 +192,7 @@
                 </Button>
             </form>
         </div>
-    </section>
+    </div>
 </template>
 
 <style scoped>
