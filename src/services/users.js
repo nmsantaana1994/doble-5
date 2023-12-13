@@ -68,6 +68,11 @@ export async function getUserById(id) {
     if (!user.exists) {
         throw new Error ("[users.js getUserById] No existe el usuario con el id provisto");
     }
+
+    const userData = user.data();
+
+    // Transforma el identificador en URL completa utilizando getFileURL
+    const photoURL = userData.photoURL ? await getFileURL(userData.photoURL) : null;
     //console.log("Usuario sin loadPhoto:", user.photoURL);
     
     // loadPhoto();
@@ -83,7 +88,7 @@ export async function getUserById(id) {
         email: user.data().email,
         displayName: user.data().displayName,
         // career: user.data().career,
-        photoURL: user.data().photoURL,
+        photoURL,
         nombre: user.data().nombre,
         apellido: user.data().apellido,
         nacimiento: user.data().nacimiento,
