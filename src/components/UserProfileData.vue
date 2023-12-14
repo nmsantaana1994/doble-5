@@ -39,11 +39,11 @@
         </div>
         <div class="col-12 mb-3">
             <div class="row">
-                <div class="col-6">
+                <div class="col-6 mt-3">
                     <p class="text-center fw-bold">{{ totalSeguidores }}</p>
                     <p class="text-center fw-bold">Seguidores</p>
                 </div>
-                <div class="col-6">
+                <div class="col-6 mt-3">
                     <p class="text-center fw-bold">{{ totalSiguiendo }}</p>
                     <p class="text-center fw-bold">Siguiendo</p>
                 </div>
