@@ -61,20 +61,22 @@
 </script>
 
 <template>
-    <section class="row py-3 m-0">
-        <div class="col-3 d-flex justify-content-center">
-            <router-link :to="`/feed`">
-                <img src="../assets/img/flecha-izquierda.png" style="width: 80%;" />
-                <i class="fi fi-sr-angle-left"></i>
-            </router-link>
-        </div>
-        <div class="col-9 d-flex align-items-center">
-            <h1 class="text-center m-0 ps-4">Publicación</h1>
+    <section class="p-3 m-0">
+        <div class="row">
+            <div class="col-3 d-flex justify-content-center">
+                <router-link :to="`/feed`">
+                    <img src="../assets/img/flecha-izquierda.png" style="width: 80%;" />
+                    <i class="fi fi-sr-angle-left"></i>
+                </router-link>
+            </div>
+            <div class="col-9 d-flex align-items-center">
+                <h1 class="text-center m-0 ps-4">Publicación</h1>
+            </div>
         </div>
     </section>
     <section class="p-3">
         <div v-if="post">
-            <div class="row">
+            <div class="row mb-3">
                 <!-- Renderizar los detalles de la publicación -->
                 <div class="col-2">
                     <Image :src="post.photoURL" class="rounded-circle foto-perfil" />
@@ -84,63 +86,75 @@
                     <p class="font-date">{{ dateToString(post.created_at) }}</p>
                 </div>
             </div>
-            <p>{{ post.content }}</p>
-            <div class="row mt-3">
-                <div class="col-6">
-                    <button @click="toggleLikeView(post)" class="icono-publicar">
-                        <div class="d-flex align-items-center">
-                            <img :src="post.liked ? '../src/assets/img/like-filled.png' : '../src/assets/img/like.png'" alt="Icono Me Gusta" class="publicar" />
-                            <p class="m-0 ps-2 fw-bold">{{ post.likes ? post.likes.length : 0 }} Me gusta</p>
-                        </div>
-                    </button>
+            <div class="row mb-3">
+                <div class="col-12">
+                    <p>{{ post.content }}</p>
                 </div>
-                <div class="col-6">
-                    <button class="icono-publicar">
-                        <div class="d-flex align-items-center">
-                            <img src="../assets/img/comment.png" alt="Icono Comentarios" class="publicar" />
-                            <p class="m-0 ps-2 fw-bold" v-if="post.comments">{{ post.comments.length }} Comentarios</p>
+            </div>
+            <div class="row mb-3">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-6">
+                            <button @click="toggleLikeView(post)" class="icono-publicar">
+                                <div class="d-flex align-items-center">
+                                    <img :src="post.liked ? '../src/assets/img/like-filled.png' : '../src/assets/img/like.png'" alt="Icono Me Gusta" class="publicar" />
+                                    <p class="m-0 ps-2 fw-bold">{{ post.likes ? post.likes.length : 0 }} Me gusta</p>
+                                </div>
+                            </button>
                         </div>
-                    </button>
-                </div>
-                <!-- Sección para agregar comentarios -->
-                <div class="row mb-3">
-                    <div class="col-2">
-                        <Image :src="user.photoURL" class="rounded-circle foto-perfil" />
+                        <div class="col-6">
+                            <button class="icono-publicar">
+                                <div class="d-flex align-items-center">
+                                    <img src="../assets/img/comment.png" alt="Icono Comentarios" class="publicar" />
+                                    <p class="m-0 ps-2 fw-bold" v-if="post.comments">{{ post.comments.length }} Comentarios</p>
+                                </div>
+                            </button>
+                        </div>
                     </div>
-                    <div class="col-10">
-                        <form 
-                            action=""
-                            method="post"
-                            @submit.prevent="addCommentView"
-                        >
-                            <div class="row">
-                                <div class="col-10">
-                                    <textarea
-                                        name="post"
-                                        id="post"
-                                        cols="40"
-                                        rows="1"
-                                        placeholder="Deja un comentario"
-                                        v-model="newComment"
-                                    >
-                                    </textarea>
-                                </div>
-                                <div class="col-2">
-                                    <button type="submit" class="icono-publicar">
-                                        <img src="../assets/img/publicar.png" alt="Icono Publicar" class="publicar" />
-                                    </button>
-                                </div>
+                </div>
+            </div>
+            <!-- Sección para agregar comentarios -->
+            <div class="row mb-3">
+                <div class="col-2">
+                    <Image :src="user.photoURL" class="rounded-circle foto-perfil" />
+                </div>
+                <div class="col-10">
+                    <form 
+                        action=""
+                        method="post"
+                        @submit.prevent="addCommentView"
+                    >
+                        <div class="row">
+                            <div class="col-10">
+                                <textarea
+                                    name="post"
+                                    id="post"
+                                    cols="41"
+                                    rows="1"
+                                    placeholder="Deja un comentario"
+                                    v-model="newComment"
+                                >
+                                </textarea>
                             </div>
-                        </form>
-                    </div>
+                            <div class="col-2">
+                                <button type="submit" class="icono-publicar">
+                                    <img src="../assets/img/publicar.png" alt="Icono Publicar" class="publicar" />
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <!-- Sección para mostrar comentarios -->
-                <div class="mt-3" v-if="post.comments && post.comments.length > 0">
-                    <div v-for="comment in post.comments" :key="comment.created_at">
-                        <p>
-                            <strong>{{ comment.userDisplayName }}</strong>: {{ comment.content }}
-                        </p>
-                        <p class="font-date">{{ dateToString(comment.created_at) }}</p>
+            </div>
+            <!-- Sección para mostrar comentarios -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="row mt-3" v-if="post.comments && post.comments.length > 0">
+                        <div v-for="comment in post.comments" :key="comment.created_at" class="col-12">
+                            <p>
+                                <strong>{{ comment.userDisplayName }}</strong>: {{ comment.content }}
+                            </p>
+                            <p class="font-date">{{ dateToString(comment.created_at) }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
