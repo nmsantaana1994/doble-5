@@ -4,82 +4,105 @@
     import { ref, onMounted } from "vue";
     import { publishPost, getPosts, toggleLike } from "../services/feed.js";
     import { dateToString } from "../helpers/date.js";
+    import Loader from "../components/Loader.vue";
 
-    const { user } = useAuth();
+    const {user, newPostContent, loading, posts, handleSubmit, toggleLikeView } = useFeed();
 
-    const newPostContent = ref("");
+    function useFeed() {
+        const { user } = useAuth();
+    
+        const newPostContent = ref("");
+    
+        const loading = ref(false);
+    
+        const posts = ref([]);
+    
+        
+        onMounted(async () => {
+            loading.value = true;
 
-    const loading = ref(false);
+            try {
 
-    const posts = ref([]);
+                // Recupera las publicaciones desde el servicio al cargar el componente
+                const postSnapshot = await getPosts();
 
-    const handleSubmit = async () => {
-
-        loading.value = true;
-
-        try {
-            if (newPostContent.value.trim() !== "" && user.value.id) {
-                await publishPost(
-                    {
-                        content: newPostContent.value,
-                        userId: user.value.id,
-                        userDisplayName: user.value.displayName,
-                        photoURL: user.value.photoURL,
-                        likes: [],
-                        comments: [],
-                        // Otros campos que desees agregar
-                    }
-                );
-
-                newPostContent.value = "";
-
-                // Después de publicar, actualiza la lista de posts
-                const updatedPostSnapshot = await getPosts();
-                posts.value = updatedPostSnapshot.docs.map(doc => {
+                posts.value = postSnapshot.docs.map(doc => {
                     const postData = doc.data();
                     postData.likes = postData.likes || [];
                     postData.liked = postData.likes.includes(user.value.id);
                     return { id: doc.id, ...postData };
                 });
-            } else {
-                console.error("El ID del usuario no está definido o es inválido.");
+            
+            } catch (error) {
+                console.error('Error al obtener las publicaciones:', error);
             }
-        } catch (error) {
-            console.error('Error al publicar la publicación:', error);
-        }
 
-        loading.value = false;
-    };
-
-    const toggleLikeView = async (post) => {
-        try {
-            // Llama a la función del servicio para manejar el "Me gusta"
-            const updatedPost = await toggleLike(post.id, user.value.id);
-
-            // Actualiza el post en la lista con los nuevos datos
-            const postIndex = posts.value.findIndex((p) => p.id === updatedPost.id);
-            if (postIndex !== -1) {
-                posts.value[postIndex] = updatedPost;
+            loading.value = false;
+        });
+    
+        const handleSubmit = async () => {
+    
+            loading.value = true;
+    
+            try {
+                if (newPostContent.value.trim() !== "" && user.value.id) {
+                    await publishPost(
+                        {
+                            content: newPostContent.value,
+                            userId: user.value.id,
+                            userDisplayName: user.value.displayName,
+                            photoURL: user.value.photoURL,
+                            likes: [],
+                            comments: [],
+                            // Otros campos que desees agregar
+                        }
+                    );
+    
+                    newPostContent.value = "";
+    
+                    // Después de publicar, actualiza la lista de posts
+                    const updatedPostSnapshot = await getPosts();
+                    posts.value = updatedPostSnapshot.docs.map(doc => {
+                        const postData = doc.data();
+                        postData.likes = postData.likes || [];
+                        postData.liked = postData.likes.includes(user.value.id);
+                        return { id: doc.id, ...postData };
+                    });
+                } else {
+                    console.error("El ID del usuario no está definido o es inválido.");
+                }
+            } catch (error) {
+                console.error('Error al publicar la publicación:', error);
             }
-        } catch (error) {
-            console.error("Error al manejar el 'Me gusta':", error);
-        }
-    };
+    
+            loading.value = false;
+        };
+    
+        const toggleLikeView = async (post) => {
+            try {
+                // Llama a la función del servicio para manejar el "Me gusta"
+                const updatedPost = await toggleLike(post.id, user.value.id);
+    
+                // Actualiza el post en la lista con los nuevos datos
+                const postIndex = posts.value.findIndex((p) => p.id === updatedPost.id);
+                if (postIndex !== -1) {
+                    posts.value[postIndex] = updatedPost;
+                }
+            } catch (error) {
+                console.error("Error al manejar el 'Me gusta':", error);
+            }
+        };
 
-    onMounted(async () => {
-        try {
-            // Recupera las publicaciones desde el servicio al cargar el componente
-            const postSnapshot = await getPosts();
-            posts.value = postSnapshot.docs.map(doc => {
-                const postData = doc.data();
-                postData.likes = postData.likes || [];
-                postData.liked = postData.likes.includes(user.value.id);
-                return { id: doc.id, ...postData };
-            });
-        } catch (error) {
-            console.error('Error al obtener las publicaciones:', error);
+        return {
+            user,
+            newPostContent,
+            loading,
+            posts,
+            handleSubmit,
+            toggleLikeView
         }
-    });
+    }
+
 </script>
 
 <template>
@@ -125,7 +148,8 @@
         </div>
     </section>
     <hr>
-    <section class="p-3">
+    <Loader v-if="loading" />
+    <section v-else class="p-3">
         <div class="card p-3 mb-3" v-for="post in posts" :key="post.id">
             <div class="card-body">
                 <div class="row mb-3">

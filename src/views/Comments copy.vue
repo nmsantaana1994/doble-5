@@ -5,78 +5,59 @@
     import { useRoute } from "vue-router";
     import { dateToString } from "../helpers/date.js";
     import { useAuth } from "../composition/useAuth.js";
-    import Loader from "../components/Loader.vue";
-    
-    const {post, user, newComment, loading, addCommentView, toggleLikeView} = useComments();
 
-    function useComments() {
-        const route = useRoute();
-        const { user } = useAuth();
-        const postId = ref(route.params.postId);
-        const post = ref(null);
-        const newComment = ref("");
-        const loading = ref(false);
-    
-        onMounted(async () => {
-            try {
-                loading.value = true;
-                const fetchedPost = await getPostById(postId.value);
-    
-                if (fetchedPost) {
-                    post.value = fetchedPost;
-    
-                    console.log("Post onMounted:", post);
-    
-                    // Verifica si el usuario actual ya dio like a esta publicación
-                    if (user.value.id) {
-                        post.value.liked = post.value.likes.includes(user.value.id);
-                        console.log("Liked status:", post.value.liked);
-                    }
+    const route = useRoute();
+    const { user } = useAuth();
+    const postId = ref(route.params.postId);
+    const post = ref(null);
+    const newComment = ref("");
 
-                    loading.value = false;
-                } else {
-                    console.error("La publicación no se ha encontrado o ha sido eliminada.");
+    onMounted(async () => {
+        try {
+            const fetchedPost = await getPostById(postId.value);
+
+            if (fetchedPost) {
+                post.value = fetchedPost;
+
+                console.log("Post onMounted:", post);
+
+                // Verifica si el usuario actual ya dio like a esta publicación
+                if (user.value.id) {
+                    post.value.liked = post.value.likes.includes(user.value.id);
+                    console.log("Liked status:", post.value.liked);
                 }
-            } catch (error) {
-                console.error("Error al recuperar la publicación:", error);
+            } else {
+                console.error("La publicación no se ha encontrado o ha sido eliminada.");
             }
-        });
-    
-        const addCommentView = async () => {
-            if (!post || !post.value || !post.value.comments || !newComment || newComment.value.trim() === "") {
-                console.error("No se puede agregar el comentario. Datos insuficientes.");
-                return;
-            }
-    
-            try {
-                post.value = await addComment(post.value.id, user.value, newComment.value);
-    
-                // Limpia el campo del comentario
-                newComment.value = "";
-            } catch (error) {
-                console.error("Error al agregar el comentario:", error);
-            }
-        };
-    
-        const toggleLikeView = async () => {
-            try {
-                const updatedPost = await toggleLike(post.value.id, user.value.id);
-                post.value = updatedPost;
-            } catch (error) {
-                console.error("Error al manejar el 'Me gusta':", error);
-            }
-        };
+        } catch (error) {
+            console.error("Error al recuperar la publicación:", error);
+        }
+    });
 
-        return {
-            post,
-            user,
-            newComment,
-            loading,
-            addCommentView,
-            toggleLikeView,
+    const addCommentView = async () => {
+        if (!post || !post.value || !post.value.comments || !newComment || newComment.value.trim() === "") {
+            console.error("No se puede agregar el comentario. Datos insuficientes.");
+            return;
+        }
+
+        try {
+            post.value = await addComment(post.value.id, user.value, newComment.value);
+
+            // Limpia el campo del comentario
+            newComment.value = "";
+        } catch (error) {
+            console.error("Error al agregar el comentario:", error);
         }
     };
 
+    const toggleLikeView = async () => {
+        try {
+            const updatedPost = await toggleLike(post.value.id, user.value.id);
+            post.value = updatedPost;
+        } catch (error) {
+            console.error("Error al manejar el 'Me gusta':", error);
+        }
+    };
 </script>
 
 <template>
@@ -93,8 +74,7 @@
             </div>
         </div>
     </section>
-    <Loader v-if="loading" />
-    <section v-else class="p-3">
+    <section class="p-3">
         <div v-if="post">
             <div class="row mb-3">
                 <!-- Renderizar los detalles de la publicación -->

@@ -5,25 +5,31 @@
     import Button from "../components/Button.vue";
     import UserProfileData from "../components/UserProfileData.vue";
     import { obtenerSeguidores, obtenerSiguiendo } from '../services/red.js';
+    import Loader from "../components/Loader.vue";
 
     const {user} = useAuth();
     const editing = ref(false);
     const toggleEditing = () => editing.value = !editing.value;
     const totalSeguidores = ref(0);
     const totalSiguiendo = ref(0);
+    const loading = ref(false);
 
     onMounted(async () => {
-        if (user.value) {
-        try {
-            const seguidores = await obtenerSeguidores(user.value.id);
-            const siguiendo = await obtenerSiguiendo(user.value.id);
+        loading.value = true;
 
-            totalSeguidores.value = seguidores.length;
-            totalSiguiendo.value = siguiendo.length;
-        } catch (error) {
-            console.error("Error al obtener seguidores y siguiendo:", error);
+        if (user.value) {
+            try {
+                const seguidores = await obtenerSeguidores(user.value.id);
+                const siguiendo = await obtenerSiguiendo(user.value.id);
+
+                totalSeguidores.value = seguidores.length;
+                totalSiguiendo.value = siguiendo.length;
+            } catch (error) {
+                console.error("Error al obtener seguidores y siguiendo:", error);
+            }
         }
-        }
+
+        loading.value = false;
     });
 </script>
 
@@ -46,7 +52,7 @@
             <UserProfileForm />
         </template>
         <template v-else>
-            <UserProfileData :user="user" :totalSeguidores="totalSeguidores" :totalSiguiendo="totalSiguiendo" :mostrarBoton="false"/>
+            <UserProfileData :user="user" :totalSeguidores="totalSeguidores" :totalSiguiendo="totalSiguiendo" :mostrarBoton="false" :loading="loading"/>
         </template>
 
         <div class="my-3">

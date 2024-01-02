@@ -65,36 +65,49 @@ const seguirDejarSeguir = async () => {
 </script>
 
 <template>
+    <section class="p-3 m-0">
+        <div class="row">
+            <div class="col-3 d-flex justify-content-center">
+                <router-link :to="`/home`">
+                    <img src="../assets/img/flecha-izquierda.png" style="width: 80%;" />
+                    <i class="fi fi-sr-angle-left"></i>
+                </router-link>
+            </div>
+            <div class="col-9 d-flex align-items-center">
+                <h1 class="text-center m-0 ps-4">{{ user.displayName ? user.displayName : user.nombre }}</h1>
+            </div>
+        </div>
+    </section>
     <LoadingContext :loading="loading">
-        <section class="row p-1 m-0">
-            <div class="col-12">
-                <h1 class="mb-3 fs-4 text-center">
-                    Perfil de
-                    {{ user.displayName ? user.displayName : user.nombre }}
-                </h1>
+    <section class="row p-1 m-0">
+        <div class="col-12">
+            <!-- <h1 class="mb-3 fs-4 text-center">
+                Perfil de
+                {{ user.displayName ? user.displayName : user.nombre }}
+            </h1> -->
 
-                <UserProfileData
-                    :user="user"
-                    :totalSeguidores="totalSeguidores"
-                    :totalSiguiendo="totalSiguiendo"
-                    :seguirDejarSeguir="seguirDejarSeguir"
-                    :userFollowing="userFollowing"
-                />
-            </div>
+            <UserProfileData
+                :user="user"
+                :totalSeguidores="totalSeguidores"
+                :totalSiguiendo="totalSiguiendo"
+                :seguirDejarSeguir="seguirDejarSeguir"
+                :userFollowing="userFollowing"
+            />
+        </div>
 
-            <div class="col-12 m-bottom">
-                <h2 class="mb-3 fs-4">Chat privado</h2>
+        <div class="col-12 m-bottom">
+            <h2 class="mb-3 fs-4">Chat privado</h2>
 
-                <router-link
-                    :to="`/usuario/${user.id}/chat`"
-                    class="text-blue-400 underline"
-                    >Iniciar chat privado con
-                    {{
-                        user.displayName ? user.displayName : user.nombre
-                    }}</router-link
-                >
-            </div>
-        </section>
+            <router-link
+                :to="`/usuario/${user.id}/chat`"
+                class="text-blue-400 underline"
+                >Iniciar chat privado con
+                {{
+                    user.displayName ? user.displayName : user.nombre
+                }}</router-link
+            >
+        </div>
+    </section>
     </LoadingContext>
 </template>
 
