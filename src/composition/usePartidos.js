@@ -12,6 +12,7 @@ export function usePartido(nombre) {
         tipo: null,
         userId: null,
         valorCancha: null,
+        contadorInscriptos: [],
     });
 
     const loading = ref(true);
@@ -31,6 +32,7 @@ export function usePartido(nombre) {
             partido.value.tipo = partidoData.tipo;
             partido.value.userId = partidoData.userId;
             partido.value.valorCancha = partidoData.valorCancha;
+            partido.value.contadorInscriptos = partidoData.contadorInscriptos;
             loading.value = false;
         } catch (error) {
             console.error(error);

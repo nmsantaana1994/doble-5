@@ -4,7 +4,10 @@ import { usePartido } from "../composition/usePartidos";
 import LoadingContext from "../components/LoadingContext.vue";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { ref, onMounted } from "vue";
-import { getFirestore, doc, updateDoc } from "firebase/firestore";
+import { getFirestore, updateDoc, doc } from "firebase/firestore";
+import { getPartidoByNombre } from "../services/partidos";
+import { collection, query, where, getDocs } from "firebase/firestore";
+
 
 const auth = getAuth();
 const db = getFirestore();
@@ -19,23 +22,51 @@ function InscriptionGame() {
   console.log("Inscribiéndome al partido...");
   const user = auth.currentUser;
   if (user) {
-    const uid = user.uid;
-    contadorInscriptos.value.push(uid); // Agrega el ID del usuario al array contadorInscriptos
-    updateFirestore(contadorInscriptos.value); // Actualiza Firestore con el nuevo array
+    const uidName = user.displayName;
+  console.log("user",user)
+    contadorInscriptos.value.push(uidName); // Agrega el ID del usuario al array contadorInscriptos
+    // console.log(partido.value.nombre)
+    // updateFirestore(contadorInscriptos.value); // Actualiza Firestore con el nuevo array
+    actualizarContadorInscriptosPorNombre(partido.value.nombre,contadorInscriptos.value);
   }
 }
 
-async function updateFirestore(inscriptos) {
+// async function updateFirestore(inscriptos) {
+//   try {
+
+//     const partidoRef = doc(db, "partidos", partido.value.nombre); // Utiliza partido.id en lugar de uid
+//     await updateDoc(partidoRef, {
+//       inscriptos: inscriptos, // Actualiza la propiedad "inscriptos" en Firestore
+//     });
+//     console.log("Firestore actualizado correctamente");
+//   } catch (error) {
+//     console.error("Error al actualizar Firestore:", error);
+//   }
+// }
+// import { getFirestore, collection, query, where, getDocs, updateDoc, doc } from "firebase/firestore";
+
+async function actualizarContadorInscriptosPorNombre(nombre, nuevoContador) {
   try {
-    const partidoRef = doc(db, "partidos", partido.id); // Utiliza partido.id en lugar de uid
-    await updateDoc(partidoRef, {
-      inscriptos: inscriptos, // Actualiza la propiedad "inscriptos" en Firestore
+    const partidosRef = collection(db, "partidos");
+    const q = query(partidosRef, where("nombre", "==", nombre));
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach(async (partido) => {
+      const partidoRef = doc(db, "partidos", partido.id);
+
+      await updateDoc(partidoRef, {
+        contadorInscriptos: nuevoContador,
+      });
+
+      console.log("Contador de inscriptos actualizado correctamente");
     });
-    console.log("Firestore actualizado correctamente");
   } catch (error) {
-    console.error("Error al actualizar Firestore:", error);
+    console.error("Error al actualizar contador de inscriptos:", error);
   }
 }
+
+
+
 </script>
 
 <template>
@@ -58,8 +89,8 @@ async function updateFirestore(inscriptos) {
         <p>{{ partido.fecha }}</p>
         <p>{{ partido.totalJ }}</p>
         <ul>
-          <li v-for="jugadorId of contadorInscriptos" :key="jugadorId">
-            {{ jugadorId }}
+          <li v-for="nombreJugador of contadorInscriptos" :key="nombreJugador">
+            {{ nombreJugador }}
           </li>
         </ul>
         <button @click="InscriptionGame">Sumarme al partido</button>
