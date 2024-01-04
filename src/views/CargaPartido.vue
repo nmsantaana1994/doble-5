@@ -61,7 +61,7 @@ function useCargaPartido() {
         <div class="col-9 d-flex align-items-center">
             <h1 class="text-center">Crear partido</h1>
         </div>
-  </section>
+    </section>
     <section class=" row p-3">
         <div class="col-12">
             <form
@@ -159,7 +159,7 @@ function useCargaPartido() {
                 <button type="submit" class="btn cargar-button fw-semibold text-white py-2">CREAR PARTIDO</button>
             </form>
         </div>
-  </section>
+    </section>
 </template>
 
 <style scoped>
