@@ -14,6 +14,12 @@ import ListaChatsPrivados from "../views/ListaChatsPrivados.vue";
 import InfoPartidos from "../views/InfoPartidos.vue";
 import Partidos from "../views/Partidos.vue";
 import InscribirPartido from "../views/InscribirPartido.vue";
+import Feed from "../views/Feed.vue";
+import Comments from "../views/Comments.vue";
+import Red from "../views/Red.vue";
+import Notificaciones from "../views/Notificaciones.vue";
+import Ajustes from "../views/Ajustes.vue";
+import Ayuda from "../views/Ayuda.vue";
 
 const routes = [
     { path: "/",                            component: Splash,},
@@ -29,7 +35,13 @@ const routes = [
     { path: "/carga-partidos",              component: CargaPartido,        meta: { requiresAuth: true, }},
     { path: "/mis-partidos",                component: MisPartidos,         meta: { requiresAuth: true, }},
     { path: "/info-partido/:nombre",        component: InfoPartidos,        meta: { requiresAuth: true, }},
-    { path: "/inscription/:nombre",        component: InscribirPartido,        meta: { requiresAuth: true, }},
+    { path: "/inscription/:nombre",         component: InscribirPartido,    meta: { requiresAuth: true, }},
+    { path: "/feed",                        component: Feed,                meta: { requiresAuth: true, }},
+    { path: "/comments/:postId",            component: Comments,            meta: { requiresAuth: true, }},
+    { path: "/red",                         component: Red,                 meta: { requiresAuth: true, }},
+    { path: "/notificaciones",              component: Notificaciones,      meta: { requiresAuth: true, }},
+    { path: "/ajustes",                     component: Ajustes,             meta: { requiresAuth: true, }},
+    { path: "/ayuda",                       component: Ayuda,               meta: { requiresAuth: true, }},
 ]
 
 const router = createRouter ({

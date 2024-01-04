@@ -114,50 +114,50 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <router-link :to="'/home'" class="row text-decoration-none d-flex align-items-center my-3">
+                                    <router-link :to="'/home'" class="row text-decoration-none d-flex align-items-center my-3" data-bs-dismiss="offcanvas">
                                         <img src="./assets/img/home-offcanvas.png" alt="Icono de home" class="col-4 icono-nav-offcanvas px-2" />
                                         <p class="text-start col-8 m-0">Home</p>
                                     </router-link>
                                 </li>
                                 <li>
-                                    <router-link :to="'/feed'" class="row text-decoration-none d-flex mb-3">
+                                    <router-link :to="'/feed'" class="row text-decoration-none d-flex mb-3" data-bs-dismiss="offcanvas">
                                         <img src="./assets/img/red-social.png" alt="Icono de home" class="col-4 icono-nav-offcanvas px-2" />
                                         <p class="text-start col-8 m-0">Feed</p>
                                     </router-link>
                                 </li>
                                 <li>
-                                    <router-link :to="'/partidos'" class="row text-decoration-none d-flex mb-3">
+                                    <router-link :to="'/partidos'" class="row text-decoration-none d-flex mb-3" data-bs-dismiss="offcanvas">
                                         <img src="./assets/img/pelota.png" alt="Icono de home" class="col-4 icono-nav-offcanvas px-2" />
                                         <p class="text-start col-8 m-0">Mis partidos</p>
                                     </router-link>
                                 </li>
                                 <li>
-                                    <router-link :to="'/red'" class="row text-decoration-none d-flex mb-3">
+                                    <router-link :to="'/red'" class="row text-decoration-none d-flex mb-3" data-bs-dismiss="offcanvas">
                                         <img src="./assets/img/usuarios.png" alt="Icono de home" class="col-4 icono-nav-offcanvas px-2" />
                                         <p class="text-start col-8 m-0">Red</p>
                                     </router-link>
                                 </li>
                                 <li>
-                                    <router-link :to="'/chat'" class="row text-decoration-none d-flex mb-3">
+                                    <router-link :to="'/chat'" class="row text-decoration-none d-flex mb-3" data-bs-dismiss="offcanvas">
                                         <img src="./assets/img/sobre-offcanvas.png" alt="Icono de home" class="col-4 icono-nav-offcanvas px-2" />
                                         <p class="text-start col-8 m-0">Mensajes</p>
                                     </router-link>
                                 </li>
                                 <li>
-                                    <router-link :to="'/notificaciones'" class="row text-decoration-none d-flex mb-3">
+                                    <router-link :to="'/notificaciones'" class="row text-decoration-none d-flex mb-3" data-bs-dismiss="offcanvas">
                                         <img src="./assets/img/campanas-offcanvas.png" alt="Icono de home" class="col-4 icono-nav-offcanvas px-2" />
                                         <p class="text-start col-8 m-0">Notificaciones</p>
                                     </router-link>
                                 </li>
                                 <hr />
                                 <li>
-                                    <router-link :to="'/ajustes'" class="row text-decoration-none d-flex my-3">
+                                    <router-link :to="'/ajustes'" class="row text-decoration-none d-flex my-3" data-bs-dismiss="offcanvas">
                                         <img src="./assets/img/ajustes.png" alt="Icono de home" class="col-4 icono-nav-offcanvas px-2" />
                                         <p class="text-start col-8 m-0">Ajustes</p>
                                     </router-link>
                                 </li>
                                 <li>
-                                    <router-link :to="'/ayuda'" class="row text-decoration-none d-flex mb-3">
+                                    <router-link :to="'/ayuda'" class="row text-decoration-none d-flex mb-3" data-bs-dismiss="offcanvas">
                                         <img src="./assets/img/ayuda.png" alt="Icono de home" class="col-4 icono-nav-offcanvas px-2" />
                                         <p class="text-start col-8 m-0">Ayuda</p>
                                     </router-link>

@@ -1,5 +1,6 @@
 import { db } from "./firebase.js";
 import { setDoc, doc, getDoc, updateDoc } from "firebase/firestore";
+import { getFileURL } from "./storage.js";
 
 /**
  * 
@@ -19,7 +20,9 @@ export function createUser(id, {email, nombre, apellido, nacimiento, genero, niv
         nivel,
         barrio,
         telefono,
-        terminos
+        terminos,
+        followers: [], // Agregamos el campo followers
+        following: [], // Agregamos el campo following
     });
 }
 
@@ -31,8 +34,8 @@ export function createUser(id, {email, nombre, apellido, nacimiento, genero, niv
  * @param {string|null} photoURL
  * @returns {Promise<void>}
  */
-export async function updateUser(id, {displayName, nombre, apellido, email, nacimiento, nivel, genero, barrio, telefono, photoURL}) {
-    console.log("Valores recibidos en updateUser:", { displayName, nombre, apellido, email, nacimiento, nivel, genero, barrio, telefono, photoURL });
+export async function updateUser(id, {displayName, nombre, apellido, email, nacimiento, nivel, genero, barrio, telefono, photoURL, followers, following}) {
+    console.log("Valores recibidos en updateUser:", { displayName, nombre, apellido, email, nacimiento, nivel, genero, barrio, telefono, photoURL, followers, following });
     return updateDoc(
         doc(db, "users", id),
         {
@@ -46,6 +49,8 @@ export async function updateUser(id, {displayName, nombre, apellido, email, naci
             barrio,
             telefono,
             photoURL,
+            followers,
+            following,
         }
     )
 }
@@ -64,12 +69,26 @@ export async function getUserById(id) {
         throw new Error ("[users.js getUserById] No existe el usuario con el id provisto");
     }
 
+    const userData = user.data();
+
+    // Transforma el identificador en URL completa utilizando getFileURL
+    const photoURL = userData.photoURL ? await getFileURL(userData.photoURL) : null;
+    //console.log("Usuario sin loadPhoto:", user.photoURL);
+    
+    // loadPhoto();
+    
+    // console.log("Usuario:", user);
+
+    // async function loadPhoto() {
+    //     user.photoURL = await getFileURL(user.data().photoURL);
+    // }
+
     return {
         id,
         email: user.data().email,
         displayName: user.data().displayName,
         // career: user.data().career,
-        photoURL: user.data().photoURL,
+        photoURL,
         nombre: user.data().nombre,
         apellido: user.data().apellido,
         nacimiento: user.data().nacimiento,
@@ -77,6 +96,8 @@ export async function getUserById(id) {
         nivel: user.data().nivel,
         barrio: user.data().barrio,
         telefono: user.data().telefono,
+        followers: user.data().followers || [], // Agregamos el campo followers
+        following: user.data().following || [], // Agregamos el campo following
     }
 }
 

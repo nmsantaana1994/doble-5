@@ -18,6 +18,8 @@ let user = {
     barrio: null,
     telefono: null,
     terminos: false,
+    followers: [],
+    following: [],
 }
 
 if (localStorage.getItem("user")) {
@@ -38,6 +40,8 @@ onAuthStateChanged(auth, async newUser => {
             nivel: newUser.nivel,
             barrio: newUser.barrio,
             telefono: newUser.telefono,
+            followers: newUser.followers,
+            following: newUser.following
         });
 
         if (newUser.photoURL) {
@@ -58,6 +62,8 @@ onAuthStateChanged(auth, async newUser => {
                     nivel: userData.nivel,
                     barrio: userData.barrio,
                     telefono: userData.telefono,
+                    followers: userData.followers,
+                    following: userData.following,
                 });
             });
     } else {
@@ -206,6 +212,8 @@ function clearUser() {
         nivel: null,
         barrio: null,
         telefono: null,
+        followers: [],
+        following: [],
     }
     localStorage.removeItem("user");
     notifyAll();

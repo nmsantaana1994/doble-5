@@ -15,6 +15,8 @@ export function useAuth() {
         nivel: null,
         barrio: null,
         telefono: null,
+        followers: null,
+        following: null,
     });
     let unsubscribe = () => {}
 
