@@ -1,8 +1,9 @@
 import { ref } from "vue";
-import { getPartidoByNombre } from "../services/partidos.js";
+import {getPartidoById } from "../services/partidos.js";
 
-export function usePartido(nombre) {
+export function usePartido(idPartido) {
     const partido = ref({
+        id: null,
         nombre: null,
         complejo: null,
         fecha: null,
@@ -21,18 +22,8 @@ export function usePartido(nombre) {
 
     async function loadPartido() {
         try {
-            const partidoData = await getPartidoByNombre(nombre);
-            console.log('partido con filtro', partidoData)
-            partido.value.nombre = partidoData.nombre;
-            partido.value.complejo = partidoData.complejo;
-            partido.value.fecha = partidoData.fecha;
-            partido.value.hora = partidoData.hora;
-            partido.value.cantidadJ = partidoData.cantidadJ;
-            partido.value.cambios = partidoData.cambios;
-            partido.value.tipo = partidoData.tipo;
-            partido.value.userId = partidoData.userId;
-            partido.value.valorCancha = partidoData.valorCancha;
-            partido.value.contadorInscriptos = partidoData.contadorInscriptos;
+            const partidoData = await getPartidoById(idPartido);
+            partido.value = partidoData;
             loading.value = false;
         } catch (error) {
             console.error(error);
