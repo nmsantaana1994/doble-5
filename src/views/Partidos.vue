@@ -16,16 +16,11 @@
 
     async function getPartidosFromService() {
         const partidos = await getPartidos();
-        console.log(partidos);
+        console.log('partidos',partidos);
         return partidos;
     }
 
     const partidos = ref([]);
-
-    onMounted(async () => {
-        partidos.value = await getPartidosFromService();
-    });
-
     // Mis Partidos
 
     const auth = getAuth();
@@ -58,12 +53,15 @@
     }
 
     onMounted(async () => {
+        partidos.value = await getPartidosFromService();
+        console.log('partidos',partidos.value)
         const user = auth.currentUser;
         if (user) {
           const uid = user.uid;
           await getPartidosForUser(uid);
         }
     });
+    
 </script>
 
 <template>
@@ -163,10 +161,10 @@
                                 </div>
                                 <div class="row justify-content-around">
                                     <div class="col-6 fondo-boton-card-negro rounded d-flex justify-content-center">
-                                        <router-link :to="`/info-partido/${partido.nombre}`" class="text-white py-2">Ver más</router-link>
+                                        <router-link :to="`/info-partido/${partido.id}`" class="text-white py-2">Ver más</router-link>
                                     </div>
                                     <div class="col-6 fondo-boton-card rounded d-flex justify-content-center">
-                                      <router-link :to="`/inscription/${partido.nombre}`" class="text-white py-2">Inscribirme</router-link>
+                                      <router-link :to="`/inscription/${partido.id}`" class="text-white py-2">Inscribirme</router-link>
                                     </div>
                                 </div>
                             </div>

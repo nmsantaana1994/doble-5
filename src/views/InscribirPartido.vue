@@ -2,105 +2,93 @@
 import { useRoute } from "vue-router";
 import { usePartido } from "../composition/usePartidos";
 import LoadingContext from "../components/LoadingContext.vue";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { ref, onMounted } from "vue";
-import { getFirestore, updateDoc, doc } from "firebase/firestore";
-import { getPartidoByNombre } from "../services/partidos";
-import { collection, query, where, getDocs } from "firebase/firestore";
-
+import { getAuth } from "firebase/auth";
+import { ref, onMounted, onUnmounted } from "vue";
+import { getFirestore, doc, onSnapshot } from "firebase/firestore";
+import { getPartidoById, inscribirPartido } from "../services/partidos";
 
 const auth = getAuth();
 const db = getFirestore();
-const contadorInscriptos = ref([]);
-
+const user = auth.currentUser;
 const route = useRoute();
-const { partido, loading } = usePartido(route.params.nombre);
+const { partido, loading } = usePartido(route.params.id);
+const partidoFiltrado = ref(null);
 
-function InscriptionGame() {
-  partido.totalJ = partido.cantidadJ * 2;
-  console.log("total de jugadores: ", partido.totalJ);
-  console.log("Inscribiéndome al partido...");
-  const user = auth.currentUser;
-  if (user) {
-    const uidName = user.displayName;
-  console.log("user",user)
-    contadorInscriptos.value.push(uidName); // Agrega el ID del usuario al array contadorInscriptos
-    // console.log(partido.value.nombre)
-    // updateFirestore(contadorInscriptos.value); // Actualiza Firestore con el nuevo array
-    actualizarContadorInscriptosPorNombre(partido.value.nombre,contadorInscriptos.value);
-  }
-}
+const partidoDocRef = doc(db, "partidos", route.params.id);
 
-// async function updateFirestore(inscriptos) {
-//   try {
-
-//     const partidoRef = doc(db, "partidos", partido.value.nombre); // Utiliza partido.id en lugar de uid
-//     await updateDoc(partidoRef, {
-//       inscriptos: inscriptos, // Actualiza la propiedad "inscriptos" en Firestore
-//     });
-//     console.log("Firestore actualizado correctamente");
-//   } catch (error) {
-//     console.error("Error al actualizar Firestore:", error);
-//   }
-// }
-// import { getFirestore, collection, query, where, getDocs, updateDoc, doc } from "firebase/firestore";
-
-async function actualizarContadorInscriptosPorNombre(nombre, nuevoContador) {
+onMounted(async () => {
   try {
-    const partidosRef = collection(db, "partidos");
-    const q = query(partidosRef, where("nombre", "==", nombre));
-    const querySnapshot = await getDocs(q);
+    const partido = await getPartidoById(route.params.id);
+    partidoFiltrado.value = partido;
 
-    querySnapshot.forEach(async (partido) => {
-      const partidoRef = doc(db, "partidos", partido.id);
-
-      await updateDoc(partidoRef, {
-        contadorInscriptos: nuevoContador,
-      });
-
-      console.log("Contador de inscriptos actualizado correctamente");
-    });
+    // Escuchar cambios en el documento del partido
+    listenToChanges();
   } catch (error) {
-    console.error("Error al actualizar contador de inscriptos:", error);
+    console.error(error.message);
   }
+});
+
+// Función para suscribirse a los cambios en el documento del partido
+function listenToChanges() {
+  const unsubscribe = onSnapshot(partidoDocRef, (snapshot) => {
+    if (snapshot.exists()) {
+      partidoFiltrado.value = { ...snapshot.data(), id: snapshot.id };
+    } else {
+      partidoFiltrado.value = null;
+    }
+  });
+
+  // Detener la escucha de cambios cuando el componente se desmonte
+  onUnmounted(unsubscribe);
 }
 
-
-
+async function inscribirseAlPartido() {
+  try {
+    if (partidoFiltrado.value) {
+      await inscribirPartido(route.params.id, auth.currentUser);
+      console.log("Usuario inscrito correctamente.");
+    } else {
+      console.error("No se ha encontrado el partido para inscribirse.");
+    }
+  } catch (error) {
+    console.error("Error al inscribirse al partido:", error);
+  }
+}
 </script>
 
 <template>
   <LoadingContext :loading="loading">
-    <section class="row py-3 m-0">
-            <div class="col-3 d-flex justify-content-center align-items-center">
-            <router-link :to="`/home`">
-                <img src="../assets/img/flecha-izquierda.png" />
-                <i class="fi fi-sr-angle-left"></i>
-            </router-link>
-            </div>
-            <div class="col-9 d-flex align-items-center">
-                <h1 class="text-center">En construcción <!--Información--></h1>
-            </div>
-    </section>
-    <!-- <section class="row p-1 m-0">
+    <section class="row p-1 m-0">
       <div class="col-12">
-        <h2>Inscripcion a partido</h2>
-        <h3 class="mb-3 fs-4 text-center">{{ partido.nombre }}</h3>
-        <p>{{ partido.fecha }}</p>
-        <p>{{ partido.totalJ }}</p>
+        <h2>
+          Inscripción a partido
+          {{ partidoFiltrado ? partidoFiltrado.nombre : "" }}
+        </h2>
+        <h3 class="mb-3 fs-4 text-center">{{}}</h3>
+        <p>Fecha del partido: {{ partidoFiltrado ? partidoFiltrado.fecha : "" }}</p>
+        <p>Cantidad faltante para completar: {{ partidoFiltrado ? partidoFiltrado.cantidadJ*2 - partidoFiltrado.contadorInscriptos.length  : "" }}</p>
+        <h3>Usuarios inscriptos: </h3>
         <ul>
-          <li v-for="nombreJugador of contadorInscriptos" :key="nombreJugador">
-            {{ nombreJugador }}
+          <li
+            v-for="nombreJugador in partidoFiltrado
+              ? partidoFiltrado.contadorInscriptos
+              : []"
+            :key="nombreJugador"
+          >
+          <router-link :to="`/usuario/${nombreJugador.uid}`">
+            {{ nombreJugador.nombre }}
+          </router-link>
           </li>
         </ul>
-        <button @click="InscriptionGame">Sumarme al partido</button>
+        <!-- Llama a la función inscribirseAlPartido cuando se hace clic en el botón -->
+        <button @click="inscribirseAlPartido">Sumarme al partido</button>
       </div>
-    </section> -->
+    </section>
   </LoadingContext>
 </template>
 
 <style scoped>
-  img {
-    width: 80%;
-  }
+img {
+  width: 80%;
+}
 </style>

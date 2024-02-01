@@ -118,10 +118,10 @@
                         </div>
                         <div class="row justify-content-around">
                             <div class="col-6 fondo-boton-card-negro rounded d-flex justify-content-center">
-                                <router-link :to="`/info-partido/${partido.nombre}`" class="text-white fw-light py-2">Ver más</router-link>
+                                <router-link :to="`/info-partido/${partido.id}`" class="text-white fw-light py-2">Ver más</router-link>
                             </div>
                             <div class="col-6 fondo-boton-card rounded d-flex justify-content-center">
-                                <router-link :to="`/inscription/${partido.nombre}`" class="text-white fw-light py-2">Inscribirme</router-link>
+                                <router-link :to="`/inscription/${partido.id}`" class="text-white fw-light py-2">Inscribirme</router-link>
                             </div>
                         </div>
                     </div>

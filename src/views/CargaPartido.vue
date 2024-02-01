@@ -20,7 +20,6 @@ function useCargaPartido() {
         cantidadJ: 0,
         contadorInscriptos: [],
         totalJ: 0,
-        //vacantes: "",
         cambios: "",
         tipo: "",
         valorCancha: "",
