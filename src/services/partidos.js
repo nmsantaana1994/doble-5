@@ -64,28 +64,49 @@ export async function getPartidoById(idPartido) {
   }
 }
 
+// export async function inscribirPartido(idPartido, usuarioInscripto) {
+//   let partido = await getPartidoById(idPartido);
+//   console.log(partido);
+//   partido.contadorInscriptos.push(usuarioInscripto.displayName);
+
+//   console.log("desde servicio", partido.contadorInscriptos);
+
+//   actualizarListaInscriptos(idPartido,partido.contadorInscriptos);
+// }
+
 export async function inscribirPartido(idPartido, usuarioInscripto) {
-  let partido = await getPartidoById(idPartido);
-  console.log(partido);
-  partido.contadorInscriptos.push(usuarioInscripto.displayName);
+  try {
+    let partido = await getPartidoById(idPartido);
+    console.log(partido);
+    let usuario = {
+      uid: usuarioInscripto.uid,
+      nombre: usuarioInscripto.displayName,
+    };
+    // Verificar si el usuario ya está inscrito en el partido
+    if (partido.contadorInscriptos.includes(usuario)) {
+      throw new Error("El usuario ya está inscrito en este partido.");
+    }
 
-  console.log("desde servicio", partido.contadorInscriptos);
-
-  actualizarListaInscriptos(idPartido,partido.contadorInscriptos);
+    // Si el usuario no está inscrito, agregarlo a la lista de inscritos
+    partido.contadorInscriptos.push(usuario);
+    await actualizarListaInscriptos(idPartido, partido.contadorInscriptos);
+    console.log("Usuario inscrito correctamente.");
+  } catch (error) {
+    console.error("Error al inscribirse al partido:", error);
+    throw error;
+  }
 }
-
 
 export async function actualizarListaInscriptos(idPartido, nuevaLista) {
   try {
-      // Obtener referencia al documento del partido específico usando el ID proporcionado
-      const partidoRef = doc(db, "partidos", idPartido); 
-      await updateDoc(partidoRef, {
-          contadorInscriptos: nuevaLista,
-      });
-      console.log("Lista actualizada correctamente");
-      console.log("Usuarios inscriptos en partido:", nuevaLista);
+    // Obtener referencia al documento del partido específico usando el ID proporcionado
+    const partidoRef = doc(db, "partidos", idPartido);
+    await updateDoc(partidoRef, {
+      contadorInscriptos: nuevaLista,
+    });
+    console.log("Lista actualizada correctamente");
   } catch (error) {
-      console.error("Error al actualizar contador de inscriptos:", error);
-      throw error;
+    console.error("Error al actualizar contador de inscriptos:", error);
+    throw error;
   }
 }

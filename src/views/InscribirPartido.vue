@@ -6,14 +6,13 @@ import { getAuth } from "firebase/auth";
 import { ref, onMounted, onUnmounted } from "vue";
 import { getFirestore, doc, onSnapshot } from "firebase/firestore";
 import { getPartidoById, inscribirPartido } from "../services/partidos";
-import { useUser } from "../composition/useUser";
 
 const auth = getAuth();
 const db = getFirestore();
 const user = auth.currentUser;
 const route = useRoute();
 const { partido, loading } = usePartido(route.params.id);
-const partidoFiltrado = ref(null); // Variable reactiva para almacenar el partido
+const partidoFiltrado = ref(null);
 
 const partidoDocRef = doc(db, "partidos", route.params.id);
 
@@ -35,7 +34,6 @@ function listenToChanges() {
     if (snapshot.exists()) {
       partidoFiltrado.value = { ...snapshot.data(), id: snapshot.id };
     } else {
-      // El partido ha sido eliminado o no existe
       partidoFiltrado.value = null;
     }
   });
@@ -67,8 +65,9 @@ async function inscribirseAlPartido() {
           {{ partidoFiltrado ? partidoFiltrado.nombre : "" }}
         </h2>
         <h3 class="mb-3 fs-4 text-center">{{}}</h3>
-        <p>{{ partidoFiltrado ? partidoFiltrado.fecha : "" }}</p>
-        <p>{{ partidoFiltrado ? partidoFiltrado.totalJ : "" }}</p>
+        <p>Fecha del partido: {{ partidoFiltrado ? partidoFiltrado.fecha : "" }}</p>
+        <p>Cantidad total de jugadores: {{ partidoFiltrado ? partidoFiltrado.cantidadJ*2 : "" }}</p>
+        <h3>Usuarios inscriptos: </h3>
         <ul>
           <li
             v-for="nombreJugador in partidoFiltrado
@@ -76,7 +75,9 @@ async function inscribirseAlPartido() {
               : []"
             :key="nombreJugador"
           >
-            {{ nombreJugador }}
+          <router-link :to="`/usuario/${nombreJugador.uid}`">
+            {{ nombreJugador.nombre }}
+          </router-link>
           </li>
         </ul>
         <!-- Llama a la función inscribirseAlPartido cuando se hace clic en el botón -->
