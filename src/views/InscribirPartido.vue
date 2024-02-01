@@ -66,7 +66,7 @@ async function inscribirseAlPartido() {
         </h2>
         <h3 class="mb-3 fs-4 text-center">{{}}</h3>
         <p>Fecha del partido: {{ partidoFiltrado ? partidoFiltrado.fecha : "" }}</p>
-        <p>Cantidad total de jugadores: {{ partidoFiltrado ? partidoFiltrado.cantidadJ*2 : "" }}</p>
+        <p>Cantidad faltante para completar: {{ partidoFiltrado ? partidoFiltrado.cantidadJ*2 - partidoFiltrado.contadorInscriptos.length  : "" }}</p>
         <h3>Usuarios inscriptos: </h3>
         <ul>
           <li
