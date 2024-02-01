@@ -2,37 +2,53 @@
 import { useRoute } from "vue-router";
 import { usePartido } from "../composition/usePartidos";
 import LoadingContext from "../components/LoadingContext.vue";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { ref, onMounted } from "vue";
-import { getFirestore} from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { ref, onMounted, onUnmounted } from "vue";
+import { getFirestore, doc, onSnapshot } from "firebase/firestore";
 import { getPartidoById, inscribirPartido } from "../services/partidos";
-
+import { useUser } from "../composition/useUser";
 
 const auth = getAuth();
 const db = getFirestore();
-
+const user = auth.currentUser;
 const route = useRoute();
-const { partido , loading } = usePartido(route.params.id);
+const { partido, loading } = usePartido(route.params.id);
 const partidoFiltrado = ref(null); // Variable reactiva para almacenar el partido
+
+const partidoDocRef = doc(db, "partidos", route.params.id);
 
 onMounted(async () => {
   try {
     const partido = await getPartidoById(route.params.id);
-    console.log('partido desde function', partido)
     partidoFiltrado.value = partido;
 
+    // Escuchar cambios en el documento del partido
+    listenToChanges();
   } catch (error) {
-    console.error(error.message); 
+    console.error(error.message);
   }
 });
 
+// Función para suscribirse a los cambios en el documento del partido
+function listenToChanges() {
+  const unsubscribe = onSnapshot(partidoDocRef, (snapshot) => {
+    if (snapshot.exists()) {
+      partidoFiltrado.value = { ...snapshot.data(), id: snapshot.id };
+    } else {
+      // El partido ha sido eliminado o no existe
+      partidoFiltrado.value = null;
+    }
+  });
+
+  // Detener la escucha de cambios cuando el componente se desmonte
+  onUnmounted(unsubscribe);
+}
+
 async function inscribirseAlPartido() {
-  debugger
   try {
     if (partidoFiltrado.value) {
-      await inscribirPartido(partidoFiltrado.value.id); 
+      await inscribirPartido(route.params.id, auth.currentUser);
       console.log("Usuario inscrito correctamente.");
-
     } else {
       console.error("No se ha encontrado el partido para inscribirse.");
     }
@@ -40,19 +56,26 @@ async function inscribirseAlPartido() {
     console.error("Error al inscribirse al partido:", error);
   }
 }
-
 </script>
 
 <template>
   <LoadingContext :loading="loading">
     <section class="row p-1 m-0">
       <div class="col-12">
-        <h2>Inscripción a partido {{ partidoFiltrado ? partidoFiltrado.nombre : '' }}</h2>
-        <h3 class="mb-3 fs-4 text-center">{{ }}</h3>
-        <p>{{ partidoFiltrado ? partidoFiltrado.fecha : '' }}</p>
-        <p>{{ partidoFiltrado ? partidoFiltrado.totalJ : '' }}</p>
+        <h2>
+          Inscripción a partido
+          {{ partidoFiltrado ? partidoFiltrado.nombre : "" }}
+        </h2>
+        <h3 class="mb-3 fs-4 text-center">{{}}</h3>
+        <p>{{ partidoFiltrado ? partidoFiltrado.fecha : "" }}</p>
+        <p>{{ partidoFiltrado ? partidoFiltrado.totalJ : "" }}</p>
         <ul>
-          <li v-for="nombreJugador in partidoFiltrado ? partidoFiltrado.contadorInscriptos : []" :key="nombreJugador">
+          <li
+            v-for="nombreJugador in partidoFiltrado
+              ? partidoFiltrado.contadorInscriptos
+              : []"
+            :key="nombreJugador"
+          >
             {{ nombreJugador }}
           </li>
         </ul>
