@@ -8,6 +8,7 @@ import {
   where,
   doc,
   updateDoc,
+  onSnapshot
 } from "@firebase/firestore";
 import { db } from "./firebase";
 
@@ -75,6 +76,7 @@ export async function getPartidoById(idPartido) {
 // }
 
 export async function inscribirPartido(idPartido, usuarioInscripto) {
+  console.log(idPartido,usuarioInscripto)
   try {
     let partido = await getPartidoById(idPartido);
     console.log(partido);
@@ -83,7 +85,8 @@ export async function inscribirPartido(idPartido, usuarioInscripto) {
       nombre: usuarioInscripto.displayName,
     };
     // Verificar si el usuario ya está inscrito en el partido
-    if (partido.contadorInscriptos.includes(usuario)) {
+    const usuarioYaInscrito = partido.contadorInscriptos.some(inscrito => inscrito.uid === usuario.uid);
+    if (usuarioYaInscrito &&  partido.contadorInscriptos.length < 10) {
       throw new Error("El usuario ya está inscrito en este partido.");
     }
 
@@ -110,3 +113,21 @@ export async function actualizarListaInscriptos(idPartido, nuevaLista) {
     throw error;
   }
 }
+
+export async function obtenerRefDocumento(db, coleccion, documento) {
+  return doc(db, coleccion, documento);
+}
+// // Función para suscribirse a los cambios en un documento de Firestore
+// export function listenToChanges(docRef,partidoFiltrado) {
+//   const unsubscribe = onSnapshot(docRef, (snapshot) => {
+//     if (snapshot.exists()) {
+//       partidoFiltrado.value = { ...snapshot.data(), id: snapshot.id };
+//     } else {
+//       partidoFiltrado.value = null;
+//     }
+//   });
+
+//   // // Detener la escucha de cambios cuando el componente se desmonte
+//   // onUnmounted(unsubscribe);
+// }
+

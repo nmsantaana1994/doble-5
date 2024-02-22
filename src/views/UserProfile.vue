@@ -9,7 +9,7 @@ import {
     obtenerSeguidores,
     obtenerSiguiendo,
 } from "../services/red.js";
-import LoadingContext from "../components/LoadingContext.vue";
+// import LoadingContext from "../components/LoadingContext.vue";
 import UserProfileData from "../components/UserProfileData.vue";
 
 const route = useRoute();
