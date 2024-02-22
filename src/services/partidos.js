@@ -65,16 +65,6 @@ export async function getPartidoById(idPartido) {
   }
 }
 
-// export async function inscribirPartido(idPartido, usuarioInscripto) {
-//   let partido = await getPartidoById(idPartido);
-//   console.log(partido);
-//   partido.contadorInscriptos.push(usuarioInscripto.displayName);
-
-//   console.log("desde servicio", partido.contadorInscriptos);
-
-//   actualizarListaInscriptos(idPartido,partido.contadorInscriptos);
-// }
-
 export async function inscribirPartido(idPartido, usuarioInscripto) {
   console.log(idPartido,usuarioInscripto)
   try {
@@ -117,17 +107,3 @@ export async function actualizarListaInscriptos(idPartido, nuevaLista) {
 export async function obtenerRefDocumento(db, coleccion, documento) {
   return doc(db, coleccion, documento);
 }
-// // Función para suscribirse a los cambios en un documento de Firestore
-// export function listenToChanges(docRef,partidoFiltrado) {
-//   const unsubscribe = onSnapshot(docRef, (snapshot) => {
-//     if (snapshot.exists()) {
-//       partidoFiltrado.value = { ...snapshot.data(), id: snapshot.id };
-//     } else {
-//       partidoFiltrado.value = null;
-//     }
-//   });
-
-//   // // Detener la escucha de cambios cuando el componente se desmonte
-//   // onUnmounted(unsubscribe);
-// }
-
