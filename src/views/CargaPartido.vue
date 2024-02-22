@@ -5,18 +5,16 @@ import { useRouter } from "vue-router";
 import { cargarPartido } from "../services/partidos.js";
 import { getCanchas } from "../services/canchas";
 
-//const {user} = useAuth();
 const { fields, user, loading, handleSubmit } = useCargaPartido();
 const canchas = ref([]);
 
 function useCargaPartido() {
   const { user } = useAuth();
-  // const userId = user.value.uid;
   const router = useRouter();
 
   const fields = ref({
     nombre: "",
-    complejo: [],
+    complejo: null,
     fecha: "",
     hora: "",
     cantidadJ: 0,
@@ -50,11 +48,12 @@ function useCargaPartido() {
   };
 }
 
-onBeforeMount(async () => {
+onMounted(async () => {
   try {
     const canchasData = await getCanchas();
     canchas.value = canchasData;
-    fields.complejo = canchas;
+    fields.complejo = canchas.value;
+    console.log('complejos',fields.complejo)
   } catch (error) {
     console.error(error.message);
   }
@@ -87,16 +86,16 @@ onBeforeMount(async () => {
           />
         </div>
         <div class="mb-3">
-          <select id="complejo" class="form-select" v-model="fields.complejo">
-            <option disabled value="">Complejo</option>
-            <option
-              v-for="cancha in canchas"
-              :value="cancha.nombre"
-              :key="cancha.nombre"
-            >
-              {{ cancha.nombre }}
-            </option>
-          </select>
+            <select id="complejo" class="form-select" v-model="fields.complejo">
+                <option disabled value="">Complejo</option>
+                <option
+                    v-for="cancha in canchas"
+                    :value="cancha"
+                    :key="cancha.nombre"
+                >
+                    {{ cancha.nombre }}
+                </option>
+            </select>
         </div>
         <div class="mb-3">
           <input
