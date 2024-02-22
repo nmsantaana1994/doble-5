@@ -163,9 +163,9 @@
                                     <div class="col-6 fondo-boton-card-negro rounded d-flex justify-content-center">
                                         <router-link :to="`/info-partido/${partido.id}`" class="text-white py-2">Ver más</router-link>
                                     </div>
-                                    <div class="col-6 fondo-boton-card rounded d-flex justify-content-center">
+                                    <!-- <div class="col-6 fondo-boton-card rounded d-flex justify-content-center">
                                       <router-link :to="`/inscription/${partido.id}`" class="text-white py-2">Inscribirme</router-link>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
