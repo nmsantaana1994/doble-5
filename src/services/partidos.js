@@ -73,7 +73,9 @@ export async function inscribirPartido(idPartido, usuarioInscripto) {
     let usuario = {
       uid: usuarioInscripto.uid,
       nombre: usuarioInscripto.displayName,
+      image: usuarioInscripto.photoURL,
     };
+    debugger
     // Verificar si el usuario ya está inscrito en el partido
     const usuarioYaInscrito = partido.contadorInscriptos.some(inscrito => inscrito.uid === usuario.uid);
     if (usuarioYaInscrito &&  partido.contadorInscriptos.length < 10) {

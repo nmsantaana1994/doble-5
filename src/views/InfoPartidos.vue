@@ -2,6 +2,7 @@
 import { useRoute } from "vue-router";
 import { usePartido } from "../composition/usePartidos";
 import LoadingContext from "../components/LoadingContext.vue";
+import Image from "../components/Image.vue";
 import { getAuth } from "firebase/auth";
 import { ref, onMounted, onUnmounted } from "vue";
 import { getFirestore, doc, onSnapshot } from "firebase/firestore";
@@ -19,7 +20,7 @@ onMounted(async () => {
   try {
     const partido = await getPartidoById(route.params.id);
     partidoFiltrado.value = partido;
-
+    console.log(partidoFiltrado.value)
     // Escuchar cambios en el documento del partido
     listenToChanges();
   } catch (error) {
@@ -58,46 +59,89 @@ async function inscribirseAlPartido() {
 <template>
   <LoadingContext :loading="loading">
     <section class="row p-1 m-0">
-      <div class="col-12">
-        <h2>
-          Inscripción a partido
-          {{ partidoFiltrado ? partidoFiltrado.nombre : "" }}
-        </h2>
-        <h3 class="mb-3 fs-4 text-center">{{}}</h3>
-        <p>
-          Fecha del partido: {{ partidoFiltrado ? partidoFiltrado.fecha : "" }}
-        </p>
-        <p>
-          Cantidad faltante para completar:
-          {{
-            partidoFiltrado
-              ? partidoFiltrado.cantidadJ * 2 -
-                partidoFiltrado.contadorInscriptos.length
-              : ""
-          }}
-        </p>
-        <h3>Usuarios inscriptos:</h3>
-        <ul>
-          <li
-            v-for="nombreJugador in partidoFiltrado
-              ? partidoFiltrado.contadorInscriptos
-              : []"
-            :key="nombreJugador"
-          >
-            <router-link :to="`/usuario/${nombreJugador.uid}`">
-              {{ nombreJugador.nombre }}
-            </router-link>
-          </li>
-        </ul>
-        <!-- Llama a la función inscribirseAlPartido cuando se hace clic en el botón -->
-        <button @click="inscribirseAlPartido">Sumarme al partido</button>
+      <div class="row">
+        <div class="col-12">
+          IMAGEN DE MAPA
+        </div>
+        </div>
+        <div class="row">
+          <div class="col-7">
+          {{partidoFiltrado ? partidoFiltrado.complejo: '-'}}
+        </div>
+        <div class="col-3">
+          {{partidoFiltrado ? partidoFiltrado.tipo: '-'}}
+        </div>
+        <div class="col-2">
+          {{partidoFiltrado ? partidoFiltrado.cantidadJ: '-'}}
+        </div>
       </div>
-    </section>
+
+      <div class="row">
+        <div class="col-12">
+        <p> <span class="fw-bold">Direccion:</span> {{ partidoFiltrado ? partidoFiltrado.complejo : "-" }}</p>
+        </div>
+        <div class="col-12">
+        <p><span class="fw-bold"> Dia:</span> {{ partidoFiltrado ? partidoFiltrado.fecha : "-" }}</p>
+        </div>
+        <div class="col-12">
+        <p><span class="fw-bold"> Horario:</span> {{ partidoFiltrado ? partidoFiltrado.hora : "-" }}</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+        <p class="text-center fs-2 fw-bold">Jugadores</p>
+        </div>
+      </div>
+      
+      <!-- <div class="row"> -->
+        <div class="row" v-for="nombreJugador in partidoFiltrado
+        ? partidoFiltrado.contadorInscriptos
+        : []"
+        :key="nombreJugador">
+          <div class="col-3">
+                <Image :src="nombreJugador.image" class="rounded-circle foto-perfil" />
+          </div>
+          <div class="col-9">
+            <p>{{ nombreJugador.nombre }}
+              <router-link :to="`/usuario/${nombreJugador.uid}`">
+                ver perfil
+              </router-link>
+            </p>
+          </div>
+        <!-- <ul>
+            <li class="col-6"
+                
+              >
+                <router-link :to="`/usuario/${nombreJugador.uid}`">
+                  {{ nombreJugador.nombre }}
+                </router-link>
+              </li>
+            <li class="col-6"
+                v-for="nombreJugador in partidoFiltrado
+                  ? partidoFiltrado.contadorInscriptos
+                  : []"
+                :key="nombreJugador"
+              >
+                <router-link :to="`/usuario/${nombreJugador.uid}`">
+                  {{ nombreJugador.nombre }}
+                </router-link>
+              </li>
+        </ul> -->
+      </div>
+
+      <div class="row">
+          <div class="col-12">
+            <button class="" @click="inscribirseAlPartido">Sumarme al partido</button>
+          </div>
+      </div>
+  </section>
   </LoadingContext>
 </template>
 
 <style scoped>
-img {
-  width: 80%;
+
+ul{
+  list-style: none;
 }
 </style>

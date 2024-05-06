@@ -107,13 +107,13 @@ onMounted(async () => {
           />
         </div>
         <div class="mb-3">
-          <input
-            type="time"
-            class="form-control"
-            id="hora"
-            placeholder="Hora del partido"
-            v-model="fields.hora"
-          />
+            <select v-model="fields.hora">
+                <option value="">Selecciona un rango horario</option>
+                <option value="5-6">5:00 - 6:00</option>
+                <option value="6-7">6:00 - 7:00</option>
+                <option value="7-8">7:00 - 8:00</option>
+                <!-- Agrega más opciones según sea necesario -->
+            </select>
         </div>
         <div class="mb-3">
           <select id="cantidadJ" class="form-select" v-model="fields.cantidadJ">

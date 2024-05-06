@@ -32,7 +32,7 @@
                     postData.liked = postData.likes.includes(user.value.id);
                     return { id: doc.id, ...postData };
                 });
-            
+            console.log(posts.value)
             } catch (error) {
                 console.error('Error al obtener las publicaciones:', error);
             }
