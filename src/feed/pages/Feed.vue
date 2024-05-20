@@ -1,10 +1,10 @@
 <script setup>
-    import Image from "../components/Image.vue";
-    import { useAuth } from "../composition/useAuth.js";
+    import Image from "../../components/Image.vue";
+    import { useAuth } from "../../composition/useAuth.js";
     import { ref, onMounted } from "vue";
-    import { publishPost, getPosts, toggleLike } from "../services/feed.js";
-    import { dateToString } from "../helpers/date.js";
-    import Loader from "../components/Loader.vue";
+    import { publishPost, getPosts, toggleLike } from "../../services/feed.js";
+    import { dateToString } from "../../helpers/date.js";
+    import Loader from "../../components/Loader.vue";
 
     const {user, newPostContent, loading, posts, handleSubmit, toggleLikeView } = useFeed();
 
