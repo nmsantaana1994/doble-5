@@ -2,7 +2,7 @@
     import { ref, onMounted } from 'vue';
     import { useRouter } from 'vue-router';
     //import { cargarChatsPrivados } from '../services/private-chats.js'; // Importa la función para cargar los chats desde Firebase que falta desarrollar
-    import { useAuth } from "../composition/useAuth.js"
+    import { useAuth } from "../../composition/useAuth.js"
 
     const chats = ref([]);
     const router = useRouter();

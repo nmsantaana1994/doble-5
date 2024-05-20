@@ -1,8 +1,8 @@
 <script setup>
 import { useRoute } from "vue-router";
-import { usePartido } from "../composition/usePartidos";
-import LoadingContext from "../components/LoadingContext.vue";
-import Image from "../components/Image.vue";
+import { usePartido } from "../../composition/usePartidos";
+import LoadingContext from '../../components/LoadingContext.vue';
+import Image from "../../components/Image.vue";
 import { getAuth } from "firebase/auth";
 import { ref, onMounted, onUnmounted } from "vue";
 import { getFirestore, doc, onSnapshot } from "firebase/firestore";

@@ -8,9 +8,9 @@ import {
   where,
   doc,
   updateDoc,
-  onSnapshot
+  onSnapshot,
 } from "@firebase/firestore";
-import { db } from "./firebase";
+import { db } from "../../services/firebase";
 
 export async function cargarPartido(
   data /*{nombre, complejo, fecha, hora, cantidadJ, cambios, tipo, valorCancha}*/
@@ -66,7 +66,7 @@ export async function getPartidoById(idPartido) {
 }
 
 export async function inscribirPartido(idPartido, usuarioInscripto) {
-  console.log(idPartido,usuarioInscripto)
+  console.log(idPartido, usuarioInscripto);
   try {
     let partido = await getPartidoById(idPartido);
     console.log(partido);
@@ -75,10 +75,12 @@ export async function inscribirPartido(idPartido, usuarioInscripto) {
       nombre: usuarioInscripto.displayName,
       image: usuarioInscripto.photoURL,
     };
-    debugger
+    debugger;
     // Verificar si el usuario ya está inscrito en el partido
-    const usuarioYaInscrito = partido.contadorInscriptos.some(inscrito => inscrito.uid === usuario.uid);
-    if (usuarioYaInscrito &&  partido.contadorInscriptos.length < 10) {
+    const usuarioYaInscrito = partido.contadorInscriptos.some(
+      (inscrito) => inscrito.uid === usuario.uid
+    );
+    if (usuarioYaInscrito && partido.contadorInscriptos.length < 10) {
       throw new Error("El usuario ya está inscrito en este partido.");
     }
 

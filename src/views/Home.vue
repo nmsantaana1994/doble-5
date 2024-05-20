@@ -1,10 +1,10 @@
 <script setup>
 import Image from "../components/Image.vue";
 import { useAuth } from "../composition/useAuth.js";
-import { getPartidos } from "../services/partidos";
+import { getPartidos } from "../partidos/services/partidos.js";
 import { ref, onUnmounted, onBeforeMount } from "vue";
 import { onSnapshot, doc, getFirestore, collection } from "firebase/firestore";
-import CardPartido from "../components/CardPartido.vue";
+import CardPartido from "../partidos/components/CardPartido.vue";
 
 const { user } = useHome();
 const db = getFirestore();
