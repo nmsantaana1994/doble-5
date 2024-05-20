@@ -61,7 +61,7 @@
         <h1 class="my-5 text-center">Iniciar Sesión</h1>
         
         <div class="d-flex justify-content-center mb-5">
-            <img src="../assets/img/logo-original.png" alt="Logo Doble-5" class="ancho-logo my-5"/>
+            <img src="../../assets/img/logo-original.png" alt="Logo Doble-5" class="ancho-logo my-5"/>
         </div>
     
         <div class="row mb-5">

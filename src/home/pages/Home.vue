@@ -52,7 +52,7 @@ function listenToChanges(partidoCollectionRef) {
       </div>
       <div class="col-4 d-flex justify-content-end">
         <img
-          src="../assets/img/lupa.png"
+          src="../../assets/img/lupa.png"
           alt="Icono flechas dobles"
           class="icono-h2"
         />
@@ -78,7 +78,7 @@ function listenToChanges(partidoCollectionRef) {
       <div class="col-3 m-auto justify-content-center botonera-home">
         <router-link :to="'/home'" class="d-flex flex-column">
           <img
-            src="../assets/img/home-offcanvas.png"
+            src="../../assets/img/home-offcanvas.png"
             alt="Icono home"
             class="icono-card m-auto"
           />
@@ -88,7 +88,7 @@ function listenToChanges(partidoCollectionRef) {
       <div class="col-3 m-auto justify-content-center botonera-home">
         <router-link :to="'/feed'" class="d-flex flex-column">
           <img
-            src="../assets/img/red-social.png"
+            src="../../assets/img/red-social.png"
             alt="Icono feed"
             class="icono-card m-auto"
           />
@@ -98,7 +98,7 @@ function listenToChanges(partidoCollectionRef) {
       <div class="col-3 m-auto justify-content-center botonera-home">
         <router-link :to="'/partidos'" class="d-flex flex-column">
           <img
-            src="../assets/img/pelota.png"
+            src="../../assets/img/pelota.png"
             alt="Icono pelota"
             class="icono-card m-auto"
           />
@@ -108,7 +108,7 @@ function listenToChanges(partidoCollectionRef) {
       <div class="col-3 m-auto justify-content-center botonera-home">
         <router-link :to="'/red'" class="d-flex flex-column">
           <img
-            src="../assets/img/usuarios.png"
+            src="../../assets/img/usuarios.png"
             alt="Icono red"
             class="icono-card m-auto"
           />
@@ -126,7 +126,7 @@ function listenToChanges(partidoCollectionRef) {
       <div class="col-2">
         <router-link to="/partidos">
           <img
-            src="../assets/img/arrows-right.png"
+            src="../../assets/img/arrows-right.png"
             alt="Icono flechas dobles"
             class="icono-h2"
           />

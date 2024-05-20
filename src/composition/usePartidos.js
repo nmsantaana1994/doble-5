@@ -12,6 +12,7 @@ export function usePartido(idPartido) {
         cambios: null,
         tipo: null,
         userId: null,
+        usuarioCreador: null,
         valorCancha: null,
         contadorInscriptos: [],
     });

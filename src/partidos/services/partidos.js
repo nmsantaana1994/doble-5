@@ -69,13 +69,11 @@ export async function inscribirPartido(idPartido, usuarioInscripto) {
   console.log(idPartido, usuarioInscripto);
   try {
     let partido = await getPartidoById(idPartido);
-    console.log(partido);
     let usuario = {
-      uid: usuarioInscripto.uid,
-      nombre: usuarioInscripto.displayName,
-      image: usuarioInscripto.photoURL,
+      uid: usuarioInscripto.value.id,
+      nombre: usuarioInscripto.value.displayName,
+      image: usuarioInscripto.value.photoURL,
     };
-    debugger;
     // Verificar si el usuario ya está inscrito en el partido
     const usuarioYaInscrito = partido.contadorInscriptos.some(
       (inscrito) => inscrito.uid === usuario.uid
@@ -85,8 +83,10 @@ export async function inscribirPartido(idPartido, usuarioInscripto) {
     }
 
     // Si el usuario no está inscrito, agregarlo a la lista de inscritos
+
     partido.contadorInscriptos.push(usuario);
     await actualizarListaInscriptos(idPartido, partido.contadorInscriptos);
+    
     console.log("Usuario inscrito correctamente.");
   } catch (error) {
     console.error("Error al inscribirse al partido:", error);

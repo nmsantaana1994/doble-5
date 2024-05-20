@@ -22,6 +22,7 @@ function useCargaPartido() {
     totalJ: 0,
     cambios: "",
     tipo: "",
+    usuarioCreador: "",
     valorCancha: "",
   });
 
@@ -33,6 +34,7 @@ function useCargaPartido() {
     await cargarPartido({
       ...fields.value,
       userId: user.value.id,
+      usuarioCreador: user.value.displayName,
     });
 
     loading.value = false;
