@@ -4,6 +4,7 @@ import { useAuth } from "../../composition/useAuth.js";
 import { getPartidos } from "../services/partidos.js";
 import { ref, onMounted } from "vue";
 import CardPartido from "../components/CardPartido.vue";
+import HeaderPage from "../../components/HeaderPage.vue";
 const { user } = useHome();
 
 function useHome() {
@@ -65,6 +66,7 @@ onMounted(async () => {
 </script>
 
 <template>
+        <HeaderPage route="/home" title="Partidos" />
     <section class="px-3 pb-3 mb-5">
         <div class="row background-partido mb-3 m-auto p-4 rounded-bottom">
             <h1 class="text-white text-center p-2">Partidos</h1>

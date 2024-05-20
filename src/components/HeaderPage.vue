@@ -13,19 +13,50 @@ const props = defineProps({
 });
 </script>
 <template>
-    <section class="p-3">
-      <div class="row">
-        <div class="col-3 d-flex justify-content-center">
-          <router-link :to="props.route">
-            <img src="../assets/img/flecha-izquierda.png" style="width: 80%;" />
-            <i class="fi fi-sr-angle-left"></i>
-          </router-link>
-        </div>
-        <div class="col-9 d-flex align-items-center">
-          <h1 class="text-center m-0 ps-4">{{ props.title }}</h1>
-        </div>
+  <section>
+    <div class="row sectionHeader">
+      <div class="col-3">
+        <router-link :to="props.route">
+          <img src="../assets/img/flecha-izquierda.png" />
+          <i class="fi fi-sr-angle-left"></i>
+        </router-link>
       </div>
-    </section>
-    <hr>
-  </template>
-<style scoped></style>
+      <div class="col-9">
+        <h1>{{ props.title }}</h1>
+      </div>
+    </div>
+  </section>
+  <!-- <hr> -->
+</template>
+<style scoped>
+section {
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+
+.sectionHeader {
+  padding-top: 1rem;
+  width: 98%;
+  margin: auto;
+  border-bottom: 1px solid black;
+  margin-bottom: .2rem;
+}
+
+.sectionHeader div:last-child h1{
+  text-align: center;
+}
+img {
+  width: 50%;
+}
+.title{
+  display: flex;
+  align-items: center;
+  margin: auto;
+}
+h1 {
+  margin: auto;
+  text-align: right;
+  font-size: 1.5rem;
+}
+</style>

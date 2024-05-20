@@ -5,7 +5,7 @@
     import { publishPost, getPosts, toggleLike } from "../../services/feed.js";
     import { dateToString } from "../../helpers/date.js";
     import Loader from "../../components/Loader.vue";
-
+    import HeaderPage from "../../components/HeaderPage.vue";
     const {user, newPostContent, loading, posts, handleSubmit, toggleLikeView } = useFeed();
 
     function useFeed() {
@@ -106,19 +106,7 @@
 </script>
 
 <template>
-    <section class="p-3">
-        <div class="row">
-            <div class="col-3 d-flex justify-content-center">
-                <router-link :to="`/home`">
-                    <img src="../../assets/img/flecha-izquierda.png" style="width: 80%;" />
-                    <i class="fi fi-sr-angle-left"></i>
-                </router-link>
-            </div>
-            <div class="col-9 d-flex align-items-center">
-                <h1 class="text-center m-0 ps-4">Feed</h1>
-            </div>
-        </div>
-    </section>
+    <HeaderPage route="/home" title="Feed" />
     <hr>
     <section class="p-3">
         <div class="row mb-3">

@@ -183,9 +183,7 @@
                 </div>   
         </nav>
     </template>
-    <!-- <footer class="flex justify-center items-center h-[150px] bg-gray-900 text-white">
-        <p>&copy; Da Vinci 2023</p>
-    </footer> -->
+
 
 </template>
 

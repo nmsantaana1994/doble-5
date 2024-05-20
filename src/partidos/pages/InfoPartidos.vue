@@ -71,7 +71,7 @@ function estaInscripto() {
 
 </script>
 
-<template>
+<template class="main">
   <LoadingContext :loading="loading">
     <HeaderPage title="Informacion" route="/home"></HeaderPage>
     <section class="row p-1 m-0">
@@ -133,7 +133,7 @@ function estaInscripto() {
           <p>no hay jugadores inscriptos</p>
         </div> -->
 
-      <div class="row sumarPartidoButton" v-show="!flagInscription">
+      <div class="row sumarPartidoButton">
           <div class="col-12">
             <button @click="inscribirseAlPartido">Unirme al partido</button>
           </div>
@@ -143,7 +143,6 @@ function estaInscripto() {
 </template>
 
 <style scoped>
-
 ul{
   list-style: none;
 }
