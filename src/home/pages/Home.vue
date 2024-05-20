@@ -118,7 +118,7 @@ function listenToChanges(partidoCollectionRef) {
     </div>
   </section>
 
-  <section class="px-3 pb-3 mb-5">
+  <section class="pb-3 px-3 mb-5">
     <div class="row mb-3">
       <div class="col-10">
         <h2 class="text-start h3 mb-3">Próximos partidos</h2>
@@ -137,6 +137,7 @@ function listenToChanges(partidoCollectionRef) {
       <!-- aqui -->
       <div class="row px-3">
         <CardPartido
+          class=" m-auto"
           v-for="partido in partidos"
           :key="partido.id"
           :partido="partido"
@@ -144,7 +145,7 @@ function listenToChanges(partidoCollectionRef) {
       </div>
     </template>
     <template v-else>
-      <div class="row px-3">
+      <div class="row">
         <div class="col-12">
           <p>No hay partidos para mostrar</p>
         </div>

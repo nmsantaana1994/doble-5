@@ -9,7 +9,7 @@ import { getFirestore, doc, onSnapshot } from "firebase/firestore";
 import { getPartidoById, inscribirPartido } from "../services/partidos";
 import { useAuth } from "../../composition/useAuth";
 import alertervice from '../../utils/alert.service'
-
+import HeaderPage from "../../components/HeaderPage.vue";
 // const auth = getAuth();
 const { user } = useAuth();
 const db = getFirestore();
@@ -63,12 +63,9 @@ async function inscribirseAlPartido() {
 }
 
 function estaInscripto() {
-  // Verifica si partidoFiltrado y contadorInscriptos están definidos
   if (!partidoFiltrado.value || !partidoFiltrado.value.contadorInscriptos) {
     return false;
   }
-
-  // Verifica si user.id está en el array contadorInscriptos
   return partidoFiltrado.value.contadorInscriptos.some(usuario => usuario.id === user.id);
 }
 
@@ -76,6 +73,7 @@ function estaInscripto() {
 
 <template>
   <LoadingContext :loading="loading">
+    <HeaderPage title="Informacion" route="/home"></HeaderPage>
     <section class="row p-1 m-0">
       <div class="col-12 fotoCancha mb-3">
         <!-- IMAGEN DE MAPA -->
