@@ -10,7 +10,7 @@ import {
     updateDoc,
     onSnapshot
   } from "@firebase/firestore";
-  import { db } from "./firebase";
+  import { db } from "../../services/firebase";
   
   export async function getCanchas() {
     const q = collection(db, "canchas");

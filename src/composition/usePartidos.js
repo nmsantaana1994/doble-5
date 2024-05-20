@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import {getPartidoById } from "../services/partidos.js";
+import {getPartidoById } from "../partidos/services/partidos.js";
 
 export function usePartido(idPartido) {
     const partido = ref({
@@ -12,6 +12,7 @@ export function usePartido(idPartido) {
         cambios: null,
         tipo: null,
         userId: null,
+        usuarioCreador: null,
         valorCancha: null,
         contadorInscriptos: [],
     });

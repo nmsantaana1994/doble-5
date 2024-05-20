@@ -31,11 +31,11 @@ async function inscribirseAlPartido(idPartido) {
       <div class="card-body">
         <div class="row mb-3">
           <div class="col-10">
-            <p class="card-title h3 text-start">{{ partido.nombre }}</p>
+            <p class="card-title h3 text-start">{{ partido?.nombre }}</p>
           </div>
           <div class="col-2 d-flex justify-content-end">
             <img
-              src="../assets/img/arrows-right.png"
+              src="../../assets/img/arrows-right.png"
               alt="Icono flechas dobles"
               class="icono-h2"
             />
@@ -44,35 +44,35 @@ async function inscribirseAlPartido(idPartido) {
         <div class="row mb-3">
           <div class="col-2 d-flex justify-content-start">
             <img
-              src="../assets/img/reloj.png"
-              alt="Icono flechas dobles"
-              class="icono-h2"
-            />
-          </div>
-          <div class="col-10 d-flex align-items-end">
-            <p class="card-subtitle h6 text-body-secondary text-start">
-              {{ partido.fecha }} {{ partido.hora }}
-            </p>
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col-2 d-flex justify-content-start">
-            <img
-              src="../assets/img/alfiler.png"
+              src="../../assets/img/reloj.png"
               alt="Icono flechas dobles"
               class="icono-h2"
             />
           </div>
           <div class="col-10 d-flex align-items-end">
             <p class="card-subtitle h6 text-body-secondary text-start">
-              {{ partido.complejo }}
+              {{ partido?.fecha }} {{ partido?.hora }}
             </p>
           </div>
         </div>
         <div class="row mb-3">
           <div class="col-2 d-flex justify-content-start">
             <img
-              src="../assets/img/alfiler.png"
+              src="../../assets/img/alfiler.png"
+              alt="Icono flechas dobles"
+              class="icono-h2"
+            />
+          </div>
+          <div class="col-10 d-flex align-items-end">
+            <p class="card-subtitle h6 text-body-secondary text-start">
+              {{ partido?.complejo?.nombre }}
+            </p>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-2 d-flex justify-content-start">
+            <img
+              src="../../assets/img/alfiler.png"
               alt="Icono flechas dobles"
               class="icono-h2"
             />
@@ -80,8 +80,8 @@ async function inscribirseAlPartido(idPartido) {
           <div class="col-10 d-flex align-items-end">
             <p class="card-subtitle h6 text-body-secondary text-start">
               {{
-                partido.cantidadJ * 2 -
-                partido.contadorInscriptos.length
+                partido?.cantidadJ * 2 -
+                partido?.contadorInscriptos.length
               }}
             </p>
           </div>
@@ -91,13 +91,13 @@ async function inscribirseAlPartido(idPartido) {
             class="col-6 fondo-boton-card-negro rounded d-flex justify-content-center"
           >
             <router-link
-              :to="`/info-partido/${partido.id}`"
+              :to="`/info-partido/${partido?.id}`"
               class="text-white fw-light py-2"
               >Ver más</router-link
             >
           </div>
           <div
-            @click="inscribirseAlPartido(partido.id)"
+            @click="inscribirseAlPartido(partido?.id)"
             class="col-6 fondo-boton-card rounded d-flex justify-content-center text-white align-items-center"
           >
             Inscribirme

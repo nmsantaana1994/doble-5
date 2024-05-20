@@ -1,10 +1,10 @@
 <script setup>
-    import Image from "../components/Image.vue";
-    import { useAuth } from "../composition/useAuth.js";
+    import Image from "../../components/Image.vue";
+    import { useAuth } from "../../composition/useAuth.js";
     import { ref, onMounted } from "vue";
-    import { publishPost, getPosts, toggleLike } from "../services/feed.js";
-    import { dateToString } from "../helpers/date.js";
-    import Loader from "../components/Loader.vue";
+    import { publishPost, getPosts, toggleLike } from "../../services/feed.js";
+    import { dateToString } from "../../helpers/date.js";
+    import Loader from "../../components/Loader.vue";
 
     const {user, newPostContent, loading, posts, handleSubmit, toggleLikeView } = useFeed();
 
@@ -110,7 +110,7 @@
         <div class="row">
             <div class="col-3 d-flex justify-content-center">
                 <router-link :to="`/home`">
-                    <img src="../assets/img/flecha-izquierda.png" style="width: 80%;" />
+                    <img src="../../assets/img/flecha-izquierda.png" style="width: 80%;" />
                     <i class="fi fi-sr-angle-left"></i>
                 </router-link>
             </div>
@@ -141,7 +141,7 @@
                     >
                     </textarea>
                     <button type="submit" class="icono-publicar">
-                        <img src="../assets/img/publicar.png" alt="Icono Publicar" class="publicar" />
+                        <img src="../../assets/img/publicar.png" alt="Icono Publicar" class="publicar" />
                     </button>
                 </form>
             </div>
@@ -179,7 +179,7 @@
                         <router-link :to="`/comments/${post.id}`">
                             <button class="icono-publicar">
                                 <div class="d-flex align-items-center">
-                                    <img src="../assets/img/comment.png" alt="Icono Comentarios" class="publicar" />
+                                    <img src="../../assets/img/comment.png" alt="Icono Comentarios" class="publicar" />
                                     <p class="m-0 ps-2 fw-bold">{{ post.comments.length }} Comentarios</p>
                                 </div>
                             </button>

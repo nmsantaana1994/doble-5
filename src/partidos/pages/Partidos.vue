@@ -1,7 +1,7 @@
 <script setup>
     import { getAuth, onAuthStateChanged } from "firebase/auth";
-    import { useAuth } from "../composition/useAuth.js";
-    import { getPartidos } from "../services/partidos";
+    import { useAuth } from "../../composition/useAuth.js";
+    import { getPartidos } from "../services/partidos.js";
     import { ref, onMounted } from "vue";
 
     const { user } = useHome();

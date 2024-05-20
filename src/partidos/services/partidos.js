@@ -8,9 +8,9 @@ import {
   where,
   doc,
   updateDoc,
-  onSnapshot
+  onSnapshot,
 } from "@firebase/firestore";
-import { db } from "./firebase";
+import { db } from "../../services/firebase";
 
 export async function cargarPartido(
   data /*{nombre, complejo, fecha, hora, cantidadJ, cambios, tipo, valorCancha}*/
@@ -66,25 +66,27 @@ export async function getPartidoById(idPartido) {
 }
 
 export async function inscribirPartido(idPartido, usuarioInscripto) {
-  console.log(idPartido,usuarioInscripto)
+  console.log(idPartido, usuarioInscripto);
   try {
     let partido = await getPartidoById(idPartido);
-    console.log(partido);
     let usuario = {
-      uid: usuarioInscripto.uid,
-      nombre: usuarioInscripto.displayName,
-      image: usuarioInscripto.photoURL,
+      uid: usuarioInscripto.value.id,
+      nombre: usuarioInscripto.value.displayName,
+      image: usuarioInscripto.value.photoURL,
     };
-    debugger
     // Verificar si el usuario ya está inscrito en el partido
-    const usuarioYaInscrito = partido.contadorInscriptos.some(inscrito => inscrito.uid === usuario.uid);
-    if (usuarioYaInscrito &&  partido.contadorInscriptos.length < 10) {
+    const usuarioYaInscrito = partido.contadorInscriptos.some(
+      (inscrito) => inscrito.uid === usuario.uid
+    );
+    if (usuarioYaInscrito && partido.contadorInscriptos.length < 10) {
       throw new Error("El usuario ya está inscrito en este partido.");
     }
 
     // Si el usuario no está inscrito, agregarlo a la lista de inscritos
+
     partido.contadorInscriptos.push(usuario);
     await actualizarListaInscriptos(idPartido, partido.contadorInscriptos);
+    
     console.log("Usuario inscrito correctamente.");
   } catch (error) {
     console.error("Error al inscribirse al partido:", error);

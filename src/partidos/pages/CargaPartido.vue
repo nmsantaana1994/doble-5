@@ -1,9 +1,9 @@
 <script setup>
 import { ref, onMounted, onBeforeMount } from "vue";
-import { useAuth } from "../composition/useAuth.js";
+import { useAuth } from "../../composition/useAuth.js";
 import { useRouter } from "vue-router";
 import { cargarPartido } from "../services/partidos.js";
-import { getCanchas } from "../services/canchas";
+import { getCanchas } from "../../canchas/services/canchas.js";
 
 const { fields, user, loading, handleSubmit } = useCargaPartido();
 const canchas = ref([]);
@@ -22,6 +22,7 @@ function useCargaPartido() {
     totalJ: 0,
     cambios: "",
     tipo: "",
+    usuarioCreador: "",
     valorCancha: "",
   });
 
@@ -33,6 +34,7 @@ function useCargaPartido() {
     await cargarPartido({
       ...fields.value,
       userId: user.value.id,
+      usuarioCreador: user.value.displayName,
     });
 
     loading.value = false;
