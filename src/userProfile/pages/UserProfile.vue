@@ -70,7 +70,7 @@ const seguirDejarSeguir = async () => {
         <div class="row">
             <div class="col-3 d-flex justify-content-center">
                 <router-link :to="`/home`">
-                    <img src="../assets/img/flecha-izquierda.png" style="width: 80%;" />
+                    <img src="../../assets/img/flecha-izquierda.png" style="width: 80%;" />
                     <i class="fi fi-sr-angle-left"></i>
                 </router-link>
             </div>

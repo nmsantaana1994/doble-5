@@ -71,7 +71,7 @@
         <div class="row">
             <div class="col-3 d-flex justify-content-center align-items-center">
             <router-link :to="`/home`">
-                <img src="../assets/img/flecha-izquierda.png" />
+                <img src="../../assets/img/flecha-izquierda.png" />
                 <i class="fi fi-sr-angle-left"></i>
             </router-link>
             </div>
