@@ -8,30 +8,24 @@ import {
   where,
   doc,
   updateDoc,
-  onSnapshot
+  onSnapshot,
 } from "@firebase/firestore";
-import { db } from "./firebase";
-
+import { db } from "../../services/firebase";
+import { actualizarCancha } from "./canchas";
 export async function cargarPartido(
-  data /*{nombre, complejo, fecha, hora, cantidadJ, cambios, tipo, valorCancha}*/
+  data,
+  reserva
 ) {
   try {
     const partidoRef = collection(db, "partidos");
-
+    await actualizarCancha(data.complejo.id, reserva);
     return addDoc(partidoRef, {
       ...data,
-      // nombre,
-      // complejo,
-      // fecha,
-      // hora,
-      // cantidadJ,
-      // cambios,
-      // tipo,
-      // valorCancha,
       created_at: serverTimestamp(),
     });
   } catch (err) {
     console.log(err);
+    throw err; // Propagar el error para que sea capturado en handleSubmit
   }
 }
 
@@ -65,32 +59,25 @@ export async function getPartidoById(idPartido) {
   }
 }
 
-// export async function inscribirPartido(idPartido, usuarioInscripto) {
-//   let partido = await getPartidoById(idPartido);
-//   console.log(partido);
-//   partido.contadorInscriptos.push(usuarioInscripto.displayName);
-
-//   console.log("desde servicio", partido.contadorInscriptos);
-
-//   actualizarListaInscriptos(idPartido,partido.contadorInscriptos);
-// }
-
 export async function inscribirPartido(idPartido, usuarioInscripto) {
-  console.log(idPartido,usuarioInscripto)
+  console.log(idPartido, usuarioInscripto);
   try {
     let partido = await getPartidoById(idPartido);
-    console.log(partido);
     let usuario = {
-      uid: usuarioInscripto.uid,
-      nombre: usuarioInscripto.displayName,
+      uid: usuarioInscripto.value.id,
+      nombre: usuarioInscripto.value.displayName,
+      image: usuarioInscripto.value.photoURL,
     };
     // Verificar si el usuario ya está inscrito en el partido
-    const usuarioYaInscrito = partido.contadorInscriptos.some(inscrito => inscrito.uid === usuario.uid);
-    if (usuarioYaInscrito &&  partido.contadorInscriptos.length < 10) {
+    const usuarioYaInscrito = partido.contadorInscriptos.some(
+      (inscrito) => inscrito.uid === usuario.uid
+    );
+    if (usuarioYaInscrito && partido.contadorInscriptos.length < 10) {
       throw new Error("El usuario ya está inscrito en este partido.");
     }
 
     // Si el usuario no está inscrito, agregarlo a la lista de inscritos
+
     partido.contadorInscriptos.push(usuario);
     await actualizarListaInscriptos(idPartido, partido.contadorInscriptos);
     console.log("Usuario inscrito correctamente.");
@@ -102,7 +89,6 @@ export async function inscribirPartido(idPartido, usuarioInscripto) {
 
 export async function actualizarListaInscriptos(idPartido, nuevaLista) {
   try {
-    // Obtener referencia al documento del partido específico usando el ID proporcionado
     const partidoRef = doc(db, "partidos", idPartido);
     await updateDoc(partidoRef, {
       contadorInscriptos: nuevaLista,
@@ -117,17 +103,3 @@ export async function actualizarListaInscriptos(idPartido, nuevaLista) {
 export async function obtenerRefDocumento(db, coleccion, documento) {
   return doc(db, coleccion, documento);
 }
-// // Función para suscribirse a los cambios en un documento de Firestore
-// export function listenToChanges(docRef,partidoFiltrado) {
-//   const unsubscribe = onSnapshot(docRef, (snapshot) => {
-//     if (snapshot.exists()) {
-//       partidoFiltrado.value = { ...snapshot.data(), id: snapshot.id };
-//     } else {
-//       partidoFiltrado.value = null;
-//     }
-//   });
-
-//   // // Detener la escucha de cambios cuando el componente se desmonte
-//   // onUnmounted(unsubscribe);
-// }
-

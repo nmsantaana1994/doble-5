@@ -2,7 +2,7 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getPartidos } from "../services/partidos";
 import { ref, onMounted } from "vue";
-
+import  cardPartido  from "../components/CardPartido.vue"
 const auth = getAuth();
 
 const partidos = ref([]);
@@ -53,7 +53,12 @@ onMounted(async () => {
       </div>
     </div>
     <template v-if="partidos.length > 0">
-      <div class="row px-3">
+      <cardPartido
+          v-for="partido in partidos"
+          :key="partido.id"
+          :partido="partido"
+        />
+      <!-- <div class="row px-3">
         <div class="card p-3" v-for="partido in partidos" :key="partido.id">
           <div class="card-body">
             <div class="row mb-3">
@@ -107,7 +112,7 @@ onMounted(async () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </template>
 
     <template v-else>

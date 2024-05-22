@@ -1,11 +1,11 @@
 <script setup>
-    import Image from "../components/Image.vue";
-    import { useAuth } from "../composition/useAuth.js";
+    import Image from "../../components/Image.vue";
+    import { useAuth } from "../../composition/useAuth.js";
     import { ref, onMounted } from "vue";
-    import { publishPost, getPosts, toggleLike } from "../services/feed.js";
-    import { dateToString } from "../helpers/date.js";
-    import Loader from "../components/Loader.vue";
-
+    import { publishPost, getPosts, toggleLike } from "../../services/feed.js";
+    import { dateToString } from "../../helpers/date.js";
+    import Loader from "../../components/Loader.vue";
+    import HeaderPage from "../../components/HeaderPage.vue";
     const {user, newPostContent, loading, posts, handleSubmit, toggleLikeView } = useFeed();
 
     function useFeed() {
@@ -32,7 +32,7 @@
                     postData.liked = postData.likes.includes(user.value.id);
                     return { id: doc.id, ...postData };
                 });
-            
+            console.log(posts.value)
             } catch (error) {
                 console.error('Error al obtener las publicaciones:', error);
             }
@@ -106,21 +106,9 @@
 </script>
 
 <template>
-    <section class="p-3">
-        <div class="row">
-            <div class="col-3 d-flex justify-content-center">
-                <router-link :to="`/home`">
-                    <img src="../assets/img/flecha-izquierda.png" style="width: 80%;" />
-                    <i class="fi fi-sr-angle-left"></i>
-                </router-link>
-            </div>
-            <div class="col-9 d-flex align-items-center">
-                <h1 class="text-center m-0 ps-4">Feed</h1>
-            </div>
-        </div>
-    </section>
-    <hr>
-    <section class="p-3">
+    <HeaderPage route="/home" title="Feed" />
+    <!-- <hr> -->
+    <section class="p-3 mt-5">
         <div class="row mb-3">
             <div class="col-2">
                 <Image :src="user.photoURL" class="rounded-circle foto-perfil" />
@@ -141,7 +129,7 @@
                     >
                     </textarea>
                     <button type="submit" class="icono-publicar">
-                        <img src="../assets/img/publicar.png" alt="Icono Publicar" class="publicar" />
+                        <img src="../../assets/img/publicar.png" alt="Icono Publicar" class="publicar" />
                     </button>
                 </form>
             </div>
@@ -179,7 +167,7 @@
                         <router-link :to="`/comments/${post.id}`">
                             <button class="icono-publicar">
                                 <div class="d-flex align-items-center">
-                                    <img src="../assets/img/comment.png" alt="Icono Comentarios" class="publicar" />
+                                    <img src="../../assets/img/comment.png" alt="Icono Comentarios" class="publicar" />
                                     <p class="m-0 ps-2 fw-bold">{{ post.comments.length }} Comentarios</p>
                                 </div>
                             </button>

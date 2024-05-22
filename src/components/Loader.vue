@@ -10,9 +10,21 @@
     </div>
 </template>
 
-<style>
-    /* .spinner-border {
-        width: 2em;
-        height: 2em;
-    } */
+<style scoped>
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
+  z-index: 9999; /* Asegúrate de que esté encima de otros elementos */
+}
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
 </style>
