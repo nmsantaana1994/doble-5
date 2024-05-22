@@ -13,7 +13,7 @@
 
     const notificationClasses = computed(() => {
         switch(props.data.type) {
-            case "succes":
+            case "success":
                 return "background-noti";
 
             case "error":
@@ -30,6 +30,7 @@
         v-if="data.message !== ''"
         class="p-3 m-3 rounded"
         :class="notificationClasses"
+        style="box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1)"
     >
         <div class="d-flex justify-content-between align-items-center">
             <div class="text-white">{{ data.message }}</div>

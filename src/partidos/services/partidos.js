@@ -11,27 +11,21 @@ import {
   onSnapshot,
 } from "@firebase/firestore";
 import { db } from "../../services/firebase";
-
+import { actualizarCancha } from "./canchas";
 export async function cargarPartido(
-  data /*{nombre, complejo, fecha, hora, cantidadJ, cambios, tipo, valorCancha}*/
+  data,
+  reserva
 ) {
   try {
     const partidoRef = collection(db, "partidos");
-
+    await actualizarCancha(data.complejo.id, reserva);
     return addDoc(partidoRef, {
       ...data,
-      // nombre,
-      // complejo,
-      // fecha,
-      // hora,
-      // cantidadJ,
-      // cambios,
-      // tipo,
-      // valorCancha,
       created_at: serverTimestamp(),
     });
   } catch (err) {
     console.log(err);
+    throw err; // Propagar el error para que sea capturado en handleSubmit
   }
 }
 
@@ -86,7 +80,6 @@ export async function inscribirPartido(idPartido, usuarioInscripto) {
 
     partido.contadorInscriptos.push(usuario);
     await actualizarListaInscriptos(idPartido, partido.contadorInscriptos);
-    
     console.log("Usuario inscrito correctamente.");
   } catch (error) {
     console.error("Error al inscribirse al partido:", error);
@@ -96,7 +89,6 @@ export async function inscribirPartido(idPartido, usuarioInscripto) {
 
 export async function actualizarListaInscriptos(idPartido, nuevaLista) {
   try {
-    // Obtener referencia al documento del partido específico usando el ID proporcionado
     const partidoRef = doc(db, "partidos", idPartido);
     await updateDoc(partidoRef, {
       contadorInscriptos: nuevaLista,

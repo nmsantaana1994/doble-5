@@ -5,13 +5,13 @@
 </template>
 
 <script lang="ts">
-import type { AlertType } from '@/interfaces/alertType.interface';
+// import type { AlertType } from '@/interfaces/alertType.interface';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
   props: {
     type: {
-      type: String as () => AlertType['type'],
+      type: String as () => any['type'],
       required: true
     },
     message: {

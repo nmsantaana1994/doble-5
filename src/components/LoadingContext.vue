@@ -1,19 +1,22 @@
 <script setup>
-    import Loader from "./Loader.vue";
+import Loader from "./Loader.vue";
 
-    defineProps({
-        loading: {
-            type: Boolean,
-            default: false
-        }
-    })
+defineProps({
+    loading: {
+        type: Boolean,
+        default: false
+    }
+})
 </script>
 
 <template>
-    <template v-if="!loading">
+    <template class="modal" v-if="!loading">
         <slot />
     </template>
-    <template v-else>
+    <template class="modal" v-else>
         <Loader />
     </template>
 </template>
+
+<style scoped>
+</style>

@@ -26,34 +26,45 @@ const props = defineProps({
       </div>
     </div>
   </section>
-  <!-- <hr> -->
 </template>
 <style scoped>
 section {
-  height: 50px;
   display: flex;
   align-items: center;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 4;
+  background-color: white;
+  border-bottom: 1px solid black;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1)
 }
 
 .sectionHeader {
-  padding-top: 1rem;
-  width: 98%;
+  width: 100%;
   margin: auto;
-  border-bottom: 1px solid black;
-  margin-bottom: .2rem;
+  display: flex;
+  align-items: center;
 }
 
-.sectionHeader div:last-child h1{
+.sectionHeader div:last-child h1 {
+  width: 70%;
+  /* border: 1px solid green; */
+  margin-left: 0;
   text-align: center;
 }
+
 img {
-  width: 50%;
+  width: 60px;
+  height: 60px;
 }
-.title{
+
+.title {
   display: flex;
   align-items: center;
   margin: auto;
 }
+
 h1 {
   margin: auto;
   text-align: right;

@@ -107,8 +107,8 @@
 
 <template>
     <HeaderPage route="/home" title="Feed" />
-    <hr>
-    <section class="p-3">
+    <!-- <hr> -->
+    <section class="p-3 mt-5">
         <div class="row mb-3">
             <div class="col-2">
                 <Image :src="user.photoURL" class="rounded-circle foto-perfil" />

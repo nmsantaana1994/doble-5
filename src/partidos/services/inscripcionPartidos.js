@@ -5,7 +5,9 @@ import {
     where
   } from "@firebase/firestore";
   import { db } from "../../services/firebase";
-
+  import { notificationProvider } from "../../symbols/symbols";
+  import { inject } from "vue";
+  const { setFeedbackMessage, clearFeedbackMessage } = inject(notificationProvider);
 
 
 export async function getPartidoByNombre(nombre) {
@@ -22,6 +24,7 @@ export async function getPartidoByNombre(nombre) {
 
 export async function actualizarListaInscriptos(nombre, nuevaLista) {
   try {
+    clearFeedbackMessage();
     const partidosRef = collection(db, "partidos");
     const q = query(partidosRef, where("nombre", "==", nombre));
     const querySnapshot = await getDocs(q);
@@ -38,10 +41,13 @@ export async function actualizarListaInscriptos(nombre, nuevaLista) {
       onSnapshot(partidoRef, (docSnapshot) => {
         const updatedPartido = docSnapshot.data();
         console.log("Cambios detectados:", updatedPartido);
+        setFeedbackMessage({type:"success",message:"Usuario inscripto correctamente"})
         // Puedes actualizar la interfaz o realizar acciones adicionales aquí
       });
     });
   } catch (error) {
     console.error("Error al actualizar contador de inscriptos:", error);
+    setFeedbackMessage({type:"error",message:error})
+
   }
 }

@@ -1,10 +1,15 @@
 <script setup>
-import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { ref } from "vue";
+import { useAuth } from "../../composition/useAuth";
 import { inscribirPartido } from "../services/partidos";
+import { inject } from "vue";
+import { notificationProvider } from "../../symbols/symbols";
+
+
 const db = getFirestore();
-const auth = getAuth();
+const { user } = useAuth();
+const { setFeedbackMessage, clearFeedbackMessage } = inject(notificationProvider);
+
 const props = defineProps({
   partido: Object,
 });
@@ -12,14 +17,19 @@ const props = defineProps({
 
 async function inscribirseAlPartido(idPartido) {
   try {
+    clearFeedbackMessage()
     if (idPartido) {
-      await inscribirPartido(idPartido, auth.currentUser);
+      await inscribirPartido(idPartido, user);
+      setFeedbackMessage({type:'success',message:'usuario inscripto correctamente.'})
       console.log("Usuario inscrito correctamente.");
+
     } else {
       console.error("No se ha encontrado el partido para inscribirse.");
     }
   } catch (error) {
     console.error("Error al inscribirse al partido:", error);
+    setFeedbackMessage({type:'error',message:error})
+
   }
 }
 
