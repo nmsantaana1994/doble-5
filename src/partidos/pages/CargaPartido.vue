@@ -195,7 +195,6 @@ const minDate = computed(() => {
 function handleCanchaChange() {
   if (selectedCancha.value && selectedDia.value) {
     const horarios = Object.keys(selectedCancha.value.horarios || {});
-    debugger
     availableHorarios.value = horarios.map(horario => ({
       horario,
       disponible: checkDisponibilidad(selectedDia.value, horario, selectedCancha.value)
