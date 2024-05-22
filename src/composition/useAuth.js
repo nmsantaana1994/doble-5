@@ -6,7 +6,7 @@ export function useAuth() {
         id: null,
         email: null,
         displayName: null,
-        career: null,
+        // career: null,
         photoURL: null,
         nombre: null,
         apellido: null,
@@ -15,6 +15,8 @@ export function useAuth() {
         nivel: null,
         barrio: null,
         telefono: null,
+        followers: null,
+        following: null,
     });
     let unsubscribe = () => {}
 

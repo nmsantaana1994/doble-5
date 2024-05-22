@@ -1,0 +1,18 @@
+Carrera: Diseño y programacion web
+Cuatrimestre: 4to.
+Turno: Noche
+Comision: A
+Integrantes:
+
+-Nombre: Sol 
+-Apellido: Vallejos
+
+-Nombre: Nicolas
+-Apellido: Santa Ana
+
+-Nombre: Nicolas 
+-Apellido: Sartori
+
+Docente: Santiago Gallino
+
+Caracter de entrega: 2do parcial

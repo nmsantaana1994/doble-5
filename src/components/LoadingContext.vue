@@ -1,4 +1,6 @@
 <script setup>
+import Loader from "./Loader.vue";
+
 defineProps({
     loading: {
         type: Boolean,
@@ -8,11 +10,13 @@ defineProps({
 </script>
 
 <template>
-    <template v-if="!loading">
+    <template class="modal" v-if="!loading">
         <slot />
     </template>
-    <template v-else>
-        <!--TODO: Reemplazar con un loader-->
-        Cargando...
+    <template class="modal" v-else>
+        <Loader />
     </template>
 </template>
+
+<style scoped>
+</style>

@@ -1,23 +1,47 @@
 import { subscribeToAuth } from "../services/auth.js";
 import { createRouter, createWebHashHistory } from "vue-router";
 import Splash from "../views/Splash.vue";
-import Home from "../views/Home.vue";
-import Chat from "../views/Chat.vue";
-import Login from "../views/Login.vue";
-import Register from "../views/Register.vue";
-import MyProfile from "../views/MyProfile.vue";
-import UserProfile from "../views/UserProfile.vue";
-import PrivateChat from "../views/PrivateChat.vue";
+import Home from "../home/pages/Home.vue";
+import Chat from "../chat/pages/Chat.vue";
+import Login from "../login/pages/Login.vue";
+import Register from "../register/pages/Register.vue";
+import MyProfile from "../userProfile/pages/MyProfile.vue";
+import UserProfile from "../userProfile/pages/UserProfile.vue";
+import PrivateChat from "../chat/pages/PrivateChat.vue";
+import CargaPartido from "../partidos/pages/CargaPartido.vue";
+import MisPartidos from "../partidos/pages/MisPartidos.vue";
+import ListaChatsPrivados from "../chat/pages/ListaChatsPrivados.vue";
+import InfoPartidos from "../partidos/pages/InfoPartidos.vue";
+import Partidos from "../partidos/pages/Partidos.vue";
+import InscribirPartido from "../partidos/pages/InscribirPartido.vue";
+import Feed from "../feed/pages/Feed.vue";
+import Comments from "../views/Comments.vue";
+import Red from "../views/Red.vue";
+import Notificaciones from "../views/Notificaciones.vue";
+import Ajustes from "../views/Ajustes.vue";
+import Ayuda from "../views/Ayuda.vue";
 
 const routes = [
-    { path: "/",                    component: Splash,},
-    { path: "/iniciar-sesion",      component: Login,},
-    { path: "/registro",            component: Register,},
-    { path: "/home",                component: Home,        meta: { requiresAuth: true, }},
-    { path: "/chat",                component: Chat,        meta: { requiresAuth: true, }},
-    { path: "/perfil",              component: MyProfile,   meta: { requiresAuth: true, }},
-    { path: "/usuario/:id",         component: UserProfile, meta: { requiresAuth: true, }},
-    { path: "/usuario/:id/chat",    component: PrivateChat, meta: { requiresAuth: true, }},
+    { path: "/",                            component: Splash,},
+    { path: "/iniciar-sesion",              component: Login,},
+    { path: "/registro",                    component: Register,},
+    { path: "/home",                        component: Home,                meta: { requiresAuth: true, }},
+    { path: "/chat",                        component: Chat,                meta: { requiresAuth: true, }},
+    { path: "/partidos",                    component: Partidos,            meta: { requiresAuth: true, }},
+    { path: "/list-private-chats",          component: ListaChatsPrivados,  meta: { requiresAuth: true, }},
+    { path: "/perfil",                      component: MyProfile,           meta: { requiresAuth: true, }},
+    { path: "/usuario/:id",                 component: UserProfile,         meta: { requiresAuth: true, }},
+    { path: "/usuario/:id/chat",            component: PrivateChat,         meta: { requiresAuth: true, }},
+    { path: "/carga-partidos",              component: CargaPartido,        meta: { requiresAuth: true, }},
+    { path: "/mis-partidos",                component: MisPartidos,         meta: { requiresAuth: true, }},
+    { path: "/info-partido/:id",            component: InfoPartidos,        meta: { requiresAuth: true, }},
+    { path: "/inscription/:id",             component: InscribirPartido,    meta: { requiresAuth: true, }},
+    { path: "/feed",                        component: Feed,                meta: { requiresAuth: true, }},
+    { path: "/comments/:postId",            component: Comments,            meta: { requiresAuth: true, }},
+    { path: "/red",                         component: Red,                 meta: { requiresAuth: true, }},
+    { path: "/notificaciones",              component: Notificaciones,      meta: { requiresAuth: true, }},
+    { path: "/ajustes",                     component: Ajustes,             meta: { requiresAuth: true, }},
+    { path: "/ayuda",                       component: Ayuda,               meta: { requiresAuth: true, }},
 ]
 
 const router = createRouter ({

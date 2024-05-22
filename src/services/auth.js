@@ -8,7 +8,7 @@ let user = {
     id: null,
     email: null,
     displayName: null,
-    career: null,
+    // career: null,
     photoURL: null, 
     nombre: null,
     apellido: null,
@@ -18,6 +18,8 @@ let user = {
     barrio: null,
     telefono: null,
     terminos: false,
+    followers: [],
+    following: [],
 }
 
 if (localStorage.getItem("user")) {
@@ -38,6 +40,8 @@ onAuthStateChanged(auth, async newUser => {
             nivel: newUser.nivel,
             barrio: newUser.barrio,
             telefono: newUser.telefono,
+            followers: newUser.followers,
+            following: newUser.following
         });
 
         if (newUser.photoURL) {
@@ -50,7 +54,7 @@ onAuthStateChanged(auth, async newUser => {
         getUserById(newUser.uid)
             .then(userData => {
                 setUser({
-                    career: userData.career,
+                    // career: userData.career,
                     nombre: userData.nombre,
                     apellido: userData.apellido,
                     nacimiento: userData.nacimiento,
@@ -58,6 +62,8 @@ onAuthStateChanged(auth, async newUser => {
                     nivel: userData.nivel,
                     barrio: userData.barrio,
                     telefono: userData.telefono,
+                    followers: userData.followers,
+                    following: userData.following,
                 });
             });
     } else {
@@ -144,11 +150,11 @@ export function logout() {
  * 
  * @param {string} id 
  * @param {string} displayName 
- * @param {string} career
+ * //@param {string} career
  * @param {string|null} photoURL
  * @returns {Promise<Awaited<unknown>[]>}
  */
-export async function updateUserProfile(id, {displayName, career, photoURL}) {
+export async function updateUserProfile(id, {displayName, nombre, apellido, email, nacimiento, nivel, genero, barrio, telefono, photoURL}) {
     const promises = [];
     
     let photoPath = user.photoURL;
@@ -158,14 +164,21 @@ export async function updateUserProfile(id, {displayName, career, photoURL}) {
         promises.push(uploadFileUsingString(photoPath, photoURL));
     }
     
-    promises.push(updateProfile(auth.currentUser, {displayName, photoURL: photoPath}));
-    promises.push(updateUser(id, {displayName, career, photoURL: photoPath}));
+    promises.push(updateProfile(auth.currentUser, {displayName, nombre, apellido, email, nacimiento, nivel, genero, barrio, telefono, photoURL: photoPath}));
+    promises.push(updateUser(id, {displayName, nombre, apellido, email, nacimiento, nivel, genero, barrio, telefono, photoURL: photoPath}));
 
     return Promise.all(promises)
         .then(() => {
             setUser({
                 displayName,
-                career,
+                nombre,
+                apellido,
+                email,
+                nacimiento,
+                nivel,
+                genero,
+                barrio,
+                telefono,
                 photoURL: photoPath,
             });
 
@@ -191,7 +204,7 @@ function clearUser() {
         id: null,
         email: null,
         displayName: null,
-        career: null,
+        // career: null,
         nombre: null,
         apellido: null,
         nacimiento: null,
@@ -199,6 +212,8 @@ function clearUser() {
         nivel: null,
         barrio: null,
         telefono: null,
+        followers: [],
+        following: [],
     }
     localStorage.removeItem("user");
     notifyAll();

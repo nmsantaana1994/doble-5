@@ -15,5 +15,4 @@ export function dateToString(date) {
     }).format(date);
 
     return `${formatedDate} ${formatedTime}`;
-
 }
