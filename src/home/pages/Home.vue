@@ -46,18 +46,6 @@ function listenToChanges(partidoCollectionRef) {
 
 <template>
   <section class="p-3">
-    <div class="row align-items-center my-3">
-      <div class="col-8">
-        <h1 class="text-start h3">Home</h1>
-      </div>
-      <div class="col-4 d-flex justify-content-end">
-        <img
-          src="../../assets/img/lupa.png"
-          alt="Icono flechas dobles"
-          class="icono-h2"
-        />
-      </div>
-    </div>
     <div class="row mb-3">
       <div class="col-4">
         <Image :src="user.photoURL" class="rounded-circle foto-perfil" />

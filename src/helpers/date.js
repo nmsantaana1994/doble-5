@@ -16,3 +16,11 @@ export function dateToString(date) {
 
     return `${formatedDate} ${formatedTime}`;
 }
+
+export function convertirFecha(fecha) {
+    // Separar la fecha en año, mes y día
+    const [year, month, day] = fecha.split('-');
+  
+    // Devolver la fecha en el nuevo formato
+    return `${day}-${month}-${year}`;
+  }
