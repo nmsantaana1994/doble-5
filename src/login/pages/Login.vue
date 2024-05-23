@@ -5,10 +5,8 @@ import { login } from "../../services/auth.js";
 import { inject, ref } from "vue";
 import { useRouter } from "vue-router";
 import { notificationProvider } from "../../symbols/symbols.js";
-import useVuelidate from '@vuelidate/core';
-import { required, email, minLength } from '@vuelidate/validators';
-
-const { feedback, setFeedbackMessage, clearFeedbackMessage } = inject(notificationProvider);
+import Loading from "../../components/Loading.vue";
+const { setFeedbackMessage, clearFeedbackMessage } = inject(notificationProvider);
 
 const router = useRouter();
 
@@ -17,12 +15,7 @@ const fields = ref({
     password: "",
 });
 
-const rules = {
-    email: { required, email },
-    password: { required, minLength: minLength(8) },
-};
 
-const v$ = useVuelidate(rules, fields);
 
 const loading = ref(false);
 
@@ -30,22 +23,15 @@ async function handleSubmit() {
     loading.value = true;
     clearFeedbackMessage();
 
-    v$.value.$touch(); // Marca todos los campos como tocados para mostrar errores
-
-    if (v$.value.$invalid) {
-        loading.value = false;
-        return;
-    }
-
     try {
         await login({
             ...fields.value,
         });
 
-        setFeedbackMessage({
-            type: "success",
-            message: "¡Hola de nuevo! Te extrañamos.",
-        });
+        // setFeedbackMessage({
+        //     type: "success",
+        //     message: "¡Hola de nuevo! Te extrañamos.",
+        // });
 
         router.push('/home');
     } catch (err) {
@@ -59,24 +45,24 @@ async function handleSubmit() {
 }
 </script>
 <template>
+    <Loading :loading="loading"/>
     <section class="p-4">
-        <h1 class="my-2 text-center">Iniciar Sesión</h1>
+        <h1 class="my-2 text-center h4">Iniciar Sesión</h1>
 
         <div class="d-flex justify-content-center mb-5">
-            <img src="../../assets/img/logo-original.png" alt="Logo Doble-5" class="ancho-logo my-5" />
+            <img src="../../assets/img/logo-original.png" alt="Logo Doble-5" class="ancho-logo my-4" />
         </div>
 
         <div class="row mb-5">
             <form @submit.prevent="handleSubmit">
                 <div class="mb-4">
+                    <label for="email" style="margin-left: .3rem; font-weight:500; padding-bottom:.5rem;">Email</label>
                     <Input type="email" name="email" id="email" placeholder="E-mail" v-model="fields.email" />
-                    <span v-if="v$.email.$error" class="text-danger">Por favor, ingrese un Email válido.</span>
                 </div>
                 <div class="mb-4">
+                    <label for="password" style="margin-left: .3rem; font-weight:500; padding-bottom:.5rem;">Contraseña</label>
                     <Input type="password" name="password" id="password" placeholder="Contraseña" class="mb-4"
                         v-model="fields.password" />
-                    <span v-if="v$.password.$error" class="text-danger">La contraseña es obligatoria y debe tener al
-                        menos 8 caracteres.</span>
                 </div>
                 <Button :disabled="loading" class="fw-semibold text-white py-3 my-2">INICIAR SESIÓN</Button>
             </form>

@@ -5,8 +5,7 @@
     import Button from "../../components/Button.vue";
     import UserProfileData from "../components/UserProfileData.vue";
     import { obtenerSeguidores, obtenerSiguiendo } from '../../services/red.js';
-    import Loader from "../../components/Loader.vue";
-
+    import Loading from "../../components/Loading.vue";
     const {user} = useAuth();
     const editing = ref(false);
     const toggleEditing = () => editing.value = !editing.value;
@@ -34,6 +33,7 @@
 </script>
 
 <template>
+    <Loading :loading="loading"/>
     <section class="p-3 m-0">
         <div class="row">
             <div class="col-3 d-flex justify-content-center">

@@ -1,15 +1,21 @@
 <script setup>
-import { onMounted, provide, ref, watch } from "vue";
+import { onMounted, provide, ref, watch, defineAsyncComponent } from "vue";
 import Notification from "./components/Notification.vue";
 import { notificationProvider } from "./symbols/symbols.js";
 import Navbar from "./components/Navbar.vue";
 import { useAuth } from "./composition/useAuth.js";
+import SplashScreen from "./views/SplashScreen.vue";
 
 const { user } = useAuth();
 
 const flagNavbar = ref(false);
+const showSplashScreen = ref(true);
 
 onMounted(() => {
+     // Simula el tiempo de carga de la SplashScreen (por ejemplo, 3 segundos)
+  setTimeout(() => {
+    showSplashScreen.value = false;
+  }, 1500);
 })
 const feedback = ref({
     message: "",
@@ -54,12 +60,14 @@ provide(notificationProvider, {
 
 </script>
 <template>
-    <div class="layout">
+    <div class="layout poppins-regular">
         <header>
             <Notification :data="feedback" @close="clearFeedbackMessage" />
         </header>
         <main>
-            <router-view />
+            <!-- <SplashScreen/>
+            <router-view /> -->
+            <component :is="showSplashScreen ? SplashScreen : 'router-view'" />
         </main>
         <footer v-show="flagNavbar" style="padding-bottom: 53px;">
             <Navbar />

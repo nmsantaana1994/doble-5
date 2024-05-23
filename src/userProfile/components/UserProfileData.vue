@@ -2,8 +2,12 @@
     // import Image from "./../Image.vue";
     import Image from "../../components/Image.vue";
     import Loader from "../../components/Loader.vue";
+    import { onMounted } from "vue";
 
-    defineProps({
+    onMounted(() => {
+        console.log(props.thisUser)
+    })
+    const props = defineProps({
         user: {
             type: Object,
             required: true,
@@ -29,6 +33,9 @@
             default: true,
         },
         loading: {
+            type: Boolean,
+        },
+        thisUser: {
             type: Boolean,
         }
     })
