@@ -48,7 +48,7 @@ onMounted(async () => {
       </div>
       <div class="col-2">
         <router-link to="/partidos">
-          <img src="../assets/img/arrows-right.png" alt="Icono flechas dobles" class="icono-h2" />
+          <img src="../../assets/img/arrows-right.png" alt="Icono flechas dobles" class="icono-h2" />
         </router-link>
       </div>
     </div>
