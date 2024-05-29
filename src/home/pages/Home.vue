@@ -2,13 +2,10 @@
 import Image from "../../components/Image.vue";
 import { useAuth } from "../../composition/useAuth.js";
 import { getPartidos } from "../../partidos/services/partidos.js";
-import { ref, onUnmounted, onBeforeMount } from "vue";
+import { ref, onUnmounted, onBeforeMount, inject } from "vue";
 import { onSnapshot, getFirestore, collection } from "firebase/firestore";
 import CardPartido from "../../partidos/components/CardPartido.vue";
 
-const { user } = useHome();
-const db = getFirestore();
-const partidos = ref([]);
 
 function useHome() {
   const { user } = useAuth();
@@ -16,6 +13,10 @@ function useHome() {
     user,
   };
 }
+
+const { user } = useHome();
+const db = getFirestore();
+const partidos = ref([]);
 
 async function getPartidosFromService() {
   const partidos = await getPartidos();
@@ -141,7 +142,6 @@ function listenToChanges(partidoCollectionRef) {
     </template>
   </section>
 </template>
-
 <style scoped>
 .icono-h2 {
   width: 25px;
@@ -174,33 +174,4 @@ a {
 .icono-card {
   width: 55%;
 }
-
-/* .icono-card {
-  width: 55%;
-}
-
-a {
-  text-decoration: none;
-  color: black;
-}
-
-.card {
-  background-color: #e6e6e6;
-  border: 0;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
-}
-
-.card-body {
-  padding: 0;
-}
-
-.fondo-boton-card {
-  background-color: #5d880d;
-  width: 35%;
-}
-
-.fondo-boton-card-negro {
-  background-color: #000000;
-  width: 35%;
-} */
 </style>
