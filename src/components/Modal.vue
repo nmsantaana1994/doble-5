@@ -96,7 +96,8 @@ header{
         background-color: transparent;
         img{
             margin: 0;
-            width: 100%;
+            width: 20px;
+            height: 20px;
         }
     }
 }
