@@ -5,6 +5,7 @@ import { getPartidos } from "../services/partidos.js";
 import { ref, onMounted } from "vue";
 import CardPartido from "../components/CardPartido.vue";
 import HeaderPage from "../../components/HeaderPage.vue";
+import Section from '../../components/Section.vue'
 const { user } = useHome();
 
 function useHome() {
@@ -22,14 +23,11 @@ async function getPartidosFromService() {
 }
 
 const partidos = ref([]);
-// Mis Partidos
 
 const auth = getAuth();
 
-// Crea una referencia reactiva a `partidos`
 const Mispartidos = ref([]);
 
-// Observa los cambios de autenticación
 onAuthStateChanged(auth, (user) => {
     if (user) {
         const uid = user.uid;
@@ -66,11 +64,8 @@ onMounted(async () => {
 </script>
 
 <template>
-        <HeaderPage route="/home" title="Partidos" />
-    <section class="px-3 pb-3 mb-5">
-        <div class="row background-partido mb-3 m-auto p-4 rounded-bottom">
-            <h1 class="text-white text-center p-2">Partidos</h1>
-        </div>
+    <HeaderPage route="/home" title="Partidos" />
+    <Section>
         <div class="row mb-3">
             <ul class="nav nav-tabs mb-3" role="tablist">
                 <li class="nav-item" role="presentation">
@@ -113,7 +108,7 @@ onMounted(async () => {
                 </div>
             </div>
         </div>
-    </section>
+    </Section>
 </template>
 
 <style scoped>
@@ -178,5 +173,11 @@ a {
 .fondo-boton-card-negro {
     background-color: #000000;
     width: 35%;
+}
+.filtro{
+    background-color: red;
+    width: 30%;
+    margin: auto;
+    text-align: right;
 }
 </style>

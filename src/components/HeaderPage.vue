@@ -17,7 +17,7 @@ const props = defineProps({
     <div class="row sectionHeader">
       <div class="col-3">
         <router-link :to="props.route">
-          <img src="../assets/img/flecha-izquierda.png" />
+          <img src="../assets/img/flecha-izquierda-blanca.png" />
           <i class="fi fi-sr-angle-left"></i>
         </router-link>
       </div>
@@ -35,9 +35,15 @@ section {
   top: 0;
   width: 100%;
   z-index: 4;
-  background-color: white;
-  border-bottom: 1px solid black;
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1)
+  /* background-color: var(--primary-color); */
+  background-image:url('../assets/img/background-partidos.png');
+  background-repeat: none;
+  background-size: cover;
+  height: 75px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+  color: white;
 }
 
 .sectionHeader {

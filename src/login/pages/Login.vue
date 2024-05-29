@@ -46,20 +46,18 @@ async function handleSubmit() {
 </script>
 <template>
     <Loading :loading="loading"/>
-    <section class="p-4">
-        <h1 class="my-2 text-center h4">Iniciar Sesión</h1>
-
-        <div class="d-flex justify-content-center mb-5">
+    <section class="p-3">
+        <div class="d-flex justify-content-center mb-4">
             <img src="../../assets/img/logo-original.png" alt="Logo Doble-5" class="ancho-logo my-4" />
         </div>
 
-        <div class="row mb-5">
+        <div class="row mb-3">
             <form @submit.prevent="handleSubmit">
                 <div class="mb-4">
                     <label for="email" style="margin-left: .3rem; font-weight:500; padding-bottom:.5rem;">Email</label>
                     <Input type="email" name="email" id="email" placeholder="E-mail" v-model="fields.email" />
                 </div>
-                <div class="mb-4">
+                <div class="mb-2">
                     <label for="password" style="margin-left: .3rem; font-weight:500; padding-bottom:.5rem;">Contraseña</label>
                     <Input type="password" name="password" id="password" placeholder="Contraseña" class="mb-4"
                         v-model="fields.password" />
@@ -69,10 +67,10 @@ async function handleSubmit() {
         </div>
 
         <div class="row">
-            <div class="col-12 text-center mb-4">
+            <div class="col-12 text-center mb-2">
                 <a href="" class="fw-semibold">¿Olvidaste tu contraseña?</a>
             </div>
-            <div class="col-12 mt-4 d-flex justify-content-center">
+            <div class="col-12 mt-3 d-flex justify-content-center">
                 <router-link to="/registro">
                     <Button class="fw-semibold text-white py-3 px-5 register-button">CREA UNA CUENTA</Button>
                 </router-link>
@@ -83,7 +81,7 @@ async function handleSubmit() {
 
 <style scoped>
 img {
-    width: 80%;
+    width: 70%;
 }
 
 form {

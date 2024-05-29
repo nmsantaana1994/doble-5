@@ -58,61 +58,6 @@ onMounted(async () => {
           :key="partido.id"
           :partido="partido"
         />
-      <!-- <div class="row px-3">
-        <div class="card p-3" v-for="partido in partidos" :key="partido.id">
-          <div class="card-body">
-            <div class="row mb-3">
-              <div class="col-10">
-                <p class="card-title h3 text-start">{{ partido.nombre }}</p>
-              </div>
-              <div class="col-2 d-flex justify-content-end">
-                <img
-                  src="../assets/img/arrows-right.png"
-                  alt="Icono flechas dobles"
-                  class="icono-h2"
-                />
-              </div>
-            </div>
-            <div class="row mb-3">
-              <div class="col-2 d-flex justify-content-start">
-                <img
-                  src="../assets/img/reloj.png"
-                  alt="Icono flechas dobles"
-                  class="icono-h2"
-                />
-              </div>
-              <div class="col-10 d-flex align-items-end">
-                <p class="card-subtitle h6 text-body-secondary text-start">
-                  {{ partido.fecha }} {{ partido.hora }}
-                </p>
-              </div>
-            </div>
-            <div class="row mb-3">
-              <div class="col-2 d-flex justify-content-start">
-                <img
-                  src="../assets/img/alfiler.png"
-                  alt="Icono flechas dobles"
-                  class="icono-h2"
-                />
-              </div>
-              <div class="col-10 d-flex align-items-end">
-                <p class="card-subtitle h6 text-body-secondary text-start">
-                  {{ partido.complejo }}
-                </p>
-              </div>
-            </div>
-
-            <div class="row justify-content-around">
-              <div class="col-6 fondo-boton-card-negro rounded">
-                <a href="#" class="text-white">Ver más</a>
-              </div>
-              <div class="col-6 fondo-boton-card rounded">
-                <router-link :to="`/inscription/${partido.nombre}`" class="text-white">Inscribirme</router-link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
     </template>
 
     <template v-else>
