@@ -76,42 +76,50 @@ const formSubmitted = ref(false);
     </section>
     <form @submit.prevent="handleSubmit">
       <div class="mb-3">
-        <Input :class="v$.nombre.$error ? 'inputError' : ''" type="text" name="nombre" id="nombre" placeholder="Nombre" v-model="fields.nombre"
-          @blur="v$.nombre.$touch()" />
+        <label for="nombre">Nombre:</label>
+        <Input :class="v$.nombre.$error ? 'inputError' : ''" type="text" name="nombre" id="nombre" placeholder="Nombre"
+          v-model="fields.nombre" @blur="v$.nombre.$touch()" />
         <span v-if="v$.nombre.$error" class="text-danger">Por favor, ingrese un nombre.</span>
       </div>
       <div class="mb-3">
-        <Input :class="v$.apellido.$error ? 'inputError' : ''" type="text" name="apellido" id="apellido" placeholder="Apellido" v-model="fields.apellido"
-          @blur="v$.apellido.$touch()" />
+        <label for="apellido">Apellido:</label>
+        <Input :class="v$.apellido.$error ? 'inputError' : ''" type="text" name="apellido" id="apellido"
+          placeholder="Apellido" v-model="fields.apellido" @blur="v$.apellido.$touch()" />
         <span v-if="v$.apellido.$error" class="text-danger">Por favor, ingrese un apellido.</span>
       </div>
       <div class="mb-3">
-        <Input :class="v$.email.$error ? '' : ''" type="email" name="email" id="email" placeholder="E-mail" v-model="fields.email"
-          @blur="v$.email.$touch()" />
+        <label for="email">Email:</label>
+        <Input :class="v$.email.$error ? '' : ''" type="email" name="email" id="email" placeholder="E-mail"
+          v-model="fields.email" @blur="v$.email.$touch()" />
         <span v-if="v$.email.$error" class="text-danger">Por favor, ingrese un correo electrónico válido.</span>
       </div>
       <div class="mb-3">
-        <Input :class="v$.password.$error ? '' : ''" type="password" name="password" id="password" placeholder="Contraseña" v-model="fields.password"
-          @blur="v$.password.$touch()" />
+        <label for="password">Contraseña:</label>
+        <Input :class="v$.password.$error ? '' : ''" type="password" name="password" id="password"
+          placeholder="Contraseña" v-model="fields.password" @blur="v$.password.$touch()" />
         <span v-if="v$.password.$error" class="text-danger">La contraseña es obligatoria y debe tener al menos 8
           caracteres.</span>
       </div>
       <div class="mb-3">
-        <Input :class="v$.nacimiento.$error ? '' : ''" type="date" name="nacimiento" id="nacimiento" placeholder="Nacimiento" v-model="fields.nacimiento"
-          @blur="v$.nacimiento.$touch()" />
+        <label for="nacimiento">Fecha de nacimiento:</label>
+        <Input :class="v$.nacimiento.$error ? '' : ''" type="date" name="nacimiento" id="nacimiento"
+          placeholder="Nacimiento" v-model="fields.nacimiento" @blur="v$.nacimiento.$touch()" />
         <span v-if="v$.nacimiento.$error" class="text-danger">Por favor, ingrese una fecha de nacimiento.</span>
       </div>
       <div class="mb-3">
-        <select name="genero" id="genero" v-model="fields.genero" @blur="v$.genero.$touch()" :class="v$.genero.$error ? '' : ''" >
+        <label for="genero">Genero:</label>
+        <select name="genero" id="genero" v-model="fields.genero" @blur="v$.genero.$touch()"
+          :class="v$.genero.$error ? '' : ''">
           <option value="" disabled>Género</option>
           <option value="Masculino">Masculino</option>
           <option value="Femenino">Femenino</option>
-          <option value="Prefiero no decir">Prefiero no decir</option>
         </select>
         <span v-if="v$.genero.$error" class="text-danger">Por favor, seleccione una opción.</span>
       </div>
       <div class="mb-3">
-        <select name="nivel" id="nivel" v-model="fields.nivel" @blur="v$.nivel.$touch()" :class="v$.nivel.$error ? '' : ''" >
+        <label for="nivel">Nivel:</label>
+        <select name="nivel" id="nivel" v-model="fields.nivel" @blur="v$.nivel.$touch()"
+          :class="v$.nivel.$error ? '' : ''">
           <option value="" disabled>Nivel de juego</option>
           <option value="Alto">Alto</option>
           <option value="Medio">Medio</option>
@@ -120,11 +128,12 @@ const formSubmitted = ref(false);
         <span v-if="v$.nivel.$error" class="text-danger">Por favor, seleccione un nivel.</span>
       </div>
       <div class="mb-3">
-        <select name="barrio" id="barrio" v-model="fields.barrio" @blur="v$.barrio.$touch()" :class="v$.barrio.$error ? '' : ''" >
-          <option value="" disabled>Barrio</option>
+        <label for="barrio">Barrio:</label>
+        <select name="barrio" id="barrio" v-model="fields.barrio" @blur="v$.barrio.$touch()"
+          :class="v$.barrio.$error ? '' : ''">
           <option value="" disabled>Barrio</option>
           <option value="Agronomia">Agronomia</option>
-          <option value="Alamgro">Alamgro</option>
+          <option value="Almagro">Almagro</option>
           <option value="Balvanera">Balvanera</option>
           <option value="Barracas">Barracas</option>
           <option value="Belgrano">Belgrano</option>
@@ -174,8 +183,9 @@ const formSubmitted = ref(false);
         <span v-if="v$.barrio.$error" class="text-danger">Por favor, seleccione un barrio.</span>
       </div>
       <div class="mb-3">
-        <Input :class="v$.telefono.$error ? '' : ''" type="text" name="telefono" id="telefono" placeholder="Teléfono" v-model="fields.telefono"
-          @blur="v$.telefono.$touch()" />
+        <label for="telefono">Telefono:</label>
+        <Input :class="v$.telefono.$error ? '' : ''" type="text" name="telefono" id="telefono" placeholder="Teléfono"
+          v-model="fields.telefono" @blur="v$.telefono.$touch()" />
         <span v-if="v$.telefono.$error" class="text-danger">Por favor, ingrese un número de teléfono.</span>
       </div>
       <div class="mb-3 row d-flex align-items-center">
@@ -198,10 +208,11 @@ img {
   width: 80%;
 }
 
-.inputError{
+.inputError {
   border: 1px solid red;
   /* background-color: green; */
 }
+
 form {
   display: flex;
   flex-direction: column;
@@ -218,6 +229,10 @@ select {
   padding: .5rem;
   border: .2px solid rgb(203, 203, 203);
   border-radius: 20px;
+}
+label{
+  font-weight: 500;
+  padding: 0 0 .3rem .2rem;
 }
 
 form button {

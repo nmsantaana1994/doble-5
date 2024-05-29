@@ -1,56 +1,24 @@
 <script setup>
-import { onMounted, provide, ref, watch, defineAsyncComponent } from "vue";
-import Notification from "./components/Notification.vue";
-import { notificationProvider } from "./symbols/symbols.js";
-import Navbar from "./components/Navbar.vue";
+import { onMounted, provide, ref, watch } from "vue";
 import { useAuth } from "./composition/useAuth.js";
-import SplashScreen from "./views/SplashScreen.vue";
+import { useNotification } from "./composition/useNotification.js";
+import { useModal } from "./composition/useModal.js";
+import Notification from "./components/Notification.vue";
+import Navbar from "./components/Navbar.vue";
+import Modal from "./components/Modal.vue";
+import { modalProvider, notificationProvider } from "./symbols/symbols.js";
 
 const { user } = useAuth();
+const { feedback, setFeedbackMessage, clearFeedbackMessage } = useNotification();
+const { modalData, showModal, handleModalClose, handleModalCloseX, handleModalSave } = useModal();
 
 const flagNavbar = ref(false);
-const showSplashScreen = ref(true);
 
 onMounted(() => {
-     // Simula el tiempo de carga de la SplashScreen (por ejemplo, 3 segundos)
-  setTimeout(() => {
-    showSplashScreen.value = false;
-  }, 1500);
-})
-const feedback = ref({
-    message: "",
-    type: "",
-    title: "",
-    closable: true,
+    watch(user, (newVal) => {
+        flagNavbar.value = newVal?.id != null;
+    });
 });
-
-watch(user, (newVal, oldVal) => {
-  if (newVal?.id != null) {
-    flagNavbar.value = true;
-  }else{
-    flagNavbar.value = false;
-  }
-});
-function setFeedbackMessage({ message, type = "success", title = "" }) {
-    feedback.value = {
-        ...feedback.value,
-        message,
-        type,
-        title,
-    }
-    setTimeout(() => {
-        clearFeedbackMessage()
-    }, 5000);
-}
-
-function clearFeedbackMessage() {
-    feedback.value = {
-        ...feedback.value,
-        message: "",
-        type: "",
-        title: "",
-    }
-}
 
 provide(notificationProvider, {
     feedback,
@@ -58,22 +26,36 @@ provide(notificationProvider, {
     clearFeedbackMessage,
 });
 
+provide(modalProvider, {
+    modalData,
+    showModal,
+});
 </script>
+
 <template>
     <div class="layout poppins-regular">
         <header>
             <Notification :data="feedback" @close="clearFeedbackMessage" />
+            <Modal 
+                v-if="modalData.isVisible" 
+                :title="modalData.title" 
+                :bodyText="modalData.bodyText" 
+                :closeButtonText="modalData.closeButtonText" 
+                :saveButtonText="modalData.saveButtonText"
+                @close="handleModalClose" 
+                @closex="handleModalCloseX"
+                @save="handleModalSave" 
+            />
         </header>
         <main>
-            <!-- <SplashScreen/>
-            <router-view /> -->
-            <component :is="showSplashScreen ? SplashScreen : 'router-view'" />
+            <router-view />
         </main>
         <footer v-show="flagNavbar" style="padding-bottom: 53px;">
             <Navbar />
         </footer>
     </div>
 </template>
+
 <style scoped>
 .layout {
     display: flex;

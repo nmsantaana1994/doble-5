@@ -79,7 +79,7 @@ function estaInscripto() {
 <template class="main">
     <Loading :loading="loading" />
       <HeaderPage title="Informacion" route="/home"></HeaderPage>
-      <section class="row p-1" style="margin: 60px 0 50px 0;">
+      <section class="row p-1" style="margin: 75px 0 50px 0;">
         <div class="col-12 fotoCancha mb-3">
           <img src="../../assets/img/cancha.jpg">
         </div>
