@@ -91,7 +91,8 @@ header{
     }
     button{
         padding: 0;
-        width: 10%;
+        width: 20px;
+        height: 20px;
         border: none;
         background-color: transparent;
         img{
