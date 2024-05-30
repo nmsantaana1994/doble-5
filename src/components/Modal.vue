@@ -76,7 +76,6 @@ const handleSave = () => {
     padding: 20px;
     border-radius: 10px;
     width: 70%;
-    /* height: 50%; */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     display: grid;
     grid-template-rows: 50px 1fr 50px;
@@ -91,14 +90,14 @@ header{
     }
     button{
         padding: 0;
-        width: 20px;
-        height: 20px;
+        width: 1.5rem;
+        height: 1.5rem;
         border: none;
         background-color: transparent;
         img{
             margin: 0;
-            width: 20px;
-            height: 20px;
+            width: 1.5rem;
+            height: 1.5rem;
         }
     }
 }
