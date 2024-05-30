@@ -9,7 +9,10 @@ import Textarea from "../../components/Textarea.vue";
 import { useAuth } from "../../composition/useAuth.js";
 import {onUnmounted, ref, watch} from "vue";
 import {sendPrivateMessage, subscribeToPrivateChat} from "../services/private-chats.js";
-
+import HeaderChat from "../components/HeaderChat.vue";
+import Section from "../../components/Section.vue";
+import Loading from "../../components/Loading.vue";
+import cardMessage from "../components/cardMessage.vue";
 const route = useRoute();
 const {user: otherUser, loading} = useUser(route.params.id);
 const {user: authUser} = useAuth();
@@ -76,77 +79,59 @@ function usePrivateChatForm(authUser, otherUser) {
     }
 }
 
-</script>
+</script> 
 
 <template>
-    <section class="px-3">
-        <LoadingContext :loading="loading">
-            <h1 class="mb-3">Chat privado con {{ otherUser.displayName ? otherUser.displayName : otherUser.nombre }}</h1>
-    
-            <div class="mb-3">
-                <LoadingContext :loading="loadingMessages">
-                <ul>
-                    <li
-                        v-for="message in messages"
-                        class="mb-3"
-                        :class="{
-                            'text-end': message.userId == authUser.id
-                        }"
-                    >
-                        <b>
-
-                            <!-- TODO: Ver bien la logica para mostrar el nombre correcto de quien envia los mensajes -->
-                            <template v-if="message.userId !== otherUser">
-                                <!-- {{ authUser.displayName }} -->
-                                {{ otherUser.displayName ? otherUser.displayName : otherUser.nombre }}
-                            </template>
-                            <template v-else>
-                                {{ authUser.displayName ? authUser.displayName : authUser.nombre }}
-                            </template>
-                           
-                            dijo:
-                        </b>
-                        {{ message.message }}
-                        <div
-                            v-if="message.created_at"
-                            class="font-date"
-                        >{{ dateToString(message.created_at) }}</div>
-                    </li>
-                </ul>
-                </LoadingContext>
-            </div>
-            <div class="mb-3">
-                <form
-                    action="#"
-                    method="POST"
-                    id="form-message"
-                    @submit.prevent="handleSubmit"
-                >
-                    <div class="mb-3">
-                        <Label for="message">Mensaje</Label>
-                        <Textarea
-                        id="message"
-                        v-model="fields.message"
-                        ></Textarea>
-                    </div>
-                    <Button class="btn btn-primary w-100" />
-                </form>
-                <div 
-                    v-if="formLoading"  
-                    class="mb-3"
-                > Enviando mensaje...</div>
-            </div>
-        </LoadingContext>
-    </section>
-</template>
+    <HeaderChat :otherUser="otherUser" />
+    <Section>
+      <Loading :loading="loading" />
+  
+      <div class="mb-3">
+          <ul>
+            <li v-for="message in messages" :key="message.id" class="mb-3" :class="{
+                          'text-end': message.userId == authUser.id}">
+              <cardMessage
+                :message="message"
+                :userName="message.userId === authUser.id ? authUser.displayName || authUser.nombre : otherUser.displayName || otherUser.nombre"
+                :messageClass="message.userId === authUser.id ? 'message-sent' : 'message-received'"
+              />
+            </li>
+          </ul>
+      </div>
+      <div class="mb-3">
+        <form action="#" method="POST" id="form-message" @submit.prevent="handleSubmit">
+          <div class="mb-3">
+            <Label for="message">Mensaje</Label>
+            <Textarea id="message" v-model="fields.message"></Textarea>
+          </div>
+          <Button class="btn btn-primary w-100" :disabled="!fields.message" :class="!fields.message ? 'button_disabled' : ''"/>
+        </form>
+        <div v-if="formLoading" class="mb-3"> Enviando mensaje...</div>
+      </div>
+    </Section>
+  </template>
 
 <style scoped>
-    ul {
-        list-style: none;
-        padding: 0;
-    }
+ul {
+  list-style: none;
+  padding: 0;
+}
 
-    .font-date {
-        font-size: 0.7rem;
-    }
-</style>
+.font-date {
+  font-size: 0.7rem;
+}
+
+.title_chat {
+  position: fixed;
+  width: 100%;
+}
+textarea{
+  width: 100%;
+}
+form button{
+  background-color: var(--primary-color);
+}
+.button_disabled{
+  background-color: grey;
+}
+</style> 
