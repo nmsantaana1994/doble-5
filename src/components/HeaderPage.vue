@@ -36,7 +36,7 @@ section {
   width: 100%;
   z-index: 4;
   background-color: var(--primary-color);
-  /* background-image:url('../assets/img/background-partidos.png'); */
+  background-image:url('../assets/img/background-partidos.png');
   background-repeat: none;
   background-size: cover;
   height: 75px;
