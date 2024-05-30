@@ -18,10 +18,24 @@ const getUserDisplayName = (users) => {
     const otherUserId = Object.keys(users).find(id => id !== userAuth.value);
     return otherUserId ? users[otherUserId].displayName || users[otherUserId].nombre : '';
 };
+// const getLastMessage = (messages) => {
+//     if (!messages || messages.length === 0) return "No messages yet";
+//     return messages[messages.length - 1].message;
+// };
+
 const getLastMessage = (messages) => {
     if (!messages || messages.length === 0) return "No messages yet";
-    return messages[messages.length - 1].message;
+    
+    // Ordenar los mensajes por fecha ascendente
+    const sortedMessages = messages.sort((a, b) => {
+        const dateA = new Date(a.created_at.seconds * 1000 + a.created_at.nanoseconds / 1000000);
+        const dateB = new Date(b.created_at.seconds * 1000 + b.created_at.nanoseconds / 1000000);
+        return dateA - dateB;
+    });
+    
+    return sortedMessages[sortedMessages.length - 1].message;
 };
+
 const getLastMessageTime = (messages) => {
     if (!messages || messages.length === 0) return "";
     const createdAt = messages[messages.length - 1].created_at;
