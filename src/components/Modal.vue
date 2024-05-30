@@ -40,7 +40,7 @@ const handleSave = () => {
         <div class="modals" @click.stop>
             <header>
                 <h3>{{ title }}</h3>
-                <button @click="handleCloseX()"><img src="../assets/img/close-icon.png" alt="close icon"></button>
+                <button @click="handleCloseX()"><img src="../assets/img/circulo-cruzado.png" alt="close icon"></button>
             </header>
             <main>
                 <p>{{ bodyText }}</p>
@@ -92,7 +92,7 @@ header {
         margin: 0;
     }
 
-    button {
+        button {
         padding: 0;
         width: 20px;
         height: 20px;
@@ -110,6 +110,7 @@ header {
         height: 1.5rem;
     }
 }
+
 
 footer {
     display: flex;
