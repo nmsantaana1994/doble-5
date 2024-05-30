@@ -1,7 +1,6 @@
 <script setup>
 import { useRoute } from "vue-router";
 import { useUser } from "../../composition/useUser.js";
-import LoadingContext from "../../components/LoadingContext.vue"
 import { dateToString } from "../../helpers/date.js";
 import Button from "../../components/Button.vue";
 import Label from "../../components/Label.vue";
