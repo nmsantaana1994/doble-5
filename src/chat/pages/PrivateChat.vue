@@ -1,4 +1,4 @@
-<!-- <script setup>
+<script setup>
 import { useRoute } from "vue-router";
 import { useUser } from "../../composition/useUser.js";
 import LoadingContext from "../../components/LoadingContext.vue"
@@ -76,9 +76,9 @@ function usePrivateChatForm(authUser, otherUser) {
     }
 }
 
-</script> -->
+</script> 
 
-<!-- <template>
+<template>
     <section class="px-3">
         <LoadingContext :loading="loading">
             <h1 class="mb-3">Chat privado con {{ otherUser.displayName ? otherUser.displayName : otherUser.nombre }}</h1>
@@ -93,12 +93,12 @@ function usePrivateChatForm(authUser, otherUser) {
                             'text-end': message.userId == authUser.id
                         }"
                     >
-                        <b> -->
+                        <b>
 
                             <!-- TODO: Ver bien la logica para mostrar el nombre correcto de quien envia los mensajes -->
-                            <!-- <template v-if="message.userId !== otherUser"> -->
+                            <template v-if="message.userId !== otherUser">
                                 <!-- {{ authUser.displayName }} -->
-                                <!-- {{ otherUser.displayName ? otherUser.displayName : otherUser.nombre }}
+                                 {{ otherUser.displayName ? otherUser.displayName : otherUser.nombre }}
                             </template>
                             <template v-else>
                                 {{ authUser.displayName ? authUser.displayName : authUser.nombre }}
@@ -149,8 +149,8 @@ function usePrivateChatForm(authUser, otherUser) {
     .font-date {
         font-size: 0.7rem;
     }
-</style> -->
-
+</style>
+<!-- 
 <script setup>
 import { useRoute } from "vue-router";
 import { useUser } from "../../composition/useUser.js";
@@ -284,4 +284,4 @@ form button{
 .button_disabled{
   background-color: grey;
 }
-</style>
+</style> -->
