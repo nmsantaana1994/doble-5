@@ -40,8 +40,8 @@ const handleSave = () => {
         <div class="modals" @click.stop>
             <header>
                 <h3 class="title">{{ title }}</h3>
-                <button class="botonCerrar" @click="handleCloseX()"><img src="../assets/img/circulo-cruzado.png"
-                        alt="close icon"></button>
+                <!-- <button class="botonCerrar" @click="handleCloseX()"><img src="../assets/img/circulo-cruzado.png" -->
+                        <!-- alt="close icon"></button> -->
             </header>
             <main>
                 <p>{{ bodyText }}</p>
