@@ -113,7 +113,7 @@ onMounted(async () => {
 
 <style scoped>
 .background-partido {
-    background-image: url("../assets/img/background-partidos.png");
+    /* background-image: url("../assets/img/background-partidos.png"); */
     width: 100%;
     background-size: cover;
     height: 15vh;

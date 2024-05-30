@@ -235,7 +235,7 @@ label{
   padding: 0 0 .3rem .2rem;
 }
 
-form button {
+form Button {
   border-radius: 18px;
   height: 150%;
   background-color: #73a812;
