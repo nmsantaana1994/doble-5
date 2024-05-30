@@ -40,7 +40,8 @@ const handleSave = () => {
         <div class="modals" @click.stop>
             <header>
                 <h3 class="title">{{ title }}</h3>
-                <button @click="handleCloseX()"><img src="../assets/img/circulo-cruzado.png" alt="close icon"></button>
+                <button class="botonCerrar" @click="handleCloseX()"><img src="../assets/img/circulo-cruzado.png"
+                        alt="close icon"></button>
             </header>
             <main>
                 <p>{{ bodyText }}</p>
@@ -86,24 +87,25 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
 
-    .title {
-        margin: 0;
-    }
+.title {
+    margin: 0;
+}
 
-    button {
-        padding: 0;
-        width: 1.5rem;
-        height: 1.5rem;
-        border: none;
-        background-color: transparent;
+.botonCerrar {
+    padding: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: none;
+    background-color: transparent;
 
-        img {
-            margin: 0;
-            width: 1.5rem;
-            height: 1.5rem;
-        }
-    }
+}
+
+.botonCerrar img {
+    margin: 0;
+    width: 1.5rem;
+    height: 1.5rem;
 }
 
 footer {
