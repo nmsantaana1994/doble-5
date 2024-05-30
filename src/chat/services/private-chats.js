@@ -12,7 +12,7 @@ import {
     orderBy,
     onSnapshot
 } from "firebase/firestore";
-
+import { getUserById } from "../../services/users.js";
 const cache = {};
 
 /**
@@ -111,10 +111,13 @@ export async function searchPrivateChat(user1, user2) {
  * @returns {Promise<DocumentReference<{users: {} | {[p: number]: boolean}}>>}
  */
 async function createPrivateChat(user1, user2) {
+    const user1Data = await getUserById(user1);
+    const user2Data = await getUserById(user2);
+
     return await addDoc(collection(db, "private-chats"), {
         users: {
-            [user1]: true,
-            [user2]: true,
+            [user1]: user1Data,
+            [user2]: user2Data,
         }
     });
 }
@@ -125,10 +128,27 @@ async function createPrivateChat(user1, user2) {
  * @return {string}
  */
 function getCacheKey(from, to) {
-    return from < to ?
-         from + to :
-         to + from
+    return from < to ? from + to : to + from;
 }
+// async function createPrivateChat(user1, user2) {
+//     return await addDoc(collection(db, "private-chats"), {
+//         users: {
+//             [user1]: true,
+//             [user2]: true,
+//         }
+//     });
+// }
+
+// /**
+//  * @param {string} from
+//  * @param {string} to
+//  * @return {string}
+//  */
+// function getCacheKey(from, to) {
+//     return from < to ?
+//          from + to :
+//          to + from
+// }
 
 /**
  * @param {string} from

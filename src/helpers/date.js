@@ -16,7 +16,18 @@ export function dateToString(date) {
 
     return `${formatedDate} ${formatedTime}`;
 }
+// export function dateToString(date) {
+//     if (!date || isNaN(date)) return "xxxx-xx-xx xx:xx:xx";
 
+//     const formatedDate = new Intl.DateTimeFormat('es-AR', {
+//         day: "2-digit", month: "2-digit", year: "numeric",
+//     }).format(date);
+//     const formatedTime = new Intl.DateTimeFormat('es-AR', {
+//         hour: "2-digit", minute: "2-digit", second: "2-digit"
+//     }).format(date);
+
+//     return `${formatedDate} ${formatedTime}`;
+// }
 export function convertirFecha(fecha) {
     // Separar la fecha en año, mes y día
     const [year, month, day] = fecha.split('-');
