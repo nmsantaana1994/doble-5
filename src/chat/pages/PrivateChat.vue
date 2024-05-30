@@ -79,6 +79,36 @@ function usePrivateChatForm(authUser, otherUser) {
 </script> 
 
 <template>
+    <HeaderChat :otherUser="otherUser" />
+    <Section>
+      <Loading :loading="loading" />
+  
+      <div class="mb-3">
+          <ul>
+            <li v-for="message in messages" :key="message.id" class="mb-3" :class="{
+                          'text-end': message.userId == authUser.id}">
+              <CardMessage
+                :message="message"
+                :userName="message.userId === authUser.id ? authUser.displayName || authUser.nombre : otherUser.displayName || otherUser.nombre"
+                :messageClass="message.userId === authUser.id ? 'message-sent' : 'message-received'"
+              />
+            </li>
+          </ul>
+      </div>
+      <div class="mb-3">
+        <form action="#" method="POST" id="form-message" @submit.prevent="handleSubmit">
+          <div class="mb-3">
+            <Label for="message">Mensaje</Label>
+            <Textarea id="message" v-model="fields.message"></Textarea>
+          </div>
+          <Button class="btn btn-primary w-100" :disabled="!fields.message" :class="!fields.message ? 'button_disabled' : ''"/>
+        </form>
+        <div v-if="formLoading" class="mb-3"> Enviando mensaje...</div>
+      </div>
+    </Section>
+  </template>
+
+<!-- <template>
     <section class="px-3">
         <LoadingContext :loading="loading">
             <h1 class="mb-3">Chat privado con {{ otherUser.displayName ? otherUser.displayName : otherUser.nombre }}</h1>
@@ -95,9 +125,7 @@ function usePrivateChatForm(authUser, otherUser) {
                     >
                         <b>
 
-                            <!-- TODO: Ver bien la logica para mostrar el nombre correcto de quien envia los mensajes -->
                             <template v-if="message.userId !== otherUser">
-                                <!-- {{ authUser.displayName }} -->
                                  {{ otherUser.displayName ? otherUser.displayName : otherUser.nombre }}
                             </template>
                             <template v-else>
@@ -138,7 +166,7 @@ function usePrivateChatForm(authUser, otherUser) {
             </div>
         </LoadingContext>
     </section>
-</template>
+</template> -->
 
 <style scoped>
     ul {
