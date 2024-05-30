@@ -108,6 +108,31 @@ function usePrivateChatForm(authUser, otherUser) {
     </Section>
   </template>
 
+<style scoped>
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.font-date {
+  font-size: 0.7rem;
+}
+
+.title_chat {
+  position: fixed;
+  width: 100%;
+}
+textarea{
+  width: 100%;
+}
+form button{
+  background-color: var(--primary-color);
+}
+.button_disabled{
+  background-color: grey;
+}
+</style> 
+
 <!-- <template>
     <section class="px-3">
         <LoadingContext :loading="loading">
@@ -168,7 +193,7 @@ function usePrivateChatForm(authUser, otherUser) {
     </section>
 </template> -->
 
-<style scoped>
+<!-- <style scoped>
     ul {
         list-style: none;
         padding: 0;
@@ -177,7 +202,7 @@ function usePrivateChatForm(authUser, otherUser) {
     .font-date {
         font-size: 0.7rem;
     }
-</style>
+</style> -->
 <!-- 
 <script setup>
 import { useRoute } from "vue-router";
