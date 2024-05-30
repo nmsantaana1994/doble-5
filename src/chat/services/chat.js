@@ -4,8 +4,8 @@
 */
 
 import {db} from "../../services/firebase";
-import { addDoc, collection, serverTimestamp, query, orderBy, onSnapshot } from "firebase/firestore";
-
+import { addDoc, collection, serverTimestamp, query, orderBy, onSnapshot, where, getDocs } from "firebase/firestore";
+import { getUserById } from "../../services/users";
 /**
  * Guarda un mensaje de chat en la base de datos
  * 
@@ -53,3 +53,50 @@ export function subscribeToChatMessages(callback){
         callback(output);
     });
 }
+
+export async function getMessagesByChat(chatId) {
+    const messagesRef = collection(db, "private-chats", chatId, "messages");
+    const messagesSnapshot = await getDocs(messagesRef);
+    const messages = [];
+    messagesSnapshot.forEach(doc => {
+        messages.push({
+            id: doc.id,
+            ...doc.data()
+        });
+    });
+    return messages;
+  }
+  
+  // Función para obtener chats de un usuario con mensajes incluidos
+  export async function getChatsByUser(userId) {
+    const q = query(
+        collection(db, "private-chats"),
+        where(`users.${userId}`, "==", true)
+    );
+    const snapshot = await getDocs(q);
+    const chats = [];
+  
+    for (const doc of snapshot.docs) {
+        const chatData = doc.data();
+        const usersInfo = {};
+  
+        // Obtener información completa de cada usuario en el chat
+        await Promise.all(
+            Object.keys(chatData.users).map(async (uid) => {
+                const userData = await getUserById(uid);
+                usersInfo[uid] = userData;
+            })
+        );
+  
+        // Obtener mensajes del chat
+        const messages = await getMessagesByChat(doc.id);
+  
+        chats.push({
+            id: doc.id,
+            users: usersInfo,
+            messages: messages
+        });
+    }
+  
+    return chats;
+  }
