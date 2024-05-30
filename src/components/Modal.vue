@@ -61,7 +61,8 @@ const handleSave = () => {
     left: 0;
     width: 100%;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5); /* Fondo negro con opacidad */
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Fondo negro con opacidad */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -82,34 +83,45 @@ const handleSave = () => {
     grid-template-rows: 50px 1fr 50px;
 }
 
-header{
+header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    h3{
+
+    h3 {
         margin: 0;
     }
-    button{
+
+        button {
         padding: 0;
         width: 20px;
         height: 20px;
+        width: 1.5rem;
+        height: 1.5rem;
         border: none;
         background-color: transparent;
-        img{
-            margin: 0;
-            width: 20px;
-            height: 20px;
-        }
+    }
+
+    img {
+        margin: 0;
+        width: 20px;
+        height: 20px;
+        width: 1.5rem;
+        height: 1.5rem;
     }
 }
-footer{
+
+
+footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    button{
+
+    button {
         width: 100%;
     }
-    button:first-child{
+
+    button:first-child {
         margin-right: .5rem;
     }
 }
