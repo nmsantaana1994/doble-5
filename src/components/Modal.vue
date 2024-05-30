@@ -39,15 +39,15 @@ const handleSave = () => {
     <div class="overlay" @click="emit('close')">
         <div class="modals" @click.stop>
             <header>
-                <h3>{{ title }}</h3>
+                <h3 class="title">{{ title }}</h3>
                 <button @click="handleCloseX()"><img src="../assets/img/circulo-cruzado.png" alt="close icon"></button>
             </header>
             <main>
                 <p>{{ bodyText }}</p>
             </main>
             <footer>
-                <button class="btn btn-primary" @click="handleClose()">{{ closeButtonText }}</button>
-                <button class="btn btn-primary" @click="handleSave()">{{ saveButtonText }}</button>
+                <button class="boton btn btn-primary" @click="handleClose()">{{ closeButtonText }}</button>
+                <button class="boton btn btn-primary" @click="handleSave()">{{ saveButtonText }}</button>
             </footer>
         </div>
     </div>
@@ -61,7 +61,8 @@ const handleSave = () => {
     left: 0;
     width: 100%;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5); /* Fondo negro con opacidad */
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Fondo negro con opacidad */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -81,35 +82,41 @@ const handleSave = () => {
     grid-template-rows: 50px 1fr 50px;
 }
 
-header{
+header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    h3{
+
+    .title {
         margin: 0;
     }
-    button{
+
+    button {
         padding: 0;
         width: 1.5rem;
         height: 1.5rem;
         border: none;
         background-color: transparent;
-        img{
+
+        img {
             margin: 0;
             width: 1.5rem;
             height: 1.5rem;
         }
     }
 }
-footer{
+
+footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    button{
-        width: 100%;
-    }
-    button:first-child{
-        margin-right: .5rem;
-    }
+}
+
+.boton {
+    width: 100%;
+}
+
+.boton :first-child {
+    margin-right: .5rem;
 }
 </style>
