@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 import { useRoute } from "vue-router";
 import { useUser } from "../../composition/useUser.js";
 import LoadingContext from "../../components/LoadingContext.vue"
@@ -76,7 +76,87 @@ function usePrivateChatForm(authUser, otherUser) {
     }
 }
 
-</script> 
+</script>  -->
+
+<script setup>
+import { useRoute } from "vue-router";
+import { useUser } from "../../composition/useUser.js";
+import Loading from "../../components/Loading.vue";
+import Button from "../../components/Button.vue";
+import Label from "../../components/Label.vue";
+import Textarea from "../../components/Textarea.vue";
+import { useAuth } from "../../composition/useAuth.js";
+import { onUnmounted, ref, watch } from "vue";
+import { sendPrivateMessage, subscribeToPrivateChat } from "../services/private-chats.js";
+import HeaderChat from "../components/HeaderChat.vue";
+import Section from '../../components/Section.vue';
+import CardMessage from "../components/CardMessage.vue";
+
+const route = useRoute();
+const { user: otherUser, loading } = useUser(route.params.id);
+const { user: authUser } = useAuth();
+const { handleSubmit, fields, formLoading } = usePrivateChatForm(authUser, otherUser);
+const { messages, loading: loadingMessages } = usePrivateChat(authUser, otherUser);
+
+function usePrivateChat(authUser, otherUser) {
+  const loading = ref(true);
+  const messages = ref([]);
+
+  let unsubscribe = () => { };
+
+  watch(otherUser, newOtherUser => {
+    if (newOtherUser.id != null) {
+      setSubscription();
+    }
+  });
+
+  async function setSubscription() {
+    unsubscribe = await subscribeToPrivateChat(
+      authUser.value.id,
+      otherUser.value.id,
+      newMessages => {
+        messages.value = newMessages;
+        loading.value = false;
+      }
+    );
+  }
+
+  onUnmounted(() => {
+    unsubscribe();
+  });
+
+  return {
+    loading,
+    messages,
+  }
+}
+
+function usePrivateChatForm(authUser, otherUser) {
+  const formLoading = ref(false);
+  const fields = ref({
+    message: "",
+  });
+
+  async function handleSubmit() {
+    formLoading.value = true;
+
+    try {
+      await sendPrivateMessage(authUser.value.id, otherUser.value.id, fields.value.message);
+      formLoading.value = false;
+      fields.value.message = "";
+    } catch (err) {
+      console.error("[PrivateChat]", err);
+    }
+  }
+
+  return {
+    formLoading,
+    fields,
+    handleSubmit,
+  }
+}
+
+</script>
 
 <template>
     <HeaderChat :otherUser="otherUser" />
