@@ -62,7 +62,7 @@ function useLogout() {
                     <ul class="navbar-nav justify-content-start flex-grow-1 px-3 pt-4">
                         <li class="row d-flex align-items-center mb-3">
                             <div class="col-5">
-                                <Image :src="user.photoURL" class="rounded-circle foto-perfil " />
+                                <Image :src="user.photoURL" />
                             </div>
                             <div class="col-7">
                                 <p class="text-start h4 m-0">{{ user.displayName ? user.displayName : user.nombre }}

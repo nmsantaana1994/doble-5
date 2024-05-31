@@ -75,7 +75,7 @@ function useRed() {
                     <ul class="list-unstyled">
                         <li v-for="seguidor in seguidores" :key="seguidor" class="row">
                             <div class="col-3">
-                                <Image :src="seguidor.photoURL" class="rounded-circle foto-perfil" />
+                                <Image :src="seguidor.photoURL" />
                             </div>
                             <div class="col-9 d-flex align-items-center">
                                 <p class="m-0">{{ seguidor.nombre }} {{ seguidor.apellido }}</p>
@@ -88,7 +88,7 @@ function useRed() {
                     <ul class="list-unstyled">
                         <li v-for="seguido in siguiendo" :key="seguido" class="row">
                             <div class="col-3">
-                                <Image :src="seguido.photoURL" class="rounded-circle foto-perfil" />
+                                <Image :src="seguido.photoURL"  />
                             </div>
                             <div class="col-9 d-flex align-items-center">
                                 <p class="m-0">{{ seguido.nombre }} {{ seguido.apellido }}</p>

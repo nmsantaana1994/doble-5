@@ -9,6 +9,7 @@ import {getDownloadURL, ref, uploadString} from "firebase/storage";
  * @returns {Promise<UploadResult>}
  */
 export async function uploadFileUsingString(path, file, format = "data_url") {
+    debugger
     return uploadString(
         ref(storage, path),
         file,

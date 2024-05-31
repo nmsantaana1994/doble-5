@@ -1,52 +1,69 @@
 <script setup>
-    // import Image from "./../Image.vue";
-    import Image from "../../components/Image.vue";
-    import Loader from "../../components/Loader.vue";
-    import { onMounted } from "vue";
+// import Image from "./../Image.vue";
+import Image from "../../components/Image.vue";
+import Loader from "../../components/Loader.vue";
+import Button from "../../components/Button.vue";
+import changePhoto from "../components/changePhoto.vue";
+import { onMounted } from "vue";
+import { ref } from "vue"; 
 
-    onMounted(() => {
-        console.log(props.thisUser)
-    })
-    const props = defineProps({
-        user: {
-            type: Object,
-            required: true,
-        },
-        totalSeguidores: {
-            type: Number,
-            default: 0,
-        },
-        totalSiguiendo: {
-            type: Number,
-            default: 0,
-        },
-        seguirDejarSeguir: {
-            type: Function,
-            //required: true,
-        },
-        userFollowing: {
-            type: Boolean,
-            //required: true,
-        },
-        mostrarBoton: {
-            type: Boolean,
-            default: true,
-        },
-        loading: {
-            type: Boolean,
-        },
-        thisUser: {
-            type: Boolean,
-        }
-    })
+const flagChangePhoto = ref(false)
+
+onMounted(() => {
+    console.log(props.thisUser)
+})
+
+const props = defineProps({
+    user: {
+        type: Object,
+        required: true,
+    },
+    totalSeguidores: {
+        type: Number,
+        default: 0,
+    },
+    totalSiguiendo: {
+        type: Number,
+        default: 0,
+    },
+    seguirDejarSeguir: {
+        type: Function,
+        //required: true,
+    },
+    userFollowing: {
+        type: Boolean,
+        //required: true,
+    },
+    mostrarBoton: {
+        type: Boolean,
+        default: true,
+    },
+    loading: {
+        type: Boolean,
+    },
+    thisUser: {
+        type: Boolean,
+    }
+})
+
+function funcChangePhoto(){
+    flagChangePhoto.value = !flagChangePhoto.value;
+    console.log("cambiar foto")
+
+}
 </script>
 
 <template>
     <div class="row">
         <div class="col-12 mb-3">
             <div class="d-flex justify-content-center mb-3">
-                <Image :src="user.photoURL" class="rounded-circle foto-perfil" />
+                <Image :src="user.photoURL" />
             </div>
+            <div class="change_photo d-flex justify-content-center mb-3" @click="funcChangePhoto">
+                <img src="../../assets/img/lapiz.png" alt="icono lapiz">
+                <button>cambiar foto de perfil</button>
+            </div>
+            <changePhoto class="mb-3" v-if="flagChangePhoto"/>
             <p class="h2 text-center m-0">{{ user.nombre }} {{ user.apellido }}</p>
         </div>
         <div class="col-12 mb-3">
@@ -68,7 +85,7 @@
                 <button v-if="mostrarBoton" @click="seguirDejarSeguir" class="btn btn-primary w-auto">
                     {{ userFollowing ? 'Dejar de seguir' : 'Seguir' }}
                 </button>
-                
+
             </div>
         </div>
         <div class="col-12 mt-3">
@@ -81,17 +98,17 @@
                 <dd class="mb-3 fw-bold">{{ user.apellido || "No especificado" }}</dd>
                 <!-- <dt class="fw-light" >Carrera</dt>
                 <dd class="mb-3">{{ user.career || "No especificado" }}</dd> -->
-                <dt class="fw-light" >EMAIL</dt>
+                <dt class="fw-light">EMAIL</dt>
                 <dd class="mb-3 fw-bold">{{ user.email }}</dd>
-                <dt class="fw-light" >FECHA DE NACIMIENTO</dt>
+                <dt class="fw-light">FECHA DE NACIMIENTO</dt>
                 <dd class="mb-3 fw-bold">{{ user.nacimiento }}</dd>
-                <dt class="fw-light" >NIVEL DE JUEGO</dt>
+                <dt class="fw-light">NIVEL DE JUEGO</dt>
                 <dd class="mb-3 fw-bold">{{ user.nivel || "No especificado" }}</dd>
-                <dt class="fw-light" >GÉNERO</dt>
+                <dt class="fw-light">GÉNERO</dt>
                 <dd class="mb-3 fw-bold">{{ user.genero || "No especificado" }}</dd>
-                <dt class="fw-light" >BARRIO</dt>
+                <dt class="fw-light">BARRIO</dt>
                 <dd class="mb-3 fw-bold">{{ user.barrio || "No especificado" }}</dd>
-                <dt class="fw-light" >TELÉFONO</dt>
+                <dt class="fw-light">TELÉFONO</dt>
                 <dd class="mb-3 fw-bold">{{ user.telefono || "No especificado" }}</dd>
             </dl>
         </div>
@@ -99,7 +116,35 @@
 </template>
 
 <style scoped>
-    .foto-perfil {
-        width: 70%;
-    }
+.foto-perfil {
+    width: 200px;
+    max-width: 300px;
+    /* Ajusta el tamaño según lo necesario */
+    height: 200px;
+    /* Ajusta el tamaño según lo necesario */
+    max-height: 300px;
+    /* Ajusta el tamaño según lo necesario */
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.change_photo {
+    display: flex;
+    align-items: center;
+    width: 50%;
+    margin: auto;
+}
+.change_photo button{
+    border: none;
+    background-color: transparent;
+    color: gray;
+    padding-bottom: .2rem;
+}
+.change_photo button:hover{
+    color: black;
+}
+.change_photo img {
+    width: 20px;
+    height: 20px;
+}
 </style>

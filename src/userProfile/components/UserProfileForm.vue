@@ -97,7 +97,7 @@
 <template>
     <div class="row d-flex">
         <div class="col-12 mb-3 d-flex justify-content-center">
-            <Image :src="user.photoURL" class="rounded-circle foto-perfil"/>
+            <Image :src="user.photoURL" />
         </div>
         <div class="col-12">
             <form

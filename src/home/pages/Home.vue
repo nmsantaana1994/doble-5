@@ -47,11 +47,11 @@ function listenToChanges(partidoCollectionRef) {
 
 <template>
   <section class="p-3">
-    <div class="row mb-3">
-      <div class="col-4">
-        <Image :src="user.photoURL" class="rounded-circle foto-perfil" />
+    <div class="header row mb-3">
+      <div class="col-5">
+        <Image :src="user.photoURL"  />
       </div>
-      <div class="col-8 d-flex align-items-center">
+      <div class="col-5 d-flex align-items-center">
         <p class="text-start h3">
           {{ user.displayName ? user.displayName : user.nombre }} <br /><span
             class="h4 bienvenida"
@@ -155,7 +155,6 @@ function listenToChanges(partidoCollectionRef) {
 .bienvenida {
   color: #5d880d;
 }
-
 .botonera-home {
   width: 4.5rem;
   height: 4.5rem;
