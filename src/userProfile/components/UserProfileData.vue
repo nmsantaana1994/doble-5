@@ -49,6 +49,15 @@ function funcChangePhoto(){
     console.log("cambiar foto")
 
 }
+
+function handlePhotoUpdated(success) {
+  if (success) {
+    console.log("Foto de perfil actualizada con éxito");
+  } else {
+    console.log("Error al actualizar la foto de perfil");
+  }
+  flagChangePhoto.value = false;
+}
 </script>
 
 <template>
@@ -61,7 +70,7 @@ function funcChangePhoto(){
                 <img src="../../assets/img/lapiz.png" alt="icono lapiz">
                 <button>cambiar foto de perfil</button>
             </div>
-            <changePhoto class="mb-3" v-if="flagChangePhoto"/>
+            <changePhoto class="mb-3" v-if="flagChangePhoto" @photoUpdated="handlePhotoUpdated" />
             <p class="h2 text-center m-0">{{ user.nombre }} {{ user.apellido }}</p>
         </div>
         <div class="col-12 mb-3">

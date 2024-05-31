@@ -1,13 +1,17 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, defineEmits } from "vue";
 import { useAuth } from "../../composition/useAuth.js";
 import { inject } from "vue";
 import { updateUserProfile } from "../../services/auth.js";
 import { notificationProvider } from "../../symbols/symbols.js";
 import Image from "../../components/Image.vue";
+import Input from "../../components/Input.vue";
+import Label from "../../components/Label.vue";
+import Button from "../../components/Button.vue";
 
 const { user } = useAuth();
 const { setFeedbackMessage, clearFeedbackMessage } = inject(notificationProvider);
+const emit = defineEmits(['photoUpdated']); // Define the event to emit
 
 const form = ref({
   displayName: "",
@@ -52,6 +56,7 @@ async function handleSubmit() {
       message: "La foto de perfil fue actualizada con éxito.",
     });
     form.value.photoURL = null;
+    emit('photoUpdated', true); // Emit the event with the boolean value
   } catch (err) {
     console.error("[handleSubmit] Error al actualizar la foto de perfil", err);
     setFeedbackMessage({
@@ -76,7 +81,7 @@ async function handleFile(ev) {
 }
 
 function sentEmit(){
-  
+
 }
 </script>
 
