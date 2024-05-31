@@ -99,7 +99,7 @@
             <div class="row mb-3">
                 <!-- Renderizar los detalles de la publicación -->
                 <div class="col-2">
-                    <Image :src="post.photoURL" class="rounded-circle foto-perfil" />
+                    <Image :src="post.photoURL" />
                 </div>
                 <div class="col-10">
                     <p class="m-0"><strong>{{ post.userDisplayName }}</strong></p>
@@ -136,7 +136,7 @@
             <!-- Sección para agregar comentarios -->
             <div class="row mb-3">
                 <div class="col-2">
-                    <Image :src="user.photoURL" class="rounded-circle foto-perfil" />
+                    <Image :src="user.photoURL"/>
                 </div>
                 <div class="col-10">
                     <form 
@@ -190,10 +190,6 @@
     .icono-h2 {
         width: 25px;
         height: 25px;
-    }
-
-    .foto-perfil {
-        width: 100%;
     }
 
     .icono-publicar {

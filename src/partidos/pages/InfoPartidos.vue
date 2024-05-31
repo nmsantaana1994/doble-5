@@ -123,7 +123,7 @@ function estaInscripto() {
           : []"
           :key="nombreJugador">
             <div class="col-3">
-                  <Image :src="nombreJugador.image" class="rounded-circle foto-perfil" />
+                  <Image :src="nombreJugador.image"/>
             </div>
             <div class="col-9 pt-3">
               <p> <span class="fw-bold">{{ nombreJugador.nombre }}&nbsp;&nbsp;</span>
@@ -145,9 +145,7 @@ function estaInscripto() {
 ul{
   list-style: none;
 }
-.foto-perfil {
-        width: 100%;
-}
+
 .infoPartido{
   color: grey;
 }

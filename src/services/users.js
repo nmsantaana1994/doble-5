@@ -16,13 +16,13 @@ export function createUser(id, {email, nombre, apellido, nacimiento, genero, niv
         nombre,
         apellido,
         nacimiento,
+        followers: [], // Agregamos el campo followers
+        following: [], // Agregamos el campo following
         genero,
         nivel,
         barrio,
         telefono,
         terminos,
-        followers: [], // Agregamos el campo followers
-        following: [], // Agregamos el campo following
     });
 }
 
@@ -34,8 +34,8 @@ export function createUser(id, {email, nombre, apellido, nacimiento, genero, niv
  * @param {string|null} photoURL
  * @returns {Promise<void>}
  */
-export async function updateUser(id, {displayName, nombre, apellido, email, nacimiento, nivel, genero, barrio, telefono, photoURL, followers, following}) {
-    console.log("Valores recibidos en updateUser:", { displayName, nombre, apellido, email, nacimiento, nivel, genero, barrio, telefono, photoURL, followers, following });
+export async function updateUser(id, {displayName, nombre, apellido, email, nacimiento, followers, following, nivel, genero, barrio, telefono, photoURL}) {
+    console.log("Valores recibidos en updateUser:", { displayName, nombre, apellido, email, nacimiento, followers, following, nivel, genero, barrio, telefono, photoURL });
     return updateDoc(
         doc(db, "users", id),
         {
@@ -44,13 +44,13 @@ export async function updateUser(id, {displayName, nombre, apellido, email, naci
             apellido,
             email,
             nacimiento,
+            followers,
+            following,
             nivel,
             genero,
             barrio,
             telefono,
             photoURL,
-            followers,
-            following,
         }
     )
 }

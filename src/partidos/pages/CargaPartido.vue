@@ -46,7 +46,6 @@ function useCargaPartido() {
         fecha: selectedDia.value,
         hora: fields.value.hora
       }
-      debugger
       const partido = await cargarPartido({
         ...fields.value,
         userId: user.value.id,
