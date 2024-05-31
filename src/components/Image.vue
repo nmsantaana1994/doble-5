@@ -28,7 +28,7 @@ const showSrc = computed(() => (props.src !== null && props.src !== "" ? props.s
 <style scoped>
 .image-wrapper {
   width: 100%;
-  padding-top: 100%; /* Aspect ratio 1:1 */
+  padding-top: 100%;
   position: relative;
 }
 
