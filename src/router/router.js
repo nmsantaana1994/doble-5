@@ -29,7 +29,7 @@ const routes = [
     { path: "/chat",                        component: Chat,                meta: { requiresAuth: true, }},
     { path: "/partidos",                    component: Partidos,            meta: { requiresAuth: true, }},
     { path: "/list-private-chats",          component: ListaChatsPrivados,  meta: { requiresAuth: true, }},
-    { path: "/perfil",                      component: MyProfile,           meta: { requiresAuth: true, }},
+    { path: "/perfil",                      component:  () => import("../userProfile/pages/Profile.vue"), meta: { requiresAuth: true, }},
     { path: "/usuario/:id",                 component: UserProfile,         meta: { requiresAuth: true, }},
     { path: "/usuario/:id/chat",            component: PrivateChat,         meta: { requiresAuth: true, }},
     { path: "/carga-partidos",              component: CargaPartido,        meta: { requiresAuth: true, }},

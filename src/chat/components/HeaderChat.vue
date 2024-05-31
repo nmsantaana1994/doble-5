@@ -39,7 +39,7 @@ const props = defineProps({
 
 <template>
 <div class="title_chat">
-  <Image :src="otherUser.photoURL" class="rounded-circle foto-perfil" />
+  <Image :src="otherUser.photoURL"/>
   <h1>{{ otherUser.displayName ? otherUser.displayName : otherUser.nombre }}</h1>
 </div>
 </template>
@@ -58,11 +58,7 @@ const props = defineProps({
     align-items: center;
     justify-content: center;
 }
-.foto-perfil {
-  width: 50px;
-  height: 50px;
-  margin-right: 10px;
-}
+
 h1{
   margin: auto 0;
 }

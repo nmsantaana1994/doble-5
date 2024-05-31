@@ -111,7 +111,7 @@
     <section class="p-3 mt-5">
         <div class="row mb-3">
             <div class="col-2">
-                <Image :src="user.photoURL" class="rounded-circle foto-perfil" />
+                <Image :src="user.photoURL"/>
             </div>
             <div class="col-10 d-flex align-items-center justify-content-center">
                 <form 
@@ -142,7 +142,7 @@
             <div class="card-body">
                 <div class="row mb-3">
                     <div class="col-2">
-                        <Image :src="post.photoURL" class="rounded-circle foto-perfil" />
+                        <Image :src="post.photoURL"/>
                     </div>
                     <div class="col-10">
                         <p class="m-0"><strong>{{ post.userDisplayName }}</strong></p>
@@ -185,9 +185,6 @@
         height: 25px;
     }
 
-    .foto-perfil {
-        width: 100%;
-    }
 
     textarea {
         resize: none;
