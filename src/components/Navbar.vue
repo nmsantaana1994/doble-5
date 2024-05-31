@@ -187,7 +187,4 @@ ul {
   width: 60%;
 }
 
-.foto-perfil {
-  width: 100%;
-}
 </style>

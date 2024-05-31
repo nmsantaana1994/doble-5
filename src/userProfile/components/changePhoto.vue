@@ -2,7 +2,7 @@
 import { ref, watch } from "vue";
 import { useAuth } from "../../composition/useAuth.js";
 import { inject } from "vue";
-import { updateImageProfile } from "../../services/auth.js";
+import { updateUserProfile } from "../../services/auth.js";
 import { notificationProvider } from "../../symbols/symbols.js";
 import Image from "../../components/Image.vue";
 
@@ -44,7 +44,7 @@ async function handleSubmit() {
   try {
     clearFeedbackMessage();
     console.log("Valores en form:", form.value);
-    await updateImageProfile(user.value.id, {
+    await updateUserProfile(user.value.id, {
       ...form.value
     });
     setFeedbackMessage({
@@ -60,12 +60,11 @@ async function handleSubmit() {
     });
   } finally {
     loading.value = false;
-    location.reload();
+    // location.reload();
   }
 }
 
 async function handleFile(ev) {
-  debugger
   const file = ev.target.files[0];
   const reader = new FileReader();
 
@@ -74,6 +73,10 @@ async function handleFile(ev) {
   });
 
   reader.readAsDataURL(file);
+}
+
+function sentEmit(){
+  
 }
 </script>
 
@@ -90,7 +93,7 @@ async function handleFile(ev) {
           <Image :src="form.photoURL" :alt="'Previsualización foto de perfil'" class="w-100" />
         </div>
         <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-3">
-          <Button class="btn btn-primary w-100">
+          <Button class="btn btn-primary w-100" @click="sentEmit">
             Actualizar mi foto
           </Button>
         </div>

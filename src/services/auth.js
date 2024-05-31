@@ -335,7 +335,7 @@ let observers = [];
 //   callback({ ...user });
 // }
 
-// NO
+// TEXTO COMENTADO POR LAS DUDAS, SE HICIERON CAMBIOS , AL PARECER NO HAY FALLAS PERO POR SI LAS MOSCAS
 
 if (localStorage.getItem("user")) {
   user = JSON.parse(localStorage.getItem("user"));
@@ -459,77 +459,6 @@ export async function updateUserProfile(
     apellido,
     email,
     nacimiento,
-    nivel,
-    genero,
-    barrio,
-    telefono,
-    photoURL,
-  }
-) {
-  const promises = [];
-  let photoPath = user.photoURL;
-
-  if (photoURL) {
-    photoPath = user.id + "/avatar.jpg";
-    promises.push(uploadFileUsingString(photoPath, photoURL));
-  }
-
-  promises.push(
-    updateProfile(auth.currentUser, {
-      displayName,
-      nombre,
-      apellido,
-      email,
-      nacimiento,
-      nivel,
-      genero,
-      barrio,
-      telefono,
-      photoURL: photoPath,
-    })
-  );
-  promises.push(
-    updateUser(id, {
-      displayName,
-      nombre,
-      apellido,
-      email,
-      nacimiento,
-      nivel,
-      genero,
-      barrio,
-      telefono,
-      photoURL: photoPath,
-    })
-  );
-
-  return Promise.all(promises).then(() => {
-    setUser({
-      displayName,
-      nombre,
-      apellido,
-      email,
-      nacimiento,
-      nivel,
-      genero,
-      barrio,
-      telefono,
-      photoURL: photoPath,
-    });
-
-    if (photoURL)
-      getFileURL(photoPath).then((url) => setUser({ photoURL: url }));
-  });
-}
-
-export async function updateImageProfile(
-  id,
-  {
-    displayName,
-    nombre,
-    apellido,
-    email,
-    nacimiento,
     followers,
     following,
     nivel,
@@ -549,22 +478,22 @@ export async function updateImageProfile(
 
   promises.push(
     updateProfile(auth.currentUser, {
-        displayName,
-        nombre,
-        apellido,
-        email,
-        nacimiento,
-        followers,
-        following,
-        nivel,
-        genero,
-        barrio,
-        telefono,
-        photoURL,
-      })
+      displayName,
+      nombre,
+      apellido,
+      email,
+      nacimiento,
+      followers,
+      following,
+      nivel,
+      genero,
+      barrio,
+      telefono,
+      photoURL: photoPath,
+    })
   );
   promises.push(
-    updateUser(id,   {
+    updateUser(id, {
       displayName,
       nombre,
       apellido,

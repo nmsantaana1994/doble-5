@@ -145,9 +145,7 @@ function estaInscripto() {
 ul{
   list-style: none;
 }
-.foto-perfil {
-        width: 100%;
-}
+
 .infoPartido{
   color: grey;
 }

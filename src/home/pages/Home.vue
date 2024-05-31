@@ -148,10 +148,6 @@ function listenToChanges(partidoCollectionRef) {
   height: 25px;
 }
 
-.foto-perfil {
-  width: 100%;
-}
-
 .bienvenida {
   color: #5d880d;
 }

@@ -1,8 +1,6 @@
 <script setup>
-// import Image from "./../Image.vue";
 import Image from "../../components/Image.vue";
 import Loader from "../../components/Loader.vue";
-import Button from "../../components/Button.vue";
 import changePhoto from "../components/changePhoto.vue";
 import { onMounted } from "vue";
 import { ref } from "vue"; 
@@ -116,17 +114,6 @@ function funcChangePhoto(){
 </template>
 
 <style scoped>
-.foto-perfil {
-    width: 200px;
-    max-width: 300px;
-    /* Ajusta el tamaño según lo necesario */
-    height: 200px;
-    /* Ajusta el tamaño según lo necesario */
-    max-height: 300px;
-    /* Ajusta el tamaño según lo necesario */
-    object-fit: cover;
-    border-radius: 50%;
-}
 
 .change_photo {
     display: flex;

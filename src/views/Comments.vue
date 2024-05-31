@@ -192,10 +192,6 @@
         height: 25px;
     }
 
-    .foto-perfil {
-        width: 100%;
-    }
-
     .icono-publicar {
         border: none;
         background: none;

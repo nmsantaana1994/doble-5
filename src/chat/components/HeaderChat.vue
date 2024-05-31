@@ -58,11 +58,7 @@ const props = defineProps({
     align-items: center;
     justify-content: center;
 }
-.foto-perfil {
-  width: 50px;
-  height: 50px;
-  margin-right: 10px;
-}
+
 h1{
   margin: auto 0;
 }

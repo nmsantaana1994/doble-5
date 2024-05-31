@@ -142,7 +142,5 @@ function useRed() {
 </template>
 
 <style scoped>
-.foto-perfil {
-    width: 70%;
-}
+
 </style>

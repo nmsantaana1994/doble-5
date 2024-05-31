@@ -185,9 +185,6 @@
         height: 25px;
     }
 
-    .foto-perfil {
-        width: 100%;
-    }
 
     textarea {
         resize: none;
