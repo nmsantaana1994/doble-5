@@ -116,7 +116,7 @@ const minDate = computed(() => {
 
 function handleCanchaChange() {
   if (selectedCancha.value && selectedDia.value) {
-    const horarios = Object.keys(selectedCancha.value.horarios || {});
+    const horarios = Object.keys(selectedCancha.value.availability || {});
     availableHorarios.value = horarios.map(horario => ({
       horario,
       disponible: checkDisponibilidad(selectedDia.value, horario, selectedCancha.value)
@@ -150,7 +150,7 @@ watch([selectedCancha, selectedDia], handleCanchaChange);
           <select id="complejo" class="form-select" v-model="selectedCancha">
             <option disabled value="">Complejo</option>
             <option v-for="cancha in canchas" :value="cancha" :key="cancha.id">
-              {{ cancha.nombre }}
+              {{ cancha.name }}
             </option>
           </select>
         </div>

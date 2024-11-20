@@ -32,7 +32,7 @@ function useEditProfile(user) {
     const loading = ref(false);
     const feedback = ref({
         message: "",
-        type: "succes",
+        type: "success",
         title: "",
     });
 
@@ -64,9 +64,13 @@ function useEditProfile(user) {
             form.value.photoURL = null;
 
             setFeedbackMessage({
-                type: "succes",
+                type: "success",
                 message: "La información de tu perfil fue actualizada con éxito.",
             });
+
+            // Emitir un evento personalizado para indicar que el perfil ha sido actualizado
+            const profileUpdatedEvent = new CustomEvent("profile-updated");
+            window.dispatchEvent(profileUpdatedEvent);
         } catch (err) {
             console.error("[MyProfile handleSubmit]", err);
 
@@ -158,7 +162,3 @@ function useEditProfile(user) {
         </div>
     </div>
 </template>
-
-<style scoped>
-
-</style>

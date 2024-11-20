@@ -13,7 +13,7 @@ import {
   import { db } from "../../services/firebase";
   
   export async function getCanchas() {
-    const q = collection(db, "canchas");
+    const q = collection(db, "admin-canchas");
     const snapshot = await getDocs(q);
     const canchas = [];
     snapshot.forEach((doc) => {
