@@ -23,6 +23,7 @@ export function createUser(id, {email, nombre, apellido, nacimiento, genero, niv
         barrio,
         telefono,
         terminos,
+
     });
 }
 
