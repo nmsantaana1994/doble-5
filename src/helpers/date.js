@@ -14,6 +14,8 @@ export function dateToString(date) {
         hour: "2-digit", minute: "2-digit", second: "2-digit"
     }).format(date);
 
+    // console.log(`${formatedDate} ${formatedTime}`);
+
     return `${formatedDate} ${formatedTime}`;
 }
 

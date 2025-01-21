@@ -1,5 +1,6 @@
 import { db } from "./firebase";
 import { collection, doc, updateDoc, arrayUnion, arrayRemove, addDoc, getDocs, getDoc, query, orderBy, serverTimestamp, Timestamp } from "firebase/firestore";
+import { format } from "date-fns"; // Import date-fns for formatting
 
 // Función para publicar una nueva publicación
 export async function publishPost(postData, userId) {
@@ -57,24 +58,26 @@ export async function addComment(postId, user, newComment) {
         if (postSnapshot.exists()) {
             const post = { id: postSnapshot.id, ...postSnapshot.data() };
 
-            // Agregar el nuevo comentario a la publicación
-            post.comments.push({
+            const newCommentData = {
                 userId: user.id,
                 userDisplayName: user.displayName,
                 content: newComment,
                 created_at: Timestamp.now(),
-            });
+            };
+
+            // Agregar el nuevo comentario a la publicación
+            post.comments.push(newCommentData);
 
             // Actualizar la publicación en la base de datos
             await updateDoc(postRef, {
                 comments: post.comments,
             });
 
+            // Formatear la fecha del comentario
+            newCommentData.formattedDate = format(newCommentData.created_at.toDate(), "dd/MM/yyyy HH:mm");
+
             // Devolver la publicación actualizada
             return post;
-
-            // console.log('Comentario: ', post.comments);
-            // console.log('Comentario agregado con éxito.');
         } else {
             throw new Error("La publicación no existe.");
         }
@@ -83,7 +86,6 @@ export async function addComment(postId, user, newComment) {
         throw error;
     }
 }
-
 
 // Función para manejar tanto la adición como la eliminación del "Me gusta"
 export async function toggleLike(postId, userId) {

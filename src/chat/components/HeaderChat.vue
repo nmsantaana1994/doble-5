@@ -1,44 +1,89 @@
 <script setup>
-import Image from "../../components/Image.vue"
-import { defineProps } from 'vue';
+import Image from "../../components/Image.vue";
+import { defineProps } from "vue";
+import { useRouter } from "vue-router";
 
 const props = defineProps({
-  otherUser: {
-    type: Object,
-    required: true
-  }
+    otherUser: {
+        type: Object,
+        required: true,
+    },
 });
+
+const router = useRouter();
+
+function goBack() {
+    router.push("/chat");
+}
 </script>
 
 <template>
-  <div class="title_chat">
-    <div class="image-container">
-      <Image :src="otherUser.photoURL"/>
+    <div class="row sectionHeader">
+        <div class="col-3" @click="goBack">
+            <img src="../../assets/img/flecha-izquierda-blanca.png" />
+            <i class="fi fi-sr-angle-left"></i>
+        </div>
+        <div class="col-9 title_chat">
+            <div class="image-container">
+                <Image :src="otherUser.photoURL" />
+            </div>
+            <h1>
+                {{
+                    otherUser.displayName
+                        ? otherUser.displayName
+                        : otherUser.nombre
+                }}
+            </h1>
+        </div>
     </div>
-    <h1>{{ otherUser.displayName ? otherUser.displayName : otherUser.nombre }}</h1>
-  </div>
 </template>
 
 <style scoped>
+.row {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 4;
+    background-image: url("../../assets/img/background-partidos.png");
+    background-repeat: none;
+    background-size: cover;
+    height: 75px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+    color: white;
+}
+
+.sectionHeader {
+    width: 100%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+}
+
 .title_chat {
-  position: fixed;
-  width: 100%;
-  background-color: var(--primary-color);
-  max-height: 60px;
-  padding: 8px 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
 }
 
 .image-container {
-  width: 50px; 
-  height: 50px; 
-  margin-right: 10px; 
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
 }
 
 h1 {
-  margin: auto 0;
+    margin: auto 0;
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+img {
+    width: 60px;
+    height: 60px;
 }
 </style>
