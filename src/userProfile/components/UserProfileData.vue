@@ -71,7 +71,7 @@ function handlePhotoUpdated(success) {
         v-if="props.isMyProfile"
       >
         <img src="../../assets/img/lapiz.png" alt="icono lapiz" />
-        <button>cambiar foto de perfil</button>
+        <button>Cambiar foto de perfil</button>
       </div>
       <changePhoto
         class="mb-3"
