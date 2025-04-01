@@ -1,6 +1,21 @@
 import { db } from "./firebase";
 import { collection, doc, updateDoc, arrayUnion, arrayRemove, addDoc, getDocs, getDoc, query, orderBy, serverTimestamp, Timestamp } from "firebase/firestore";
-import { format } from "date-fns"; // Import date-fns for formatting
+import { format } from "date-fns"; // Import date-fns para formatear
+
+// Función para crear una notificación
+async function createNotification(userId, message) {
+    try {
+        const notificacionesRef = collection(db, "notificaciones");
+        await addDoc(notificacionesRef, {
+            userId,
+            mensaje: message, // Mensaje claro y específico
+            leida: false, // Agregar el campo `leida` como false por defecto
+            created_at: serverTimestamp(),
+        });
+    } catch (error) {
+        console.error("Error al crear la notificación:", error);
+    }
+}
 
 // Función para publicar una nueva publicación
 export async function publishPost(postData, userId) {
@@ -14,6 +29,8 @@ export async function publishPost(postData, userId) {
             created_at: serverTimestamp(),
         });
 
+        // Crear una notificación para el usuario
+        await createNotification(userId, "Has publicado una nueva publicación.");
     } catch (error) {
         console.error("Error al publicar la publicación:", error);
         throw error;
@@ -73,6 +90,11 @@ export async function addComment(postId, user, newComment) {
                 comments: post.comments,
             });
 
+            // Crear una notificación para el autor del post
+            if (post.userId !== user.id) {
+                await createNotification(post.userId, `${user.displayName} comentó tu publicación: "${newComment}"`);
+            }
+
             // Formatear la fecha del comentario
             newCommentData.formattedDate = format(newCommentData.created_at.toDate(), "dd/MM/yyyy HH:mm");
 
@@ -117,6 +139,11 @@ export async function toggleLike(postId, userId) {
             await updateDoc(postRef, {
                 likes: post.likes,
             });
+
+            // Crear una notificación para el autor del post
+            if (!userLiked && post.userId !== userId) {
+                await createNotification(post.userId, `A ${userId} le gustó tu publicación.`);
+            }
 
             // Devolver la publicación actualizada
             return post;

@@ -31,25 +31,37 @@
 // }
 
 import { ref } from "vue";
-import { collection, query, where, onSnapshot } from "firebase/firestore";
+import { collection, query, where, onSnapshot, orderBy } from "firebase/firestore";
 import { db } from "../../services/firebase";
 
 export function useNotificaciones(userId) {
   const notificaciones = ref([]); // Mantén esto como un ref reactivo
 
   const cargarNotificaciones = () => {
-    if (!userId) return; // Asegúrate de tener el `userId` antes de ejecutar la consulta
+    if (!userId) {
+      console.error("El userId no está definido. No se pueden cargar las notificaciones.");
+      return;
+    }
 
     const q = query(
       collection(db, "notificaciones"),
-      where("userId", "==", userId)
+      where("userId", "==", userId), // Filtrar por el usuario autenticado
+      // orderBy("created_at", "desc") // Ordenar por fecha
     );
 
     onSnapshot(q, (snapshot) => {
-      notificaciones.value = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
+      if (!snapshot.empty) {
+        notificaciones.value = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        console.log("Notificaciones obtenidas:", notificaciones.value);
+      } else {
+        console.warn("No se encontraron notificaciones para el usuario:", userId);
+        notificaciones.value = [];
+      }
+    }, (error) => {
+      console.error("Error al obtener las notificaciones:", error);
     });
   };
 
@@ -57,6 +69,6 @@ export function useNotificaciones(userId) {
   cargarNotificaciones();
 
   return {
-    notificaciones, // Retornar el `ref` reactivo, no su valor
+    notificaciones,
   };
 }

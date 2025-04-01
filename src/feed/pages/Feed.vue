@@ -55,7 +55,8 @@
                             likes: [],
                             comments: [],
                             // Otros campos que desees agregar
-                        }
+                        },
+                        user.value.id // Pasar el ID del usuario para notificar
                     );
     
                     newPostContent.value = "";

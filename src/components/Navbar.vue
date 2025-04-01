@@ -3,9 +3,13 @@ import Image from "./Image.vue";
 import { logout } from "../services/auth";
 import { useRouter } from "vue-router";
 import { useAuth } from "../composition/useAuth.js";
+import { ref, onMounted, onUnmounted } from "vue";
+import { obtenerNumeroNotificacionesNoLeidas } from "../notifications/services/notifications";
 
 const { user } = useAuth();
 const { handleLogout } = useLogout();
+const notificacionesNoLeidas = ref(0); // Número de notificaciones no leídas
+let unsubscribe = null;
 
 function useLogout() {
   const router = useRouter();
@@ -18,6 +22,23 @@ function useLogout() {
     },
   };
 }
+
+// Escuchar el número de notificaciones no leídas en tiempo real
+onMounted(() => {
+  if (user.value && user.value.id) {
+    unsubscribe = obtenerNumeroNotificacionesNoLeidas(user.value.id, (numero) => {
+      console.log("Actualizando badge de notificaciones:", numero); // Depuración
+      notificacionesNoLeidas.value = numero;
+    });
+  }
+});
+
+// Limpiar el listener al desmontar el componente
+onUnmounted(() => {
+  if (unsubscribe) {
+    unsubscribe();
+  }
+});
 </script>
 
 <template>
@@ -64,13 +85,20 @@ function useLogout() {
         <li class="col-2 p-0 mx-1">
           <router-link
             :to="'/notificaciones'"
-            class="d-flex justify-content-center"
+            class="d-flex justify-content-center position-relative"
           >
             <img
               src="../assets/img/campanas.png"
               alt="Campanas de notificaciones"
               class="icono-nav"
             />
+            <!-- Badge para notificaciones no leídas -->
+            <span
+              v-if="notificacionesNoLeidas > 0"
+              class="badge bg-danger position-absolute top-0 start-100 translate-middle"
+            >
+              {{ notificacionesNoLeidas }}
+            </span>
           </router-link>
         </li>
         <li class="col-2 p-0 mx-1">
@@ -277,5 +305,10 @@ ul {
 
 .ancho-logo {
   width: 60%;
+}
+
+.badge {
+  font-size: 0.8rem;
+  padding: 0.4em 0.6em;
 }
 </style>
