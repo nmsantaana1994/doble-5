@@ -8,31 +8,31 @@ import { convertirFecha } from "../../helpers/date";
 
 const db = getFirestore();
 const { user } = useAuth();
-const { setFeedbackMessage, clearFeedbackMessage } = inject(notificationProvider);
+const { setFeedbackMessage, clearFeedbackMessage } =
+  inject(notificationProvider);
 
 const props = defineProps({
   partido: Object,
 });
 
-
 async function inscribirseAlPartido(idPartido) {
   try {
-    clearFeedbackMessage()
+    clearFeedbackMessage();
     if (idPartido) {
       await inscribirPartido(idPartido, user);
-      setFeedbackMessage({type:'success',message:'usuario inscripto correctamente.'})
+      setFeedbackMessage({
+        type: "success",
+        message: "usuario inscripto correctamente.",
+      });
       console.log("Usuario inscrito correctamente.");
-
     } else {
       console.error("No se ha encontrado el partido para inscribirse.");
     }
   } catch (error) {
     console.error("Error al inscribirse al partido:", error);
-    setFeedbackMessage({type:'error',message:error})
-
+    setFeedbackMessage({ type: "error", message: error });
   }
 }
-
 </script>
 
 <template>
@@ -44,10 +44,11 @@ async function inscribirseAlPartido(idPartido) {
             <p class="card-title h4 text-start">{{ partido?.nombre }}</p>
           </div>
           <div class="col-2 d-flex justify-content-end">
-            <router-link :to="`/info-partido/${partido?.id}`"><img
-              src="../../assets/img/arrows-right.png"
-              alt="Icono flechas dobles"
-              class="icono-h2"
+            <router-link :to="`/info-partido/${partido?.id}`"
+              ><img
+                src="../../assets/img/arrows-right.png"
+                alt="Icono flechas dobles"
+                class="icono-h2"
             /></router-link>
           </div>
         </div>
@@ -89,10 +90,7 @@ async function inscribirseAlPartido(idPartido) {
           </div>
           <div class="col-10 d-flex align-items-end">
             <p class="card-subtitle text-body-secondary text-start">
-              {{
-                partido?.cantidadJ * 2 -
-                partido?.contadorInscriptos.length
-              }}
+              {{ partido?.cantidadJ * 2 - partido?.contadorInscriptos.length }}
             </p>
           </div>
         </div>

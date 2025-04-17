@@ -9,11 +9,12 @@ import Section from "../../components/Section.vue";
 import { notificationProvider, modalProvider } from "../../symbols/symbols.js";
 import { inscribirPartido } from "../services/partidos.js";
 
-const { feedback, setFeedbackMessage, clearFeedbackMessage } = inject(notificationProvider);
+const { feedback, setFeedbackMessage, clearFeedbackMessage } =
+  inject(notificationProvider);
 const { showModal } = inject(modalProvider);
 const { fields, user, loading, handleSubmit } = useCargaPartido();
 const canchas = ref([]);
-const selectedDia = ref('');
+const selectedDia = ref("");
 const availableHorarios = ref([]);
 const selectedCancha = ref(null);
 
@@ -39,54 +40,68 @@ function useCargaPartido() {
 
   async function handleSubmit() {
     try {
+      debugger;
       clearFeedbackMessage();
       loading.value = true;
 
       let reserva = {
         fecha: selectedDia.value,
-        hora: fields.value.hora
-      }
-      const partido = await cargarPartido({
-        ...fields.value,
-        userId: user.value.id,
-        usuarioCreador: user.value.displayName,
-        complejo: selectedCancha.value,
-        fecha: selectedDia.value
-      }, reserva);
+        hora: fields.value.hora,
+      };
+      debugger;
+      const partido = await cargarPartido(
+        {
+          ...fields.value,
+          userId: user.value.id,
+          usuarioCreador: user.value.displayName,
+          complejo: selectedCancha.value,
+          fecha: selectedDia.value,
+        },
+        reserva
+      );
+      debugger;
       loading.value = false;
-      setFeedbackMessage({ type: 'success', message: 'Partido creado correctamente' });
+      setFeedbackMessage({
+        type: "success",
+        message: "Partido creado correctamente",
+      });
       // Llamar a showModal justo después de crear el partido
       const result = await showModal({
-        title: 'Partido creado',
-        bodyText: 'desea sumarse como jugador al partido?.',
-        closeButtonText: 'Cancelar',
-        saveButtonText: 'Aceptar'
+        title: "Partido creado",
+        bodyText: "desea sumarse como jugador al partido?.",
+        closeButtonText: "Cancelar",
+        saveButtonText: "Aceptar",
       });
       if (result) {
         try {
-          clearFeedbackMessage()
+          clearFeedbackMessage();
           if (partido.id) {
             await inscribirPartido(partido.id, user);
-            setFeedbackMessage({ type: 'success', message: 'usuario inscripto correctamente.' })
+            setFeedbackMessage({
+              type: "success",
+              message: "usuario inscripto correctamente.",
+            });
             router.push(`/info-partido/${partido.id}`);
           } else {
             console.error("No se ha encontrado el partido para inscribirse.");
           }
         } catch (error) {
           console.error("Error al inscribirse al partido:", error);
-          setFeedbackMessage({ type: 'error', message: error })
-
+          setFeedbackMessage({ type: "error", message: error });
         }
       } else if (!result) {
-        console.log('no sumarme al partido')
+        console.log("no sumarme al partido");
         router.push("/home");
-      } else if (result === 'closex') {
-        console.log('no hacer nada')
+      } else if (result === "closex") {
+        console.log("no hacer nada");
         router.push("/home");
         return;
       }
     } catch (error) {
-      setFeedbackMessage({ type: 'error', message: error.message || 'Error al crear el partido' });
+      setFeedbackMessage({
+        type: "error",
+        message: error.message || "Error al crear el partido",
+      });
     }
   }
 
@@ -111,29 +126,39 @@ onMounted(async () => {
 // Calcula la fecha mínima estableciendo la fecha actual
 const minDate = computed(() => {
   const today = new Date();
-  return today.toISOString().split('T')[0];
+  return today.toISOString().split("T")[0];
 });
 
 function handleCanchaChange() {
   if (selectedCancha.value && selectedDia.value) {
-    const horarios = Object.keys(selectedCancha.value.availability || {});
-    availableHorarios.value = horarios.map(horario => ({
+    const horarios = Object.keys(selectedCancha.value.horarios || {});
+    debugger;
+    availableHorarios.value = horarios.map((horario) => ({
       horario,
-      disponible: checkDisponibilidad(selectedDia.value, horario, selectedCancha.value)
+      disponible: checkDisponibilidad(
+        selectedDia.value,
+        horario,
+        selectedCancha.value
+      ),
     }));
   } else {
     availableHorarios.value = [];
   }
-  console.log('availableHorarios', availableHorarios)
+  console.log("availableHorarios", availableHorarios);
 }
 
+// function checkDisponibilidad(fecha, hora, cancha) {
+//   const reservas = cancha.reservas?.[fecha] || [];
+//   return !reservas.includes(hora);
+// }
+
 function checkDisponibilidad(fecha, hora, cancha) {
-  const reservas = cancha.reservas?.[fecha] || [];
-  return !reservas.includes(hora);
+  const reservasDelDia = cancha.reservas?.[fecha] || {};
+  const reserva = reservasDelDia[hora];
+  return reserva ? reserva.disponible !== false : true;
 }
 
 watch([selectedCancha, selectedDia], handleCanchaChange);
-
 </script>
 
 <template>
@@ -143,8 +168,13 @@ watch([selectedCancha, selectedDia], handleCanchaChange);
       <form action="#" method="POST" @submit.prevent="handleSubmit">
         <h3 class="mb-3">Datos del partido</h3>
         <div class="mb-3">
-          <input type="text" class="form-control" id="nombre" placeholder="Nombre del partido"
-            v-model="fields.nombre" />
+          <input
+            type="text"
+            class="form-control"
+            id="nombre"
+            placeholder="Nombre del partido"
+            v-model="fields.nombre"
+          />
         </div>
         <div class="mb-3">
           <select id="complejo" class="form-select" v-model="selectedCancha">
@@ -155,14 +185,20 @@ watch([selectedCancha, selectedDia], handleCanchaChange);
           </select>
         </div>
         <div class="mb-3">
-          <input type="date" id="fecha" v-model="selectedDia" :min="minDate">
+          <input type="date" id="fecha" v-model="selectedDia" :min="minDate" />
         </div>
         <div class="mb-3">
           <select id="hora" class="form-select" v-model="fields.hora">
             <option disabled value="">Hora</option>
-            <option v-for="horario in availableHorarios" :value="horario.horario" :key="horario.horario"
-              :disabled="!horario.disponible">
-              {{ horario.horario }} ({{ horario.disponible ? 'Disponible' : 'No Disponible' }})
+            <option
+              v-for="horario in availableHorarios"
+              :value="horario.horario"
+              :key="horario.horario"
+              :disabled="!horario.disponible"
+            >
+              {{ horario.horario }} ({{
+                horario.disponible ? "Disponible" : "No Disponible"
+              }})
             </option>
           </select>
         </div>
@@ -193,10 +229,18 @@ watch([selectedCancha, selectedDia], handleCanchaChange);
           </select>
         </div>
         <div class="mb-3">
-          <input type="text" class="form-control" id="valorCancha" placeholder="Valor total de la cancha"
-            v-model="fields.valorCancha" />
+          <input
+            type="text"
+            class="form-control"
+            id="valorCancha"
+            placeholder="Valor total de la cancha"
+            v-model="fields.valorCancha"
+          />
         </div>
-        <button type="submit" class="btn cargar-button fw-semibold text-white py-2">
+        <button
+          type="submit"
+          class="btn cargar-button fw-semibold text-white py-2"
+        >
           CREAR PARTIDO
         </button>
       </form>
