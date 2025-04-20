@@ -62,7 +62,7 @@ async function inscribirseAlPartido(idPartido) {
           </div>
           <div class="col-10 d-flex align-items-end">
             <p class="card-subtitle text-body-secondary text-start">
-              {{ convertirFecha(partido?.fecha) }} - {{ partido?.hora }}
+              {{ convertirFecha(partido?.fecha) }} - {{ partido?.hora }}hs
             </p>
           </div>
         </div>
@@ -76,7 +76,7 @@ async function inscribirseAlPartido(idPartido) {
           </div>
           <div class="col-10 d-flex align-items-end">
             <p class="card-subtitle text-body-secondary text-start">
-              {{ partido?.complejo?.nombre }}
+              {{ partido?.complejo?.name }}
             </p>
           </div>
         </div>

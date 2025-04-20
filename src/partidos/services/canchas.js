@@ -1,15 +1,4 @@
-import {
-  collection,
-  serverTimestamp,
-  addDoc,
-  query,
-  getDocs,
-  getDoc,
-  where,
-  doc,
-  updateDoc,
-  onSnapshot,
-} from "@firebase/firestore";
+import { getDoc, doc, updateDoc } from "@firebase/firestore";
 import { db } from "../../services/firebase";
 
 export async function getCanchaById(idCancha) {
@@ -45,7 +34,6 @@ export async function actualizarCancha(idCancha, reservas) {
         "Fecha y hora ya reservadas anteriormente, intente otra fecha u hora"
       );
     }
-    debugger;
 
     // Agregar o actualizar la reserva
     cancha.reservas[reservas.fecha][reservas.hora] = {
@@ -58,32 +46,6 @@ export async function actualizarCancha(idCancha, reservas) {
     throw error;
   }
 }
-
-// export async function actualizarCancha(idCancha, reservas) {
-//   try {
-//     let cancha = await getCanchaById(idCancha);
-//     // Verificar si ya hay una reserva anteriormente
-//     if (cancha.reservas[reservas.fecha]) {
-//       if (cancha.reservas[reservas.fecha] === reservas.hora) {
-//         throw new Error(
-//           "fecha y hora ya reservadas anteriormente, intente otra fecha u hora"
-//         );
-//       }
-//     }
-//     //   Si la reserva es valida, agregarlo al objeto de reservas
-//     debugger;
-//     cancha.reservas[reservas.fecha] = {
-//       hora: reservas.hora,
-//       disponible: true,
-//     };
-
-//     if (cancha.horarios) await actualizarListaReservas(idCancha, cancha);
-//     console.log("cancha actualizada correctamente.");
-//   } catch (error) {
-//     console.error("Error al actualizar la cancha:", error);
-//     throw error;
-//   }
-// }
 
 export async function actualizarListaReservas(idCancha, cancha) {
   try {

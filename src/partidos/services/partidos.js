@@ -15,16 +15,14 @@ import { actualizarCancha } from "./canchas";
 export async function cargarPartido(data, reserva) {
   try {
     const partidoRef = collection(db, "partidos");
-    debugger;
     await actualizarCancha(data.complejo.id, reserva);
-    debugger;
     return addDoc(partidoRef, {
       ...data,
       created_at: serverTimestamp(),
     });
   } catch (err) {
     console.log(err);
-    throw err; // Propagar el error para que sea capturado en handleSubmit
+    throw err;
   }
 }
 
