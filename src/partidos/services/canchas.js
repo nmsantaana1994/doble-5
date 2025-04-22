@@ -1,20 +1,9 @@
-import {
-  collection,
-  serverTimestamp,
-  addDoc,
-  query,
-  getDocs,
-  getDoc,
-  where,
-  doc,
-  updateDoc,
-  onSnapshot,
-} from "@firebase/firestore";
+import { getDoc, doc, updateDoc } from "@firebase/firestore";
 import { db } from "../../services/firebase";
 
 export async function getCanchaById(idCancha) {
   try {
-    const canchaDoc = await getDoc(doc(db, "canchas", idCancha));
+    const canchaDoc = await getDoc(doc(db, "admin-canchas", idCancha));
     if (canchaDoc.exists()) {
       // El documento existe, devolver los datos del partido
       return canchaDoc.data();
@@ -32,18 +21,24 @@ export async function getCanchaById(idCancha) {
 export async function actualizarCancha(idCancha, reservas) {
   try {
     let cancha = await getCanchaById(idCancha);
-    // Verificar si ya hay una reserva anteriormente
-    if (cancha.reservas[reservas.fecha]) {
-      if (cancha.reservas[reservas.fecha] === reservas.hora) {
-        throw new Error(
-          "fecha y hora ya reservadas anteriormente, intente otra fecha u hora"
-        );
-      }
-    }
-    //   Si la reserva es valida, agregarlo al objeto de reservas
-    cancha.reservas[reservas.fecha] = { hora: reservas.hora, disponible: true };
 
-    if(cancha.horarios)
+    // Si no hay reservas para ese día, inicializalo
+    if (!cancha.reservas[reservas.fecha]) {
+      cancha.reservas[reservas.fecha] = {};
+    }
+
+    // Verificar si ya existe una reserva para esa hora
+    const reservaExistente = cancha.reservas[reservas.fecha][reservas.hora];
+    if (reservaExistente && reservaExistente.disponible === false) {
+      throw new Error(
+        "Fecha y hora ya reservadas anteriormente, intente otra fecha u hora"
+      );
+    }
+
+    // Agregar o actualizar la reserva
+    cancha.reservas[reservas.fecha][reservas.hora] = {
+      disponible: false, // marcar como ocupada
+    };
     await actualizarListaReservas(idCancha, cancha);
     console.log("cancha actualizada correctamente.");
   } catch (error) {
@@ -54,9 +49,13 @@ export async function actualizarCancha(idCancha, reservas) {
 
 export async function actualizarListaReservas(idCancha, cancha) {
   try {
-    const canchaRef = doc(db, "canchas", idCancha);
+    const canchaRef = doc(db, "admin-canchas", idCancha);
     await updateDoc(canchaRef, {
       reservas: cancha.reservas,
+    });
+    console.log("Contenido que se va a guardar:", {
+      reservas: cancha.reservas,
+      horarios: cancha.horarios,
     });
     console.log("cancha actualizada correctamente");
   } catch (error) {

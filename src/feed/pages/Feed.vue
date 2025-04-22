@@ -81,7 +81,7 @@
         const toggleLikeView = async (post) => {
             try {
                 // Llama a la función del servicio para manejar el "Me gusta"
-                const updatedPost = await toggleLike(post.id, user.value.id);
+                const updatedPost = await toggleLike(post.id, user.value);
     
                 // Actualiza el post en la lista con los nuevos datos
                 const postIndex = posts.value.findIndex((p) => p.id === updatedPost.id);
@@ -108,7 +108,7 @@
 <template>
     <HeaderPage route="/home" title="Feed" />
     <!-- <hr> -->
-    <section class="p-3 mt-5">
+    <section class="p-3 mt-6">
         <div class="row mb-3">
             <div class="col-2">
                 <Image :src="user.photoURL"/>
@@ -211,5 +211,9 @@
     .font-content {
         color: #828282;
         font-weight: 500;
+    }
+
+    .mt-6 {
+        margin-top: 6rem;
     }
 </style>

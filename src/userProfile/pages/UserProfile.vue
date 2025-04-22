@@ -13,42 +13,77 @@ import UserProfileData from "../components/UserProfileData.vue";
 import Loading from "../../components/Loading.vue";
 import HeaderPage from "../../components/HeaderPage.vue";
 import Section from "../../components/Section.vue";
+import Button from "../../components/Button.vue";
+import UserProfileForm from "../components/UserProfileForm.vue";
+
 const route = useRoute();
 const { user, loading } = useUser(route.params.id);
 const { user: userAuth } = useAuth();
 const totalSeguidores = ref(0);
 const totalSiguiendo = ref(0);
 const userFollowing = ref(false);
-const thisUser = ref(false);
+const isMyProfile = ref(false);
+
+const editing = ref(false);
+const toggleEditing = async () => {
+    editing.value = !editing.value;
+    if (!editing.value) {
+        await fetchUserData();
+    }
+};
+
+const fetchUserData = async () => {
+    try {
+        if (user.value.id === userAuth.value.id) {
+            isMyProfile.value = true;
+        } else {
+            isMyProfile.value = false;
+        }
+        const seguidores = await obtenerSeguidores(user.value.id);
+        const siguiendo = await obtenerSiguiendo(user.value.id);
+
+        totalSeguidores.value = seguidores.length;
+        totalSiguiendo.value = siguiendo.length;
+
+        // Verificar si el usuario actual está siguiendo al usuario cuyo perfil se visualiza
+        userFollowing.value = seguidores.some(usuario => usuario.id === userAuth.value.id);
+    } catch (error) {
+        console.error("Error al obtener seguidores y siguiendo:", error);
+    }
+};
 
 onMounted(async () => {
-    const fetchUserData = async () => {
-        if (user.value && userAuth.value) {
-            try {
-               
-                const seguidores = await obtenerSeguidores(user.value.id);
-                const siguiendo = await obtenerSiguiendo(user.value.id);
-
-                totalSeguidores.value = seguidores.length;
-                totalSiguiendo.value = siguiendo.length;
-
-                // Verificar si el usuario actual está siguiendo al usuario cuyo perfil se visualiza
-                userFollowing.value = seguidores.some(usuario => usuario.id === userAuth.value.id);
-            } catch (error) {
-                console.error(
-                    "Error al obtener seguidores y siguiendo:",
-                    error
-                );
-            }
-        }
-    };
-
-    // Llama a fetchUserData cuando el componente se monta y cuando hay cambios en user o userAuth
-    watch([user, userAuth], fetchUserData);
-
-    // También llama a fetchUserData cuando se sigue o deja de seguir a un usuario
-    watch(userFollowing, fetchUserData);
+    if (user.value.id && userAuth.value) {
+        await fetchUserData();
+    }
 });
+
+watch(
+    [user, userAuth],
+    async () => {
+        if (user.value.id && userAuth.value) {
+            await fetchUserData();
+        }
+    },
+    { immediate: true, flush: 'post' }
+);
+
+watch(
+    editing,
+    async () => {
+    },
+    { flush: 'post' }
+);
+
+watch(
+    userFollowing,
+    async () => {
+        if (user.value.id && userAuth.value) {
+            await fetchUserData();
+        }
+    },
+    { flush: 'post' }
+);
 
 const seguirDejarSeguir = async () => {
     try {
@@ -61,6 +96,7 @@ const seguirDejarSeguir = async () => {
             await seguirUsuario(userAuth.value.id, user.value.id);
             userFollowing.value = true;
         }
+        await fetchUserData(); // Asegurarse de que los datos se actualizan después de seguir/dejar de seguir
     } catch (error) {
         console.error("Error al seguir/dejar de seguir usuario:", error);
     }
@@ -68,23 +104,34 @@ const seguirDejarSeguir = async () => {
 </script>
 
 <template>
-    <HeaderPage route="/home" :title="user?.displayName || user?.name"></HeaderPage>
+    <HeaderPage route="/home" :title="user ? user?.displayName || user?.name : 'perfil'" v-if="!loading"></HeaderPage>
     <Loading :loading="loading" />
-    <Section>
-        <div class="col-12">
-            <UserProfileData :user="user" :totalSeguidores="totalSeguidores" :totalSiguiendo="totalSiguiendo"
-                :seguirDejarSeguir="seguirDejarSeguir" :userFollowing="userFollowing" :thisUser="thisUser" />
-        </div>
+    <template v-if="editing">
+        <Section>
+            <UserProfileForm @profile-updated="fetchUserData" />
+            <div class="my-3" v-if="isMyProfile">
+                <Button class="btn btn-primary w-100" @click="toggleEditing">{{ editing ? "Dejar de Editar" : "Editar mi Perfil"}}</Button>
+            </div>
+        </Section>
+    </template>
+    <template v-else>
+        <Section>
+            <div class="col-12">
+                <UserProfileData :user="user" :totalSeguidores="totalSeguidores" :totalSiguiendo="totalSiguiendo"
+                    :seguirDejarSeguir="seguirDejarSeguir" :userFollowing="userFollowing" :isMyProfile="isMyProfile" />
+            </div>
 
-        <div class="col-12 m-bottom">
-            <h2 class="mb-3 fs-4">Chat privado</h2>
+            <div class="col-12 m-bottom" v-if="!isMyProfile">
+                <h2 class="mb-3 fs-4">Chat privado</h2>
 
-            <router-link :to="`/usuario/${user.id}/chat`" class="text-blue-400 underline">Iniciar chat privado con
-                {{
-                    user.displayName ? user.displayName : user.nombre
-                }}</router-link>
-        </div>
-    </Section>
+                <router-link :to="`/usuario/${user.id}/chat`" class="text-blue-400 underline">Iniciar chat privado con
+                    {{ user.displayName ? user.displayName : user.nombre }}</router-link>
+            </div>
+            <div class="my-3" v-if="isMyProfile">
+                <Button class="btn btn-primary w-100" @click="toggleEditing">{{ editing ? "Dejar de Editar" : "Editar mi Perfil"}}</Button>
+            </div>
+        </Section>
+    </template>
 </template>
 
 <style scoped>

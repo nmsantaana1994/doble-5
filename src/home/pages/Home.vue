@@ -107,7 +107,7 @@ function listenToChanges(partidoCollectionRef) {
     </div>
   </section>
 
-  <section class="pb-3 px-3 mb-5">
+  <section class="pb-3 px-3">
     <div class="row mb-3">
       <div class="col-10">
         <h2 class="text-start h3 mb-3">Próximos partidos</h2>

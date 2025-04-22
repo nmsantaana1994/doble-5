@@ -12,10 +12,7 @@ import {
 } from "@firebase/firestore";
 import { db } from "../../services/firebase";
 import { actualizarCancha } from "./canchas";
-export async function cargarPartido(
-  data,
-  reserva
-) {
+export async function cargarPartido(data, reserva) {
   try {
     const partidoRef = collection(db, "partidos");
     await actualizarCancha(data.complejo.id, reserva);
@@ -25,7 +22,7 @@ export async function cargarPartido(
     });
   } catch (err) {
     console.log(err);
-    throw err; // Propagar el error para que sea capturado en handleSubmit
+    throw err;
   }
 }
 

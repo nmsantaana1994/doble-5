@@ -34,7 +34,7 @@ function goToChat(chat) {
 
 <template>
     <Loading :loading="loading" />
-    <HeaderPage title="chats" route="home" />
+    <HeaderPage title="Chats" route="home" />
     <Section>
         <div>
             <ul>
@@ -66,6 +66,6 @@ ul {
 }
 
 li {
-    margin: 0 0 1rem 0;
+    margin: 0 0 0.2rem 0;
 }
 </style>
