@@ -55,8 +55,7 @@
                             likes: [],
                             comments: [],
                             // Otros campos que desees agregar
-                        },
-                        user.value.id // Pasar el ID del usuario para notificar
+                        }
                     );
     
                     newPostContent.value = "";
@@ -82,7 +81,7 @@
         const toggleLikeView = async (post) => {
             try {
                 // Llama a la función del servicio para manejar el "Me gusta"
-                const updatedPost = await toggleLike(post.id, user.value.id);
+                const updatedPost = await toggleLike(post.id, user.value);
     
                 // Actualiza el post en la lista con los nuevos datos
                 const postIndex = posts.value.findIndex((p) => p.id === updatedPost.id);

@@ -10,8 +10,11 @@ import {
     limit,
     getDocs,
     orderBy,
-    onSnapshot
+    onSnapshot,
+    doc
 } from "firebase/firestore";
+import { createNotification } from "../../notifications/services/notifications.js";
+import { ref, get } from "firebase/database";
 
 const cache = {};
 
@@ -62,6 +65,20 @@ export async function sendPrivateMessage(from, to, message) {
         message,
         created_at: serverTimestamp(),
     });
+
+    // Verificar si el destinatario está en el mismo chat
+    try {
+        const recipientPresenceRef = ref(db, `presence/${to}`);
+        const recipientPresence = (await get(recipientPresenceRef)).val();
+
+        if (!recipientPresence || recipientPresence.chatId !== docRef.id) {
+            const userDoc = await getDoc(doc(db, "users", from));
+            const senderName = userDoc.data()?.displayName || "Alguien";
+            await createNotification(to, `${senderName} te ha enviado un mensaje`);
+        }
+    } catch (error) {
+        console.error("Error al verificar la presencia o crear la notificación:", error);
+    }
 
     return true;
 }

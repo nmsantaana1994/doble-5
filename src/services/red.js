@@ -7,6 +7,7 @@ import {
     getDoc,
     onSnapshot,
 } from "firebase/firestore";
+import { createNotification } from "../notifications/services/notifications.js";
 import { getUserById } from "./users.js";
 
 // Obtener seguidores de un usuario
@@ -144,6 +145,13 @@ export async function seguirUsuario(userId, usuarioASeguirId) {
         await updateDoc(usuarioASeguirRef, {
             followers: arrayUnion(userId),
         });
+
+        // Obtener datos del usuario que sigue para la notificación
+        const usuarioQueSigue = await getUserById(userId);
+        if (usuarioQueSigue) {
+            const mensaje = `${usuarioQueSigue.displayName || usuarioQueSigue.name} te ha empezado a seguir`;
+            await createNotification(usuarioASeguirId, mensaje);
+        }
 
         console.log("[red.js seguirUsuario] Usuario seguido con éxito:", usuarioASeguirId);
         return await getUserById(usuarioASeguirId);

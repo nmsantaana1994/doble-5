@@ -1,21 +1,22 @@
 import { db } from "./firebase";
 import { collection, doc, updateDoc, arrayUnion, arrayRemove, addDoc, getDocs, getDoc, query, orderBy, serverTimestamp, Timestamp } from "firebase/firestore";
+import { createNotification } from "../notifications/services/notifications";
 import { format } from "date-fns"; // Import date-fns para formatear
 
 // Función para crear una notificación
-async function createNotification(userId, message) {
-    try {
-        const notificacionesRef = collection(db, "notificaciones");
-        await addDoc(notificacionesRef, {
-            userId,
-            mensaje: message, // Mensaje claro y específico
-            leida: false, // Agregar el campo `leida` como false por defecto
-            created_at: serverTimestamp(),
-        });
-    } catch (error) {
-        console.error("Error al crear la notificación:", error);
-    }
-}
+// async function createNotification(userId, message) {
+//     try {
+//         const notificacionesRef = collection(db, "notificaciones");
+//         await addDoc(notificacionesRef, {
+//             userId,
+//             mensaje: message, // Mensaje claro y específico
+//             leida: false, // Agregar el campo `leida` como false por defecto
+//             created_at: serverTimestamp(),
+//         });
+//     } catch (error) {
+//         console.error("Error al crear la notificación:", error);
+//     }
+// }
 
 // Función para publicar una nueva publicación
 export async function publishPost(postData, userId) {
@@ -110,7 +111,52 @@ export async function addComment(postId, user, newComment) {
 }
 
 // Función para manejar tanto la adición como la eliminación del "Me gusta"
-export async function toggleLike(postId, userId) {
+// export async function toggleLike(postId, userId) {
+//     try {
+//         const postRef = doc(db, "publicaciones", postId);
+//         const postSnapshot = await getDoc(postRef);
+
+//         if (postSnapshot.exists()) {
+//             const post = { id: postSnapshot.id, ...postSnapshot.data() };
+
+//             // Verifica si el usuario ya dio like
+//             const userLiked = post.likes.includes(userId);
+
+//             // Agregar o quitar el "Me gusta" según el estado actual
+//             if (userLiked) {
+//                 // Quitar el "Me gusta"
+//                 post.likes = post.likes.filter((likedUserId) => likedUserId !== userId);
+//                 await removeLike(postId, userId);
+//             } else {
+//                 // Agregar el "Me gusta"
+//                 post.likes.push(userId);
+//                 await addLike(postId, userId);
+//             }
+            
+//             // Actualizar el estado del "Me gusta" en la publicación
+//             post.liked = !userLiked;
+
+//             // Actualizar la publicación en la base de datos
+//             await updateDoc(postRef, {
+//                 likes: post.likes,
+//             });
+
+//             // Crear una notificación para el autor del post
+//             if (!userLiked && post.userId !== userId) {
+//                 await createNotification(post.userId, `A ${userId} le gustó tu publicación.`);
+//             }
+
+//             // Devolver la publicación actualizada
+//             return post;
+//         } else {
+//             throw new Error("La publicación no existe.");
+//         }
+//     } catch (error) {
+//         console.error("Error al manejar el 'Me gusta':", error);
+//         throw error;
+//     }
+// }
+export async function toggleLike(postId, user) {
     try {
         const postRef = doc(db, "publicaciones", postId);
         const postSnapshot = await getDoc(postRef);
@@ -119,19 +165,21 @@ export async function toggleLike(postId, userId) {
             const post = { id: postSnapshot.id, ...postSnapshot.data() };
 
             // Verifica si el usuario ya dio like
-            const userLiked = post.likes.includes(userId);
+            const userLiked = post.likes.includes(user.id);
 
             // Agregar o quitar el "Me gusta" según el estado actual
             if (userLiked) {
                 // Quitar el "Me gusta"
-                post.likes = post.likes.filter((likedUserId) => likedUserId !== userId);
-                await removeLike(postId, userId);
+                post.likes = post.likes.filter(
+                    (likedUserId) => likedUserId !== user.id
+                );
+                await removeLike(postId, user.id);
             } else {
                 // Agregar el "Me gusta"
-                post.likes.push(userId);
-                await addLike(postId, userId);
+                post.likes.push(user.id);
+                await addLike(postId, user.id);
             }
-            
+
             // Actualizar el estado del "Me gusta" en la publicación
             post.liked = !userLiked;
 
@@ -141,8 +189,11 @@ export async function toggleLike(postId, userId) {
             });
 
             // Crear una notificación para el autor del post
-            if (!userLiked && post.userId !== userId) {
-                await createNotification(post.userId, `A ${userId} le gustó tu publicación.`);
+            if (!userLiked && post.userId !== user.id) {
+                await createNotification(
+                    post.userId,
+                    `A ${user.displayName} le gustó tu publicación.`
+                );
             }
 
             // Devolver la publicación actualizada
@@ -155,7 +206,6 @@ export async function toggleLike(postId, userId) {
         throw error;
     }
 }
-
 
 // Función para agregar un "Me gusta" a una publicación
 export async function addLike(postId, userId) {

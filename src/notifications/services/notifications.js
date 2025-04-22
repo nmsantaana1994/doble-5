@@ -1,5 +1,21 @@
-import { addDoc, collection, doc, updateDoc, query, where, onSnapshot, orderBy, deleteDoc } from "firebase/firestore";
+import { addDoc, collection, doc, updateDoc, query, where, onSnapshot, orderBy, deleteDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../services/firebase";
+
+// Función para crear una notificación
+export const createNotification = async (userId, message) => {
+    try {
+        const notificacionesRef = collection(db, "notificaciones");
+        await addDoc(notificacionesRef, {
+            userId,
+            mensaje: message, // Mensaje claro y específico
+            leida: false, // Agregar el campo `leida` como false por defecto
+            created_at: serverTimestamp(),
+        });
+    } catch (error) {
+        console.error("Error al crear la notificación:", error);
+    }
+}
+
 
 // Agregar una nueva notificación
 export const agregarNotificacion = async (mensaje, userId) => {
