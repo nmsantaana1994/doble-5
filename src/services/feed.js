@@ -3,21 +3,6 @@ import { collection, doc, updateDoc, arrayUnion, arrayRemove, addDoc, getDocs, g
 import { createNotification } from "../notifications/services/notifications";
 import { format } from "date-fns"; // Import date-fns para formatear
 
-// Función para crear una notificación
-// async function createNotification(userId, message) {
-//     try {
-//         const notificacionesRef = collection(db, "notificaciones");
-//         await addDoc(notificacionesRef, {
-//             userId,
-//             mensaje: message, // Mensaje claro y específico
-//             leida: false, // Agregar el campo `leida` como false por defecto
-//             created_at: serverTimestamp(),
-//         });
-//     } catch (error) {
-//         console.error("Error al crear la notificación:", error);
-//     }
-// }
-
 // Función para publicar una nueva publicación
 export async function publishPost(postData, userId) {
     try {
@@ -31,7 +16,7 @@ export async function publishPost(postData, userId) {
         });
 
         // Crear una notificación para el usuario
-        await createNotification(userId, "Has publicado una nueva publicación.");
+        // await createNotification(userId, "Has publicado una nueva publicación.");
     } catch (error) {
         console.error("Error al publicar la publicación:", error);
         throw error;
@@ -80,7 +65,7 @@ export async function addComment(postId, user, newComment) {
                 userId: user.id,
                 userDisplayName: user.displayName,
                 content: newComment,
-                created_at: Timestamp.now(),
+                created_at: serverTimestamp(),
             };
 
             // Agregar el nuevo comentario a la publicación
@@ -93,7 +78,7 @@ export async function addComment(postId, user, newComment) {
 
             // Crear una notificación para el autor del post
             if (post.userId !== user.id) {
-                await createNotification(post.userId, `${user.displayName} comentó tu publicación: "${newComment}"`);
+                await createNotification(post.userId, `${user.displayName} comentó tu publicación: "${newComment}"`, "comentario", post.id, `/comments/${post.id}`);
             }
 
             // Formatear la fecha del comentario
@@ -110,52 +95,6 @@ export async function addComment(postId, user, newComment) {
     }
 }
 
-// Función para manejar tanto la adición como la eliminación del "Me gusta"
-// export async function toggleLike(postId, userId) {
-//     try {
-//         const postRef = doc(db, "publicaciones", postId);
-//         const postSnapshot = await getDoc(postRef);
-
-//         if (postSnapshot.exists()) {
-//             const post = { id: postSnapshot.id, ...postSnapshot.data() };
-
-//             // Verifica si el usuario ya dio like
-//             const userLiked = post.likes.includes(userId);
-
-//             // Agregar o quitar el "Me gusta" según el estado actual
-//             if (userLiked) {
-//                 // Quitar el "Me gusta"
-//                 post.likes = post.likes.filter((likedUserId) => likedUserId !== userId);
-//                 await removeLike(postId, userId);
-//             } else {
-//                 // Agregar el "Me gusta"
-//                 post.likes.push(userId);
-//                 await addLike(postId, userId);
-//             }
-            
-//             // Actualizar el estado del "Me gusta" en la publicación
-//             post.liked = !userLiked;
-
-//             // Actualizar la publicación en la base de datos
-//             await updateDoc(postRef, {
-//                 likes: post.likes,
-//             });
-
-//             // Crear una notificación para el autor del post
-//             if (!userLiked && post.userId !== userId) {
-//                 await createNotification(post.userId, `A ${userId} le gustó tu publicación.`);
-//             }
-
-//             // Devolver la publicación actualizada
-//             return post;
-//         } else {
-//             throw new Error("La publicación no existe.");
-//         }
-//     } catch (error) {
-//         console.error("Error al manejar el 'Me gusta':", error);
-//         throw error;
-//     }
-// }
 export async function toggleLike(postId, user) {
     try {
         const postRef = doc(db, "publicaciones", postId);
@@ -192,7 +131,10 @@ export async function toggleLike(postId, user) {
             if (!userLiked && post.userId !== user.id) {
                 await createNotification(
                     post.userId,
-                    `A ${user.displayName} le gustó tu publicación.`
+                    `A ${user.displayName} le gustó tu publicación.`,
+                    "like",
+                    post.id,
+                    `/comments/${post.id}`
                 );
             }
 

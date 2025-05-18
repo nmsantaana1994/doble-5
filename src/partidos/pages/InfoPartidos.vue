@@ -1,6 +1,10 @@
 <script setup>
 import { ref, onMounted, onUnmounted, inject, watch } from "vue";
-import { getPartidoById, inscribirPartido } from "../services/partidos";
+import {
+  getPartidoById,
+  inscribirPartido,
+  eliminarJugadorDePartido,
+} from "../services/partidos";
 import { getFirestore, doc, onSnapshot } from "firebase/firestore";
 import { notificationProvider } from "../../symbols/symbols.js";
 import { usePartido } from "../../composition/usePartidos";
@@ -20,6 +24,7 @@ const partidoDocRef = doc(db, "partidos", route.params.id);
 
 const partidoFiltrado = ref(null);
 const flagInscription = ref(false);
+const myMatch = ref(false);
 
 onMounted(async () => {
   try {
@@ -28,6 +33,11 @@ onMounted(async () => {
     console.log(partidoFiltrado.value);
     flagInscription.value = estaInscripto();
     listenToChanges();
+    if (user.value.id === partidoFiltrado.value.userId) {
+      myMatch.value = true;
+    } else {
+      myMatch.value = false;
+    }
   } catch (error) {
     console.error(error.message);
   }
@@ -65,6 +75,38 @@ async function inscribirseAlPartido() {
     }
   } catch (error) {
     setFeedbackMessage({ type: "error", message: error });
+  }
+}
+
+async function eliminarDePartido(userid) {
+  try {
+    clearFeedbackMessage();
+    if (partidoFiltrado.value) {
+      await eliminarJugadorDePartido(userid, route.params.id);
+      flagInscription.value = estaInscripto();
+      setFeedbackMessage({
+        type: "success",
+        message: "Usuario eliminado correctamente",
+      });
+    }
+  } catch (error) {
+    setFeedbackMessage({ type: "error", message: error.message });
+  }
+}
+
+async function eliminarPartido(userid) {
+  try {
+    clearFeedbackMessage();
+    if (partidoFiltrado.value) {
+      await eliminarJugadorDePartido(userid, route.params.id);
+      flagInscription.value = estaInscripto();
+      setFeedbackMessage({
+        type: "success",
+        message: "Usuario eliminado correctamente",
+      });
+    }
+  } catch (error) {
+    setFeedbackMessage({ type: "error", message: error.message });
   }
 }
 
@@ -127,6 +169,14 @@ function estaInscripto() {
           Organizado por: <br />{{
             partidoFiltrado ? partidoFiltrado.usuarioCreador : "-"
           }}
+          -
+          <button
+            class="button__delete"
+            @click="eliminarPartido()"
+            v-show="myMatch"
+          >
+            ELIMINAR PARTIDO
+          </button>
         </p>
       </div>
     </div>
@@ -153,6 +203,13 @@ function estaInscripto() {
           <router-link :to="`/usuario/${nombreJugador.uid}`">
             ver perfil
           </router-link>
+          <button
+            class="button__delete"
+            @click="eliminarDePartido(nombreJugador.uid)"
+            v-show="myMatch"
+          >
+            X
+          </button>
         </p>
       </div>
     </div>
@@ -202,5 +259,13 @@ ul {
 }
 .fotoCancha img {
   width: 100%;
+}
+.button__delete {
+  border: none;
+  background-color: red;
+  border-radius: 8px;
+  color: white;
+  font-weight: 500;
+  margin: 0 0.3rem;
 }
 </style>

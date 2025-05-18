@@ -418,15 +418,23 @@ export async function register({
     const user = credentials.user;
 
     await createUser(user.uid, {
-      email: user.email,
-      nombre: nombre,
-      apellido: apellido,
-      nacimiento: nacimiento,
-      genero: genero,
-      nivel: nivel,
-      barrio: barrio,
-      telefono: telefono,
-      terminos: terminos,
+        email: user.email,
+        nombre: nombre,
+        apellido: apellido,
+        nacimiento: nacimiento,
+        genero: genero,
+        nivel: nivel,
+        barrio: barrio,
+        telefono: telefono,
+        terminos: terminos,
+        settings: {
+            notifications: {
+                chat: true,
+                comentario: true,
+                like: true,
+                seguir: true,
+            },
+        },
     });
 
     return {

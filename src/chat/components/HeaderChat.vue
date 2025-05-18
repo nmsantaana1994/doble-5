@@ -8,6 +8,7 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    isOnline: Boolean,
 });
 
 const router = useRouter();
@@ -27,13 +28,23 @@ function goBack() {
             <div class="image-container">
                 <Image :src="otherUser.photoURL" />
             </div>
-            <h1>
-                {{
-                    otherUser.displayName
-                        ? otherUser.displayName
-                        : otherUser.nombre
-                }}
-            </h1>
+            <div>
+                <h1>
+                    <!-- <span
+                        v-if="otherUser.displayName"
+                        style="font-size: 1.5rem; margin-right: 0.5rem"
+                        class="d-inline-block"
+                        >{{ otherUser.displayName }}</span
+                    > -->
+                    {{
+                        otherUser.displayName
+                            ? otherUser.displayName
+                            : otherUser.nombre
+                    }}
+                </h1>
+                <span v-if="isOnline" style="color: white; font-size: 0.8rem">● En línea</span>
+                <span v-else style="color: white; font-size: 1rem">● Desconectado</span>
+            </div>
         </div>
     </div>
 </template>

@@ -2,28 +2,37 @@
   <div>
     <HeaderPage route="/home" title="Notificaciones" />
     <Section>
-      <h3>Notificaciones</h3>
-      <ul v-if="notificaciones.length > 0">
-        <li
+      <h3 class="mb-3">Notificaciones</h3>
+      <div v-if="notificaciones.length > 0" class="notificaciones-list">
+        <div
           v-for="notificacion in notificaciones"
           :key="notificacion.id"
-          :class="{ 'notificacion-leida': notificacion.leida }"
+          class="notificacion-card"
+          :class="{ leida: notificacion.leida }"
+          @click="irADetalle(notificacion)"
         >
-          <div class="d-flex justify-content-between align-items-center">
-            <div @click="marcarComoLeida(notificacion)">
-              <p>{{ notificacion.mensaje }}</p>
-              <small>{{ notificacion.created_at?.toDate().toLocaleString() }}</small>
-            </div>
+          <div class="icono">
+            <span v-if="notificacion.tipo === 'like'"><i class="bi bi-hand-thumbs-up"></i></span>
+            <span v-else-if="notificacion.tipo === 'comentario'"><i class="bi bi-chat-left-dots"></i></span>
+            <span v-else><i class="bi bi-bell"></i></span>
+          </div>
+          <div class="contenido">
+            <p class="mensaje">{{ notificacion.mensaje }}</p>
+            <small class="fecha">
+              {{ notificacion.created_at?.toDate().toLocaleString() }}
+            </small>
+          </div>
+          <div class="acciones">
             <button
-              type="button"
-              class="btn btn-danger btn-sm"
-              @click="eliminarNotificacionHandler(notificacion.id)"
+              class="btn btn-link eliminar"
+              @click.stop="eliminarNotificacionHandler(notificacion.id)"
+              title="Eliminar notificación"
             >
-              Eliminar
+              <i class="bi bi-trash"></i>
             </button>
           </div>
-        </li>
-      </ul>
+        </div>
+      </div>
       <p v-else>No tienes notificaciones</p>
     </Section>
   </div>
@@ -32,6 +41,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
 import { useAuth } from "../../composition/useAuth";
+import { useRouter } from "vue-router";
 import HeaderPage from "../../components/HeaderPage.vue";
 import Section from "../../components/Section.vue";
 import {
@@ -40,94 +50,100 @@ import {
   eliminarNotificacion,
 } from "../services/notifications";
 
-// Obtener usuario autenticado
 const { user } = useAuth();
-const notificaciones = ref([]); // Variable reactiva para almacenar las notificaciones
+const notificaciones = ref([]);
+const router = useRouter();
 let unsubscribe = null;
 
 onMounted(() => {
   if (user.value && user.value.id) {
-    console.log("Cargando notificaciones para el usuario:", user.value.id);
     unsubscribe = obtenerNotificaciones(user.value.id, (nuevasNotificaciones) => {
-      console.log("Notificaciones actualizadas en el componente:", nuevasNotificaciones); // Depuración
-      notificaciones.value = nuevasNotificaciones; // Actualizar en tiempo real
+      notificaciones.value = nuevasNotificaciones;
     });
-  } else {
-    console.error("El usuario no está autenticado o no tiene un ID válido.");
   }
 });
 
-// Usar watchEffect para observar cambios en las notificaciones
-// watchEffect(() => {
-//   console.log("Notificaciones actualizadas (watchEffect):", notificaciones.value);
-// });
-
-// Función para marcar una notificación como leída
-const marcarComoLeida = async (notificacion) => {
+const irADetalle = async (notificacion) => {
   if (!notificacion.leida) {
     await marcarNotificacionComoLeida(notificacion.id);
-    notificacion.leida = true; // Actualizar localmente
+    notificacion.leida = true;
+  }
+
+  if (notificacion.ruta) {
+    router.push(notificacion.ruta);
   }
 };
 
-// Función para eliminar una notificación
 const eliminarNotificacionHandler = async (notificacionId) => {
   try {
     await eliminarNotificacion(notificacionId);
     notificaciones.value = notificaciones.value.filter(
-      (notificacion) => notificacion.id !== notificacionId
+      (n) => n.id !== notificacionId
     );
   } catch (error) {
     console.error("Error al eliminar la notificación:", error);
   }
 };
 
-// Limpiar el listener al desmontar el componente
 onUnmounted(() => {
-  if (unsubscribe) {
-    unsubscribe();
-  }
+  if (unsubscribe) unsubscribe();
 });
 </script>
 
 <style scoped>
-.notificacion-leida {
+.notificaciones-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.notificacion-card {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.notificacion-card:hover {
+  background: #f9f9f9;
+}
+
+.notificacion-card.leida {
   opacity: 0.6;
 }
+
+.icono {
+  font-size: 1.5rem;
+  margin-right: 1rem;
+}
+
+.contenido {
+  flex: 1;
+}
+
+.mensaje {
+  margin: 0;
+  font-weight: 500;
+}
+
+.fecha {
+  color: #666;
+  font-size: 0.8rem;
+}
+
+.acciones {
+  margin-left: 1rem;
+}
+
+.eliminar {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #dc3545;
+  cursor: pointer;
+}
 </style>
-<!-- 
-<template>
-  <div>
-    <h3>Notificaciones</h3>
-    <ul v-if="notificaciones.length">
-      <li v-for="notificacion in notificaciones" :key="notificacion.id">
-        <p>{{ notificacion.mensaje }}</p>
-        <small>{{ notificacion.fecha.toDate().toLocaleString() }}</small>
-      </li>
-    </ul>
-    <p v-else>No tienes notificaciones</p>
-  </div>
-</template>
-
-<script setup>
-import { useNotificaciones } from "../composables/useNotifications";
-import { useAuth } from "../../composition/useAuth";
-import { agregarNotificacion } from "../services/notifications";
-import { ref, onMounted } from "vue";
-
-// Obtener usuario autenticado
-const { user } = useAuth();
-const notificaciones = ref([]);
-
-onMounted(async () => {
-  // Asegurarte de que el usuario esté disponible antes de llamar a `useNotificaciones`
-  if (user.value && user.value.id) {
-    const { notificaciones: notis } = useNotificaciones(user.value.id);
-    notificaciones.value = notis;
-
-    // await agregarNotificacion("chau", user.value.id);
-  } else {
-    console.log("El usuario no está disponible.");
-  }
-});
-</script> -->

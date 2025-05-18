@@ -7,6 +7,7 @@ import Loader from "../components/Loader.vue";
 import HeaderPage from "../components/HeaderPage.vue";
 import Loading from "../components/Loading.vue";
 import Section from "../components/Section.vue";
+import router from "../router/router";
 const { user, seguidores, siguiendo, loading } = useRed();
 
 function useRed() {
@@ -74,12 +75,16 @@ function useRed() {
                     aria-labelledby="seguidores-tab" tabindex="0">
                     <ul class="list-unstyled">
                         <li v-for="seguidor in seguidores" :key="seguidor" class="row">
-                            <div class="col-3">
-                                <Image :src="seguidor.photoURL" />
-                            </div>
-                            <div class="col-9 d-flex align-items-center">
-                                <p class="m-0">{{ seguidor.nombre }} {{ seguidor.apellido }}</p>
-                            </div>
+                            <router-link :to="'/usuario/' + seguidor.id" class="col-12 text-decoration-none text-dark">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <Image :src="seguidor.photoURL" />
+                                    </div>
+                                    <div class="col-9 d-flex align-items-center">
+                                        <p class="m-0">{{ seguidor.nombre }} {{ seguidor.apellido }}</p>
+                                    </div>
+                                </div>
+                            </router-link>
                         </li>
                     </ul>
                 </div>
