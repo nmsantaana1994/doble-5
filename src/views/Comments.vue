@@ -60,7 +60,7 @@
     
         const toggleLikeView = async () => {
             try {
-                const updatedPost = await toggleLike(post.value.id, user.value.id);
+                const updatedPost = await toggleLike(post.value.id, user.value);
                 post.value = updatedPost;
             } catch (error) {
                 console.error("Error al manejar el 'Me gusta':", error);

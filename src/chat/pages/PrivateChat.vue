@@ -9,34 +9,45 @@ import { onUnmounted, ref, watch, nextTick } from "vue";
 import {
     sendPrivateMessage,
     subscribeToPrivateChat,
+    getPrivateChatRef,
 } from "../services/private-chats.js";
 import HeaderChat from "../components/HeaderChat.vue";
 import Section from "../../components/Section.vue";
 import Loading from "../../components/Loading.vue";
 import cardMessage from "../components/cardMessage.vue";
+import { doc, updateDoc, serverTimestamp, onSnapshot } from "firebase/firestore";
+import { db } from "../../services/firebase.js";
 
 const route = useRoute();
 const { user: otherUser, loading } = useUser(route.params.id);
 const { user: authUser } = useAuth();
+const messagesContainerRef = ref(null);
+const isOtherUserOnline = ref(false);
+
 const { handleSubmit, fields, formLoading } = usePrivateChatForm(
     authUser,
     otherUser
 );
-const { messages, loading: loadingMessages } = usePrivateChat(
+const { messages, loading: loadingMessages, chatId } = usePrivateChat(
     authUser,
     otherUser
 );
-const messagesContainerRef = ref(null); // Nueva referencia para el contenedor de mensajes
 
 function usePrivateChat(authUser, otherUser) {
     const loading = ref(true);
     const messages = ref([]);
-
+    const chatId = ref(null);
     let unsubscribe = () => {};
 
-    watch(otherUser, (newOtherUser) => {
+    watch(otherUser, async (newOtherUser) => {
         if (newOtherUser.id != null) {
+            const chatRef = await getPrivateChatRef(
+                authUser.value.id,
+                newOtherUser.id
+            );
+            chatId.value = chatRef.id;
             setSubscription();
+            subscribeToPresence();
         }
     });
 
@@ -47,7 +58,7 @@ function usePrivateChat(authUser, otherUser) {
             (newMessages) => {
                 messages.value = newMessages;
                 loading.value = false;
-                scrollToBottom(); // Desplaza hacia abajo después de cargar nuevos mensajes
+                scrollToBottom();
             }
         );
     }
@@ -55,17 +66,34 @@ function usePrivateChat(authUser, otherUser) {
     function scrollToBottom() {
         nextTick(() => {
             messagesContainerRef.value.scrollTop =
-                messagesContainerRef.value.scrollHeight; // Desplazar hacia el final
+                messagesContainerRef.value.scrollHeight;
+        });
+    }
+
+    let unsubscribePresence = () => {};
+
+    async function subscribeToPresence() {
+        const chatRef = await getPrivateChatRef(
+            authUser.value.id,
+            otherUser.value.id
+        );
+        const presenceDocRef = doc(db, "private-chats", chatRef.id);
+
+        unsubscribePresence = onSnapshot(presenceDocRef, (docSnap) => {
+            const presenceData = docSnap.data()?.presence || {};
+            isOtherUserOnline.value = presenceData[otherUser.value.id] || false;
         });
     }
 
     onUnmounted(() => {
         unsubscribe();
+        unsubscribePresence();
     });
 
     return {
         loading,
         messages,
+        chatId,
     };
 }
 
@@ -97,13 +125,36 @@ function usePrivateChatForm(authUser, otherUser) {
         handleSubmit,
     };
 }
+
+// Gestión de presencia al entrar y salir del chat
+async function setUserOnlineStatus(online) {
+    if (!authUser.value || !otherUser.value) return;
+
+    const chatRef = await getPrivateChatRef(authUser.value.id, otherUser.value.id);
+    const docRef = doc(db, "private-chats", chatRef.id);
+
+    await updateDoc(docRef, {
+        [`presence.${authUser.value.id}`]: online,
+        [`users.${authUser.value.id}`]: true, // asegura mantener esta info
+        [`lastSeen.${authUser.value.id}`]: serverTimestamp(),
+    });
+}
+
+watch([authUser, otherUser], async ([newAuthUser, newOtherUser]) => {
+    if (newAuthUser?.id && newOtherUser?.id) {
+        await setUserOnlineStatus(true);
+    }
+});
+
+onUnmounted(async () => {
+    await setUserOnlineStatus(false);
+});
 </script>
 
 <template>
-    <HeaderChat :otherUser="otherUser" />
+    <HeaderChat :otherUser="otherUser" :isOnline="isOtherUserOnline" />
     <Section>
         <Loading :loading="loading" />
-
         <div
             class="mb-3"
             ref="messagesContainerRef"
@@ -118,28 +169,19 @@ function usePrivateChatForm(authUser, otherUser) {
                 >
                     <cardMessage
                         :message="message"
-                        :userName="
-                            message.userId === authUser.id
-                                ? authUser.displayName || authUser.nombre
-                                : otherUser.displayName || otherUser.nombre
-                        "
-                        :messageClass="
-                            message.userId === authUser.id
-                                ? 'message-sent'
-                                : 'message-received'
-                        "
+                        :userName="message.userId === authUser.id
+                            ? authUser.displayName || authUser.nombre
+                            : otherUser.displayName || otherUser.nombre"
+                        :messageClass="message.userId === authUser.id
+                            ? 'message-sent'
+                            : 'message-received'"
                     />
                 </li>
             </ul>
         </div>
 
         <div class="textarea__message">
-            <form
-                action="#"
-                method="POST"
-                id="form-message"
-                @submit.prevent="handleSubmit"
-            >
+            <form @submit.prevent="handleSubmit">
                 <div class="mb-3">
                     <Label for="message">Mensaje</Label>
                     <Textarea
@@ -162,36 +204,29 @@ function usePrivateChatForm(authUser, otherUser) {
 <style scoped>
 ul {
     list-style: none;
-    /* padding-bottom: 105px; */
     padding: 0 0 100px 0;
 }
-
 .font-date {
     font-size: 0.7rem;
 }
-
 .title_chat {
     position: fixed;
     width: 100%;
 }
-
 textarea {
     width: 100%;
 }
-
 form button {
     background-color: var(--primary-color);
     color: white;
 }
-
 .button_disabled {
     background-color: grey;
 }
-
 .textarea__message {
     background-color: #f0f0f0;
     position: fixed;
-    bottom: 56px; /* Adjusted to account for the navbar height */
+    bottom: 56px;
     display: flex;
     align-items: center;
     width: 100%;
@@ -199,13 +234,11 @@ form button {
     left: 0;
     border-top: 1px solid #ddd;
 }
-
 .textarea__message form {
     display: flex;
     flex: 1;
     align-items: center;
 }
-
 .textarea__message form textarea {
     flex: 1;
     border: none;
@@ -216,7 +249,6 @@ form button {
     background-color: #fff;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
-
 .textarea__message form button {
     background-color: var(--primary-color);
     color: white;
@@ -225,7 +257,6 @@ form button {
     border-radius: 20px;
     cursor: pointer;
 }
-
 .textarea__message form button:disabled {
     background-color: grey;
     cursor: not-allowed;

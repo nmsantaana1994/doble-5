@@ -17,7 +17,7 @@ import InscribirPartido from "../partidos/pages/InscribirPartido.vue";
 import Feed from "../feed/pages/Feed.vue";
 import Comments from "../views/Comments.vue";
 import Red from "../views/Red.vue";
-import Ajustes from "../views/Ajustes.vue";
+import Ajustes from "../ajustes/Ajustes.vue";
 import Ayuda from "../views/Ayuda.vue";
 import Notificaciones from "../notifications/pages/notificaciones.vue";
 
