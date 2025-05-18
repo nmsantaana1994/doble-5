@@ -1,31 +1,55 @@
-import { addDoc, collection, doc, updateDoc, query, where, onSnapshot, orderBy, deleteDoc, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, updateDoc, query, where, onSnapshot, orderBy, deleteDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../../services/firebase";
 
-// Función para crear una notificación
-export const createNotification = async (userId, message) => {
+export const createNotification = async (
+    userId,
+    message,
+    tipo = null,
+    referenciaId = null,
+    ruta = null
+) => {
     try {
+        const userDocRef = doc(db, "users", userId);
+        const userSnap = await getDoc(userDocRef);
+
+        if (!userSnap.exists()) return;
+
+        const settings = userSnap.data().settings?.notifications || {};
+
+        if (tipo && settings[tipo] === false) return; // no crear si está desactivado
+
         const notificacionesRef = collection(db, "notificaciones");
         await addDoc(notificacionesRef, {
             userId,
-            mensaje: message, // Mensaje claro y específico
-            leida: false, // Agregar el campo `leida` como false por defecto
+            mensaje: message,
+            leida: false,
+            tipo,
+            referenciaId,
+            ruta,
             created_at: serverTimestamp(),
         });
     } catch (error) {
         console.error("Error al crear la notificación:", error);
     }
-}
-
-
-// Agregar una nueva notificación
-export const agregarNotificacion = async (mensaje, userId) => {
-  await addDoc(collection(db, "notificaciones"), {
-    mensaje,
-    userId,
-    leida: false,
-    created_at: new Date(),
-  });
 };
+
+// // Función para crear una notificación
+// export const createNotification = async (userId, message, tipo = null, referenciaId = null, ruta = null) => {
+//     try {
+//         const notificacionesRef = collection(db, "notificaciones");
+//         await addDoc(notificacionesRef, {
+//             userId,
+//             mensaje: message, // Mensaje claro y específico
+//             leida: false, // Agregar el campo `leida` como false por defecto
+//             tipo,
+//             referenciaId,
+//             ruta,
+//             created_at: serverTimestamp(),
+//         });
+//     } catch (error) {
+//         console.error("Error al crear la notificación:", error);
+//     }
+// }
 
 // Obtener notificaciones en tiempo real
 export const obtenerNotificaciones = (userId, callback) => {

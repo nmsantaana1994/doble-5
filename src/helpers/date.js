@@ -26,3 +26,8 @@ export function convertirFecha(fecha) {
     // Devolver la fecha en el nuevo formato
     return `${day}-${month}-${year}`;
   }
+
+export function formatTime(date) {
+    const options = { hour: "2-digit", minute: "2-digit", hour12: false };
+    return new Intl.DateTimeFormat("es-AR", options).format(new Date(date));
+}

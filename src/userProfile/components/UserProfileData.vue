@@ -1,6 +1,7 @@
 <script setup>
 import Image from "../../components/Image.vue";
 import Loader from "../../components/Loader.vue";
+import router from "../../router/router";
 import changePhoto from "../components/changePhoto.vue";
 import { onMounted, watch } from "vue";
 import { ref } from "vue";
@@ -83,14 +84,24 @@ function handlePhotoUpdated(success) {
     <div class="col-12 mb-3">
       <div class="row">
         <div class="col-6 mt-3">
-          <Loader v-if="loading" />
-          <p v-else class="text-center fw-bold">{{ totalSeguidores }}</p>
-          <p class="text-center fw-bold">Seguidores</p>
+          <router-link
+          :to="`/red/`"
+          class="text-decoration-none text-dark"
+          >
+            <!-- <Loader v-if="loading" /> -->
+            <p class="text-center fw-bold">{{ totalSeguidores }}</p>
+            <p class="text-center fw-bold">Seguidores</p>
+          </router-link>
         </div>
         <div class="col-6 mt-3">
-          <Loader v-if="loading" />
-          <p v-else class="text-center fw-bold">{{ totalSiguiendo }}</p>
-          <p class="text-center fw-bold">Siguiendo</p>
+          <router-link
+          :to="`/red/`"
+          class="text-decoration-none text-dark"
+          >
+            <!-- <Loader v-if="loading" /> -->
+            <p class="text-center fw-bold">{{ totalSiguiendo }}</p>
+            <p class="text-center fw-bold">Siguiendo</p>
+          </router-link>
         </div>
       </div>
       <!-- Mostrar botón de seguir/dejar de seguir -->
