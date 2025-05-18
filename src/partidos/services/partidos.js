@@ -100,3 +100,36 @@ export async function actualizarListaInscriptos(idPartido, nuevaLista) {
 export async function obtenerRefDocumento(db, coleccion, documento) {
   return doc(db, coleccion, documento);
 }
+
+export async function eliminarJugadorDePartido(usuarioaEliminar, idPartido) {
+  try {
+    let partido = await getPartidoById(idPartido);
+    let usuario = {
+      uid: usuarioaEliminar,
+    };
+    const nuevoListado = partido.contadorInscriptos.filter(
+      (elemento) => elemento.uid !== usuario.uid
+    );
+
+    await actualizarListaInscriptos(idPartido, nuevoListado);
+    console.log("Usuario eliminado correctamente.");
+  } catch (error) {
+    console.error("Error al eliminar al jugador del partido:", error);
+    throw error;
+  }
+}
+
+export async function eliminarPartidoCreado() {
+  try {
+    let partidos = await getPartidos();
+    const nuevoListado = partidos.filter(
+      (elemento) => elemento.uid !== usuario.uid
+    );
+
+    // await actualizarListaInscriptos(idPartido, nuevoListado);
+    // console.log("Usuario eliminado correctamente.");
+  } catch (error) {
+    console.error("Error al eliminar al jugador del partido:", error);
+    throw error;
+  }
+}
