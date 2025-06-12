@@ -24,13 +24,13 @@ function formatTime(date) {
 
 <style scoped>
 .card-message {
-    padding: .5rem 1rem;
+    padding: .2rem 0.5rem;
     display: inline-block;
     max-width: 80%;
     text-align: left;
     word-wrap: break-word;
     border-radius: 8px;
-    margin-bottom: 0.5rem;
+    /* margin-bottom: 0.5rem; */
     color: white;
     position: relative;
     font-size: 0.9rem;
@@ -51,7 +51,7 @@ function formatTime(date) {
 .font-date {
     font-size: 0.7rem;
     text-align: end;
-    margin-top: 0.2rem;
+    /* margin-top: 0.2rem; */
     color: rgba(0, 0, 0, 0.6);
 }
 

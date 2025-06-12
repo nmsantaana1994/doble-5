@@ -20,11 +20,11 @@ function goBack() {
 
 <template>
     <div class="row sectionHeader">
-        <div class="col-3" @click="goBack">
+        <div class="col-2" @click="goBack">
             <img src="../../assets/img/flecha-izquierda-blanca.png" />
             <i class="fi fi-sr-angle-left"></i>
         </div>
-        <div class="col-9 title_chat">
+        <div class="col-10 d-flex justify-content-start title_chat">
             <div class="image-container">
                 <Image :src="otherUser.photoURL" />
             </div>
@@ -43,7 +43,7 @@ function goBack() {
                     }}
                 </h1>
                 <span v-if="isOnline" style="color: white; font-size: 0.8rem">● En línea</span>
-                <span v-else style="color: white; font-size: 1rem">● Desconectado</span>
+                <span v-else style="color: white; font-size: 0.8rem">● Desconectado</span>
             </div>
         </div>
     </div>

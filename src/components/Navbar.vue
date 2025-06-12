@@ -42,9 +42,9 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <nav class="navbar fixed-bottom bg-dark">
-    <div class="container-fluid align-items-center p-0">
-      <ul class="row m-0 p-0 justify-content-center">
+  <nav class="navbar container-fluid d-flex flex-column justify-content-between fixed-bottom bg-dark">
+    <div class="w-100 align-items-center p-0">
+      <ul class="row m-0 p-0 justify-content-between nav-bottom">
         <li class="col-2 p-0 mx-1">
           <a
             class="col-2 w-auto d-flex justify-content-center"
@@ -288,6 +288,10 @@ a {
 
 ul {
   list-style: none;
+}
+
+.nav-bottom li a{
+  max-width: 70px;
 }
 
 .icono-nav {
