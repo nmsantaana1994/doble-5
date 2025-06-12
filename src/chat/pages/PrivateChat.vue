@@ -155,16 +155,20 @@ onUnmounted(async () => {
     <HeaderChat :otherUser="otherUser" :isOnline="isOtherUserOnline" />
     <Section>
         <Loading :loading="loading" />
-        <div
+        <!-- <div
             class="mb-3"
             ref="messagesContainerRef"
             style="max-height: calc(100vh - 165px); overflow-y: auto"
+        > -->
+        <div
+            class="messages-wrapper"
+            ref="messagesContainerRef"
         >
-            <ul>
+            <ul class="mb-0">
                 <li
                     v-for="message in messages"
                     :key="message.id"
-                    class="mb-3"
+                    class="mb-1"
                     :class="{ 'text-end': message.userId == authUser.id }"
                 >
                     <cardMessage
@@ -180,23 +184,52 @@ onUnmounted(async () => {
             </ul>
         </div>
 
-        <div class="textarea__message">
-            <form @submit.prevent="handleSubmit">
-                <div class="mb-3">
-                    <Label for="message">Mensaje</Label>
-                    <Textarea
-                        id="message"
+        <!-- ChatInput.vue (o directamente en PrivateChat.vue) -->
+        <div class="chat-input bg-light p-2 border-top">
+            <form @submit.prevent="handleSubmit" class="d-flex align-items-end">
+                <!-- Área de texto -->
+                <div class="flex-grow-1 me-2">
+                    <textarea
                         v-model="fields.message"
                         rows="1"
-                    ></Textarea>
+                        class="form-control chat-textarea"
+                        placeholder="Escribe un mensaje..."
+                    ></textarea>
                 </div>
-                <Button
-                    class="w-50"
-                    :disabled="!fields.message"
-                    :class="!fields.message ? 'button_disabled' : ''"
-                />
+
+                <!-- ... dentro de <form> ... -->
+                <button
+                type="submit"
+                class="btn btn-primary d-flex align-items-center justify-content-center position-relative"
+                :disabled="!fields.message || formLoading"
+                >
+                <!-- Si estamos enviando, muestro spinner; si no, ícono -->
+                <template v-if="formLoading">
+                    <span class="spinner-border spinner-border-sm text-light" role="status">
+                    <span class="visually-hidden">Enviando…</span>
+                    </span>
+                </template>
+                <template v-else>
+                    <i class="bi bi-send-fill"></i>
+                </template>
+                </button>
+
+                    <!-- Botón enviar -->
+                    <!-- <button
+                    type="submit"
+                    class="btn btn-primary d-flex align-items-center justify-content-center"
+                    :disabled="!fields.message || formLoading"
+                    >
+                    <i class="bi bi-send-fill"></i>
+                    </button> -->
+
+                    <!-- Spinner pequeño para “enviando” -->
+                    <!-- <div v-if="formLoading" class="ms-2"> -->
+                    <!-- <div class="spinner-border spinner-border-sm text-primary" role="status">
+                        <span class="visually-hidden">Enviando…</span>
+                    </div> -->
+                <!-- </div> -->
             </form>
-            <div v-if="formLoading" class="mb-3">Enviando mensaje...</div>
         </div>
     </Section>
 </template>
@@ -204,61 +237,63 @@ onUnmounted(async () => {
 <style scoped>
 ul {
     list-style: none;
-    padding: 0 0 100px 0;
+    /* padding: 0 0 100px 0;*/
 }
 .font-date {
     font-size: 0.7rem;
 }
-.title_chat {
-    position: fixed;
-    width: 100%;
+
+.chat-input {
+  position: fixed;
+  bottom: 56px;          /* ajusta si tu navbar inferior cambia */
+  width: 100%;
+  left: 0;
+  z-index: 10;
 }
-textarea {
-    width: 100%;
+
+.chat-textarea {
+  resize: none;
+  border-radius: 20px;
+  /* padding: 0.75rem 1rem; */
+  /* Opcional: ajustar altura mínima */
+  min-height: 40px;
+  max-height: 100px;
+  overflow-y: auto;
 }
-form button {
-    background-color: var(--primary-color);
-    color: white;
+
+.btn-primary {
+  width: 2.5rem;          /* fija ancho */
+  height: 2.5rem;         /* fija alto para mantenerlo cuadrado */
+  padding: 0;             /* quita padding interno */
+  border-radius: 50%;     /* lo deja redondo */
+  background-color: #75ab11;
 }
-.button_disabled {
-    background-color: grey;
+
+.btn-primary i,
+.btn-primary .spinner-border {
+  font-size: 1.2rem;
+  /* centrado vertical y horizontal gracias a d-flex y align-items/justify-content */
 }
-.textarea__message {
-    background-color: #f0f0f0;
-    position: fixed;
-    bottom: 56px;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    padding: 0.5rem;
-    left: 0;
-    border-top: 1px solid #ddd;
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: var(--bs-primary);
 }
-.textarea__message form {
-    display: flex;
-    flex: 1;
-    align-items: center;
+
+.messages-wrapper {
+  /* altura hasta justo encima del chat-input */
+  max-height: calc(100vh - 165px);
+  overflow-y: auto;
+  overflow-x: hidden;       /* quita scroll horizontal */
+  padding-bottom: 50px;    /* deja espacio para el chat-input */
 }
-.textarea__message form textarea {
-    flex: 1;
-    border: none;
-    padding: 0.5rem;
-    border-radius: 20px;
-    resize: none;
-    margin-right: 0.5rem;
-    background-color: #fff;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+
+/* opcional: que el UL ocupe todo el ancho y evite gaps */
+.messages-wrapper ul {
+  width: 100%;
+  padding: 0;
+  margin: 0;
 }
-.textarea__message form button {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    cursor: pointer;
-}
-.textarea__message form button:disabled {
-    background-color: grey;
-    cursor: not-allowed;
-}
+
+
 </style>
