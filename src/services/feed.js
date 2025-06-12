@@ -65,7 +65,7 @@ export async function addComment(postId, user, newComment) {
                 userId: user.id,
                 userDisplayName: user.displayName,
                 content: newComment,
-                created_at: serverTimestamp(),
+                created_at: Timestamp.now(),
             };
 
             // Agregar el nuevo comentario a la publicación

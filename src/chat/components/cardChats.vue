@@ -54,13 +54,17 @@ const getLastMessageTime = (messages) => {
 </script>
 <template>
     <div class="card d-flex flex-row align-items-center p-2">
-        <img :src="getUserPhotoURL(chat?.users)" alt="User Photo" class="user-photo me-3">
-        <div class="flex-grow-1">
-            <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-1">{{ getUserDisplayName(chat?.users) }}</h5>
-                <small class="text-muted">{{ getLastMessageTime(chat?.messages) }}</small>
+        <div class="col-2 col-md-1">
+            <img :src="getUserPhotoURL(chat?.users)" alt="User Photo" class="user-photo">
+        </div>
+        <div class="col-10 col-md-11">
+            <div class="flex-grow-1">
+                <div class="d-flex justify-content-between align-items-center">
+                    <p class="h6 mb-0">{{ getUserDisplayName(chat?.users) }}</p>
+                    <small class="text-muted">{{ getLastMessageTime(chat?.messages) }}</small>
+                </div>
+                <p class="card-text mb-0">{{ getLastMessage(chat?.messages) }}</p>
             </div>
-            <p class="card-text mb-0">{{ getLastMessage(chat?.messages) }}</p>
         </div>
     </div>
 </template>

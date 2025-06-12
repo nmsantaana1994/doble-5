@@ -106,77 +106,80 @@
 </script>
 
 <template>
-    <HeaderPage route="/home" title="Feed" />
-    <!-- <hr> -->
-    <section class="p-3 mt-6">
-        <div class="row mb-3">
-            <div class="col-2">
-                <Image :src="user.photoURL"/>
-            </div>
-            <div class="col-10 d-flex align-items-center justify-content-center">
-                <form 
-                    action=""
-                    method="post"
-                    @submit.prevent="handleSubmit"
-                >
-                    <textarea
-                        name="post"
-                        id="post"
-                        cols="40"
-                        rows="1"
-                        placeholder="¿Qué estas pensado?"
-                        v-model="newPostContent"
+    <div class="feed-wrapper">
+        <HeaderPage route="/home" title="Feed" />
+        <!-- <hr> -->
+        <section class="container-fluid p-3 mt-6">
+            <div class="row mb-3">
+                <div class="col-2">
+                    <Image :src="user.photoURL"/>
+                </div>
+                <div class="col-10 d-flex align-items-center">
+                    <form 
+                        action=""
+                        method="post"
+                        @submit.prevent="handleSubmit"
+                        class="w-100"
                     >
-                    </textarea>
-                    <button type="submit" class="icono-publicar">
-                        <img src="../../assets/img/publicar.png" alt="Icono Publicar" class="publicar" />
-                    </button>
-                </form>
-            </div>
-        </div>
-    </section>
-    <hr>
-    <Loader v-if="loading" />
-    <section v-else class="p-3">
-        <div class="card p-3 mb-3" v-for="post in posts" :key="post.id">
-            <div class="card-body">
-                <div class="row mb-3">
-                    <div class="col-2">
-                        <Image :src="post.photoURL"/>
-                    </div>
-                    <div class="col-10">
-                        <p class="m-0"><strong>{{ post.userDisplayName }}</strong></p>
-                        <p class="font-date">{{ dateToString(post.created_at) }}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <p class="font-content">{{ post.content }}</p>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-6">
-                        <button @click="toggleLikeView(post)" class="icono-publicar">
-                            <div class="d-flex align-items-center">
-                                <img :src="post.liked ? '../src/assets/img/like-filled.png' : '../src/assets/img/like.png'" alt="Icono Me Gusta" class="publicar" />
-                                <p class="m-0 ps-2 fw-bold">{{ post.likes ? post.likes.length : 0 }}</p>
-                            </div>
+                        <textarea
+                            name="post"
+                            id="post"
+                            rows="1"
+                            placeholder="¿Qué estas pensado?"
+                            v-model="newPostContent"
+                            class="form-control"
+                        >
+                        </textarea>
+                        <button type="submit" class="icono-publicar">
+                            <img src="../../assets/img/publicar.png" alt="Icono Publicar" class="publicar" />
                         </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+        <hr>
+        <Loader v-if="loading" />
+        <section v-else class="p-3">
+            <div class="card p-3 mb-3" v-for="post in posts" :key="post.id">
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-2">
+                            <Image :src="post.photoURL"/>
+                        </div>
+                        <div class="col-10">
+                            <p class="m-0"><strong>{{ post.userDisplayName }}</strong></p>
+                            <p class="font-date">{{ dateToString(post.created_at) }}</p>
+                        </div>
                     </div>
-                    <div class="col-6">
-                        <router-link :to="`/comments/${post.id}`">
-                            <button class="icono-publicar">
+                    <div class="row">
+                        <div class="col-12">
+                            <p class="font-content">{{ post.content }}</p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-6">
+                            <button @click="toggleLikeView(post)" class="icono-publicar">
                                 <div class="d-flex align-items-center">
-                                    <img src="../../assets/img/comment.png" alt="Icono Comentarios" class="publicar" />
-                                    <p class="m-0 ps-2 fw-bold">{{ post.comments.length }} Comentarios</p>
+                                    <img :src="post.liked ? '../src/assets/img/like-filled.png' : '../src/assets/img/like.png'" alt="Icono Me Gusta" class="publicar" />
+                                    <p class="m-0 ps-2 fw-bold">{{ post.likes ? post.likes.length : 0 }}</p>
                                 </div>
                             </button>
-                        </router-link>
+                        </div>
+                        <div class="col-6">
+                            <router-link :to="`/comments/${post.id}`">
+                                <button class="icono-publicar">
+                                    <div class="d-flex align-items-center">
+                                        <img src="../../assets/img/comment.png" alt="Icono Comentarios" class="publicar" />
+                                        <p class="m-0 ps-2 fw-bold">{{ post.comments.length }} Comentarios</p>
+                                    </div>
+                                </button>
+                            </router-link>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
 </template>
 
 <style scoped>
@@ -185,11 +188,23 @@
         height: 25px;
     }
 
-
     textarea {
         resize: none;
         border: none;
         outline: none;
+    }
+
+    /* Todas las imágenes dentro del feed no exceden el ancho de su columna */
+    img, .publicar {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .feed-wrapper {
+        overflow-x: hidden;
+        /* Opcional: para móviles un padding extra */
+        /* padding-right: 0.5rem;
+        padding-left: 0.5rem; */
     }
 
     .icono-publicar {
