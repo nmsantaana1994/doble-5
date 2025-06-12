@@ -34,6 +34,7 @@ function useCargaPartido() {
     tipo: "",
     usuarioCreador: "",
     valorCancha: "",
+    estado: "activo", // NUEVO CAMPO
   });
 
   const loading = ref(false);

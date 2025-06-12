@@ -4,6 +4,7 @@ import {
   getPartidoById,
   inscribirPartido,
   eliminarJugadorDePartido,
+  eliminarPartidoSiSoyCreador,
 } from "../services/partidos";
 import { getFirestore, doc, onSnapshot } from "firebase/firestore";
 import { notificationProvider } from "../../symbols/symbols.js";
@@ -98,11 +99,12 @@ async function eliminarPartido(userid) {
   try {
     clearFeedbackMessage();
     if (partidoFiltrado.value) {
-      await eliminarJugadorDePartido(userid, route.params.id);
-      flagInscription.value = estaInscripto();
+      // await eliminarJugadorDePartido(userid, route.params.id);
+      await eliminarPartidoSiSoyCreador(route.params.id, userid);
+      // flagInscription.value = estaInscripto();
       setFeedbackMessage({
         type: "success",
-        message: "Usuario eliminado correctamente",
+        message: "se cambio el estado a eliminado",
       });
     }
   } catch (error) {
@@ -146,6 +148,12 @@ function estaInscripto() {
     <div class="row mx-auto mt-2 infoPartido">
       <div class="col-12">
         <p>
+          <span class="fw-bold text-black">Estado:</span>
+          {{ partidoFiltrado ? partidoFiltrado.estado : "-" }}
+        </p>
+      </div>
+      <div class="col-12">
+        <p>
           <span class="fw-bold text-black">Direccion:</span>
           {{ partidoFiltrado ? partidoFiltrado.complejo.direction : "-" }}
         </p>
@@ -172,7 +180,7 @@ function estaInscripto() {
           -
           <button
             class="button__delete"
-            @click="eliminarPartido()"
+            @click="eliminarPartido(user.id)"
             v-show="myMatch"
           >
             ELIMINAR PARTIDO
