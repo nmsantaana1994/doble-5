@@ -3,9 +3,13 @@ import Image from "../../components/Image.vue";
 import { useAuth } from "../../composition/useAuth.js";
 import { getPartidos } from "../../partidos/services/partidos.js";
 import { ref, onUnmounted, onBeforeMount, inject } from "vue";
-import { onSnapshot, getFirestore, collection } from "firebase/firestore";
+import {
+  onSnapshot,
+  getFirestore,
+  collection,
+  where,
+} from "firebase/firestore";
 import CardPartido from "../../partidos/components/CardPartido.vue";
-
 
 function useHome() {
   const { user } = useAuth();
@@ -26,7 +30,10 @@ async function getPartidosFromService() {
 
 onBeforeMount(async () => {
   partidos.value = await getPartidosFromService();
-  const partidoCollectionRef = collection(db, "partidos");
+  const partidoCollectionRef = query(
+    collection(db, "partidos"),
+    where("estado", "==", "activo")
+  );
   if (partidoCollectionRef) {
     listenToChanges(partidoCollectionRef);
   }
@@ -49,7 +56,7 @@ function listenToChanges(partidoCollectionRef) {
   <section class="p-3">
     <div class="header row mb-3">
       <div class="col-5">
-        <Image :src="user.photoURL"  />
+        <Image :src="user.photoURL" />
       </div>
       <div class="col-5 d-flex align-items-center">
         <p class="text-start h3">
@@ -126,7 +133,7 @@ function listenToChanges(partidoCollectionRef) {
       <!-- aqui -->
       <div class="row px-3">
         <CardPartido
-          class=" m-auto"
+          class="m-auto"
           v-for="partido in partidos"
           :key="partido.id"
           :partido="partido"

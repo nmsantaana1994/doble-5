@@ -26,8 +26,11 @@ export async function cargarPartido(data, reserva) {
   }
 }
 
-export async function getPartidos() {
-  const q = collection(db, "partidos");
+export async function getPartidos(state) {
+  const q = query(
+    collection(db, "partidos"),
+    where("estado", "==", state || "activo")
+  );
   const snapshot = await getDocs(q);
   const partidos = [];
   snapshot.forEach((doc) => {
@@ -36,6 +39,25 @@ export async function getPartidos() {
       ...doc.data(),
     });
   });
+  return partidos;
+}
+
+export async function getPartidosByCountry(localidad) {
+  const q = query(
+    collection(db, "partidos"),
+    where("localidad", "==", localidad)
+  );
+
+  const snapshot = await getDocs(q);
+  const partidos = [];
+
+  snapshot.forEach((doc) => {
+    partidos.push({
+      id: doc.id,
+      ...doc.data(),
+    });
+  });
+
   return partidos;
 }
 
@@ -130,6 +152,34 @@ export async function eliminarPartidoCreado() {
     // console.log("Usuario eliminado correctamente.");
   } catch (error) {
     console.error("Error al eliminar al jugador del partido:", error);
+    throw error;
+  }
+}
+
+export async function eliminarPartidoSiSoyCreador(idPartido, userId) {
+  try {
+    debugger;
+    const partidoRef = doc(db, "partidos", idPartido);
+    const partidoDoc = await getDoc(partidoRef);
+
+    if (!partidoDoc.exists()) {
+      throw new Error("El partido no existe.");
+    }
+
+    const partidoData = partidoDoc.data();
+
+    if (partidoData.userId !== userId) {
+      throw new Error("No sos el creador de este partido.");
+    }
+
+    await updateDoc(partidoRef, {
+      estado: "eliminado",
+    });
+
+    console.log("Partido marcado como eliminado correctamente.");
+    return true;
+  } catch (error) {
+    console.error("Error al eliminar el partido:", error.message);
     throw error;
   }
 }
