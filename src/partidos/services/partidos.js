@@ -158,7 +158,6 @@ export async function eliminarPartidoCreado() {
 
 export async function eliminarPartidoSiSoyCreador(idPartido, userId) {
   try {
-    debugger;
     const partidoRef = doc(db, "partidos", idPartido);
     const partidoDoc = await getDoc(partidoRef);
 

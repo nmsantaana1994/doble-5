@@ -8,6 +8,7 @@ import {
   getFirestore,
   collection,
   where,
+  query,
 } from "firebase/firestore";
 import CardPartido from "../../partidos/components/CardPartido.vue";
 
@@ -130,7 +131,6 @@ function listenToChanges(partidoCollectionRef) {
       </div>
     </div>
     <template v-if="partidos.length > 0">
-      <!-- aqui -->
       <div class="row px-3">
         <CardPartido
           class="m-auto"

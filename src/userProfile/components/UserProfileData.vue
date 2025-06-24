@@ -3,7 +3,7 @@ import Image from "../../components/Image.vue";
 import Loader from "../../components/Loader.vue";
 import router from "../../router/router";
 import changePhoto from "../components/changePhoto.vue";
-import { onMounted, watch } from "vue";
+import { onMounted, watch, computed } from "vue";
 import { ref } from "vue";
 
 const flagChangePhoto = ref(false);
@@ -11,6 +11,8 @@ const flagChangePhoto = ref(false);
 onMounted(() => {
   console.log(props.isMyProfile);
 });
+
+const jugadores = ref([]);
 
 const props = defineProps({
   user: {
@@ -58,6 +60,14 @@ function handlePhotoUpdated(success) {
   }
   flagChangePhoto.value = false;
 }
+const promedioEstrellas = computed(() => {
+  const valoraciones = props.user.valoraciones || [];
+
+  if (valoraciones.length === 0) return 0;
+
+  const suma = valoraciones.reduce((acc, v) => acc + v.estrellas, 0);
+  return suma / valoraciones.length; // <- devolvemos número, no string
+});
 </script>
 
 <template>
@@ -126,14 +136,56 @@ function handlePhotoUpdated(success) {
         <dd class="mb-3 fw-bold">{{ user.nombre || "No especificado" }}</dd>
         <dt class="fw-light">APELLIDO</dt>
         <dd class="mb-3 fw-bold">{{ user.apellido || "No especificado" }}</dd>
-        <!-- <dt class="fw-light" >Carrera</dt>
-                <dd class="mb-3">{{ user.career || "No especificado" }}</dd> -->
         <dt class="fw-light">EMAIL</dt>
         <dd class="mb-3 fw-bold">{{ user.email }}</dd>
         <dt class="fw-light">FECHA DE NACIMIENTO</dt>
         <dd class="mb-3 fw-bold">{{ user.nacimiento }}</dd>
         <dt class="fw-light">NIVEL DE JUEGO</dt>
-        <dd class="mb-3 fw-bold">{{ user.nivel || "No especificado" }}</dd>
+        <p class="estrellas">
+          <span
+            v-for="n in 5"
+            :key="n"
+            :class="{ activa: n <= user.valoracion }"
+            >★</span
+          >
+        </p>
+        <p class="comentario">“{{ user.comentario || "No especificado" }}”</p>
+
+        <div class="valoracion-general">
+          <h5>Valoración de otros jugadores</h5>
+
+          <div class="estrellas">
+            <span
+              v-for="n in 5"
+              :key="n"
+              class="estrella"
+              :class="{ activa: n <= Math.round(promedioEstrellas) }"
+              >★</span
+            >
+            <span class="promedio">({{ promedioEstrellas }}/5)</span>
+          </div>
+
+          <div class="comentarios mt-3" v-if="user.valoraciones?.length">
+            <div
+              v-for="(val, index) in user.valoraciones"
+              :key="index"
+              class="comentario"
+            >
+              <p class="fw-bold m-0">{{ val.nombreUsuario }}</p>
+              <p class="mb-1 text-muted">
+                <span
+                  v-for="n in 5"
+                  :key="n"
+                  :class="{ activa: n <= val.estrellas }"
+                  >★</span
+                >
+              </p>
+              <p>"{{ val.comentario }}"</p>
+              <hr />
+            </div>
+          </div>
+          <p v-else class="text-muted">Aún no tiene valoraciones.</p>
+        </div>
         <dt class="fw-light">GÉNERO</dt>
         <dd class="mb-3 fw-bold">{{ user.genero || "No especificado" }}</dd>
         <dt class="fw-light">BARRIO</dt>
@@ -164,5 +216,42 @@ function handlePhotoUpdated(success) {
 .change_photo img {
   width: 20px;
   height: 20px;
+}
+
+.estrellas {
+  color: gold;
+  font-size: 22px;
+  margin: 5px 0;
+}
+
+.estrellas span {
+  color: lightgray; /* Por defecto, gris claro */
+}
+
+.estrellas span.activa {
+  color: gold; /* Solo las activas son doradas */
+}
+
+.comentario {
+  font-style: italic;
+  color: #555;
+}
+
+.estrellas span {
+  color: lightgray;
+  font-size: 20px;
+}
+.estrellas span.activa {
+  color: gold;
+}
+.promedio {
+  margin-left: 0.5rem;
+  color: #333;
+  font-weight: bold;
+}
+.comentario {
+  background: #f9f9f9;
+  padding: 10px;
+  border-radius: 8px;
 }
 </style>

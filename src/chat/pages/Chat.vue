@@ -14,58 +14,60 @@ const loading = ref(true);
 const router = useRouter();
 
 onMounted(async () => {
-    try {
-        if (user.value) {
-            chats.value = await getChatsByUser(user.value.id);
-            getMessagesByChat
-        }
-    } catch (error) {
-        console.error("Error getting chats: ", error);
-    } finally {
-        loading.value = false;
+  try {
+    if (user.value) {
+      chats.value = await getChatsByUser(user.value.id);
+      getMessagesByChat;
     }
+  } catch (error) {
+    console.error("Error getting chats: ", error);
+  } finally {
+    loading.value = false;
+  }
 });
 
 function goToChat(chat) {
-    const otherUserId = Object.keys(chat.users).find(id => id !== user.value.id);
-    router.push(`/usuario/${otherUserId}/chat`);
+  const otherUserId = Object.keys(chat.users).find(
+    (id) => id !== user.value.id
+  );
+  router.push(`/usuario/${otherUserId}/chat`);
 }
 </script>
 
 <template>
-    <Loading :loading="loading" />
-    <HeaderPage title="Chats" route="home" />
-    <Section>
-        <div>
-            <ul>
-                <li v-for="chat in chats" :key="chat.id" @click="goToChat(chat)">
-                    <cardChats :chat="chat" :userAuthenticatedID="user?.id" />
-                </li>
-            </ul>
-        </div>
-    </Section>
+  <Loading :loading="loading" />
+  <HeaderPage title="Chats" route="home" />
+  <Section>
+    <div>
+      <ul>
+        <li v-for="chat in chats" :key="chat.id" @click="goToChat(chat)">
+          <cardChats :chat="chat" :userAuthenticatedID="user?.id" />
+        </li>
+      </ul>
+    </div>
+  </Section>
 </template>
 
 <style scoped>
 img {
-    width: 80%;
+  width: 80%;
 }
 
 .m-bottom {
-    margin-bottom: 4em;
+  margin-bottom: 4em;
 }
 
 .font-date {
-    font-size: 0.7rem;
+  font-size: 0.7rem;
 }
 
 ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 li {
-    margin: 0 0 0.2rem 0;
+  margin: 0 0 0.2rem 0;
 }
 </style>
