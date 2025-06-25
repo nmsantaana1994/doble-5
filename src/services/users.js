@@ -10,18 +10,7 @@ import { getFileURL } from "./storage.js";
  */
 export function createUser(
   id,
-  {
-    email,
-    nombre,
-    apellido,
-    nacimiento,
-    genero,
-    valoracion,
-    comentario,
-    barrio,
-    telefono,
-    terminos,
-  }
+  { email, nombre, apellido, nacimiento, genero, barrio, telefono, terminos }
 ) {
   const userRef = doc(db, "users", id);
 
@@ -33,8 +22,7 @@ export function createUser(
     followers: [], // Agregamos el campo followers
     following: [], // Agregamos el campo following
     genero,
-    valoracion,
-    comentario,
+    valoraciones: [],
     barrio,
     telefono,
     terminos,
@@ -59,8 +47,6 @@ export async function updateUser(
     nacimiento,
     followers,
     following,
-    valoracion,
-    comentario,
     genero,
     barrio,
     telefono,
@@ -75,8 +61,7 @@ export async function updateUser(
     nacimiento,
     followers,
     following,
-    valoracion,
-    comentario,
+    valoraciones,
     genero,
     barrio,
     telefono,
@@ -90,8 +75,6 @@ export async function updateUser(
     nacimiento,
     followers,
     following,
-    valoracion,
-    comentario,
     genero,
     barrio,
     telefono,
@@ -107,10 +90,8 @@ export async function updateUser(
 export async function getUserById(id) {
   const userRef = doc(db, "users", id);
   const user = await getDoc(userRef);
-  console.log(user.data());
 
   if (!user.exists()) {
-    console.log(id, "que no existe");
     throw new Error(
       "[users.js getUserById] No existe el usuario con el id provisto"
     );
@@ -131,8 +112,7 @@ export async function getUserById(id) {
     apellido: userData.apellido,
     nacimiento: userData.nacimiento,
     genero: userData.genero,
-    valoracion: userData.valoracion,
-    comentario: userData.comentario,
+    valoraciones: userData.valoraciones || [],
     barrio: userData.barrio,
     telefono: userData.telefono,
     followers: userData.followers || [],
@@ -140,55 +120,17 @@ export async function getUserById(id) {
   };
 }
 
-// export async function getUserById(id) {
-//   const userRef = doc(db, "users", id);
+export async function agregarValoracion(userId, valoraciones) {
+  try {
+    const userRef = doc(db, "users", userId);
 
-//   const user = await getDoc(userRef);
-//   console.log(user.data());
+    await updateDoc(userRef, {
+      valoraciones: arrayUnion(valoraciones),
+    });
 
-//   if (!user.exists) {
-//     throw new Error(
-//       "[users.js getUserById] No existe el usuario con el id provisto"
-//     );
-//   }
-
-//   const userData = user.data();
-
-//   // Transforma el identificador en URL completa utilizando getFileURL
-//   const photoURL = userData?.photoURL
-//     ? await getFileURL(userData?.photoURL)
-//     : null;
-//   //console.log("Usuario sin loadPhoto:", user.photoURL);
-
-//   // loadPhoto();
-
-//   // console.log("Usuario:", user);
-
-//   async function loadPhoto() {
-//     user.photoURL = await getFileURL(user.data().photoURL);
-//   }
-//   return {
-//     id,
-//     email: user.data().email,
-//     displayName: user.data().displayName,
-//     // career: user.data().career,
-//     photoURL,
-//     nombre: user.data().nombre,
-//     apellido: user.data().apellido,
-//     nacimiento: user.data().nacimiento,
-//     genero: user.data().genero,
-//     valoracion: user.data().valoracion,
-//     comentario: user.data().comentario,
-//     barrio: user.data().barrio,
-//     telefono: user.data().telefono,
-//     followers: user.data().followers || [], // Agregamos el campo followers
-//     following: user.data().following || [], // Agregamos el campo following
-//   };
-// }
-export async function agregarValoracion(uidJugador, valoracionObj) {
-  const ref = doc(db, "users", uidJugador);
-
-  await updateDoc(ref, {
-    valoraciones: arrayUnion(valoracionObj),
-  });
+    console.log("Valoración agregada con éxito");
+  } catch (error) {
+    console.error("Error al agregar la valoración:", error);
+    throw error;
+  }
 }

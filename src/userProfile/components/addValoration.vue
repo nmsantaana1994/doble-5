@@ -1,7 +1,16 @@
 <script setup>
-import { ref } from "vue";
+import { agregarValoracion } from "../../services/users";
+import { ref, onMounted, inject } from "vue";
+import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
+import { useAuth } from "../../composition/useAuth";
+import { notificationProvider } from "../../symbols/symbols";
 
-const emit = defineEmits(["valoracion-enviada"]);
+const { setFeedbackMessage } = inject(notificationProvider);
+const route = useRoute();
+const router = useRouter();
+const jugadorValoradoId = route.params.id;
+const { user } = useAuth();
 
 const estrellasSeleccionadas = ref(0);
 const comentario = ref("");
@@ -10,7 +19,11 @@ function seleccionarEstrellas(n) {
   estrellasSeleccionadas.value = n;
 }
 
-function enviarValoracion() {
+onMounted(() => {
+  console.log(user.id);
+});
+
+async function enviarValoracion() {
   if (estrellasSeleccionadas.value === 0 || comentario.value.trim() === "") {
     alert("Debes elegir una cantidad de estrellas y escribir un comentario.");
     return;
@@ -20,13 +33,21 @@ function enviarValoracion() {
     estrellas: estrellasSeleccionadas.value,
     comentario: comentario.value.trim(),
     fecha: new Date().toISOString(),
+    autorId: user.value.id,
   };
+  try {
+    await agregarValoracion(jugadorValoradoId, valoracion);
+    estrellasSeleccionadas.value = 0;
+    comentario.value = "";
+    setFeedbackMessage({
+      type: "success",
+      message: "Valoracion enviada correctamente.",
+    });
 
-  emit("valoracion-enviada", valoracion);
-
-  // Resetear formulario
-  estrellasSeleccionadas.value = 0;
-  comentario.value = "";
+    router.back();
+  } catch (error) {
+    alert("Ocurrió un error al enviar la valoración.");
+  }
 }
 </script>
 

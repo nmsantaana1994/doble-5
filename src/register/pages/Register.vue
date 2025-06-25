@@ -19,7 +19,6 @@ function useRegister() {
     apellido: "",
     nacimiento: "",
     genero: "",
-    valoracion: 0,
     comentario: "",
     barrio: "",
     telefono: "",
@@ -59,7 +58,6 @@ const rules = {
   password: { required, minLength: minLength(8) },
   nacimiento: { required },
   genero: { required },
-  valoracion: { required },
   barrio: { required },
   telefono: { required },
   terminos: { required },
@@ -168,36 +166,6 @@ const formSubmitted = ref(false);
         <span v-if="v$.genero.$error" class="text-danger"
           >Por favor, seleccione una opción.</span
         >
-      </div>
-      <div class="mb-3">
-        <label>Valoración como jugador (1 a 5):</label>
-        <div class="estrellas">
-          <span
-            v-for="n in 5"
-            :key="n"
-            class="estrella"
-            :class="{ activa: n <= fields.valoracion }"
-            @click="
-              fields.valoracion = n;
-              v$.valoracion.$touch();
-            "
-            >★</span
-          >
-        </div>
-        <span v-if="v$.valoracion.$error" class="text-danger"
-          >Por favor, seleccioná una valoración.</span
-        >
-      </div>
-      <div class="mb-3">
-        <label for="comentario">Comentario sobre valoracion:</label>
-        <Input
-          :class="v$.telefono.$error ? '' : ''"
-          type="text"
-          name="comentario"
-          id="comentario"
-          placeholder="Comentario"
-          v-model="fields.comentario"
-        />
       </div>
       <div class="mb-3">
         <label for="barrio">Barrio:</label>

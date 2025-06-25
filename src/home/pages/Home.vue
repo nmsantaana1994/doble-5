@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 import Image from "../../components/Image.vue";
 import { useAuth } from "../../composition/useAuth.js";
 import { getPartidos } from "../../partidos/services/partidos.js";
@@ -44,13 +44,55 @@ function listenToChanges(partidoCollectionRef) {
   const unsubscribe = onSnapshot(partidoCollectionRef, (snapshot) => {
     partidos.value = []; // Limpiamos la lista actual de partidos
     snapshot.forEach((doc) => {
-      partidos.value.push({ ...doc.data(), id: doc.id }); // Agregamos los nuevos partidos a la lista
+      console.log(doc);
+      partidos.value.push({ ...doc.data(), id: doc.id });
     });
   });
 
   // Detenemos la escucha de cambios cuando el componente se desmonta
   onUnmounted(unsubscribe);
 }
+</script> -->
+
+<script setup>
+import Image from "../../components/Image.vue";
+import { useAuth } from "../../composition/useAuth.js";
+import { ref, onUnmounted, onBeforeMount } from "vue";
+import {
+  onSnapshot,
+  getFirestore,
+  collection,
+  where,
+  query,
+} from "firebase/firestore";
+import CardPartido from "../../partidos/components/CardPartido.vue";
+
+const { user } = useAuth();
+const db = getFirestore();
+const partidos = ref([]);
+let unsubscribe = null;
+
+function listenToPartidosActivos() {
+  const q = query(collection(db, "partidos"), where("estado", "==", "activo"));
+
+  unsubscribe = onSnapshot(q, (snapshot) => {
+    const lista = [];
+    snapshot.forEach((doc) => {
+      lista.push({ ...doc.data(), id: doc.id });
+    });
+    partidos.value = lista;
+  });
+}
+
+onBeforeMount(() => {
+  listenToPartidosActivos();
+});
+
+onUnmounted(() => {
+  if (unsubscribe) {
+    unsubscribe();
+  }
+});
 </script>
 
 <template>

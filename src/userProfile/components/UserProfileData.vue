@@ -8,10 +8,6 @@ import { ref } from "vue";
 
 const flagChangePhoto = ref(false);
 
-onMounted(() => {
-  console.log(props.isMyProfile);
-});
-
 const jugadores = ref([]);
 
 const props = defineProps({
@@ -47,10 +43,15 @@ const props = defineProps({
   },
 });
 
+// const { user } = props;
+
 function funcChangePhoto() {
   flagChangePhoto.value = !flagChangePhoto.value;
   console.log("cambiar foto");
 }
+onMounted(() => {
+  console.log(props);
+});
 
 function handlePhotoUpdated(success) {
   if (success) {
@@ -60,13 +61,23 @@ function handlePhotoUpdated(success) {
   }
   flagChangePhoto.value = false;
 }
+
 const promedioEstrellas = computed(() => {
   const valoraciones = props.user.valoraciones || [];
-
   if (valoraciones.length === 0) return 0;
 
   const suma = valoraciones.reduce((acc, v) => acc + v.estrellas, 0);
-  return suma / valoraciones.length; // <- devolvemos número, no string
+  return suma / valoraciones.length;
+});
+
+const ultimaValoracion = computed(() => {
+  const valoraciones = props.user.valoraciones || [];
+  if (valoraciones.length === 0) return null;
+
+  const ordenadas = [...valoraciones].sort(
+    (a, b) => new Date(b.fecha) - new Date(a.fecha)
+  );
+  return ordenadas[0];
 });
 </script>
 
@@ -94,20 +105,14 @@ const promedioEstrellas = computed(() => {
     <div class="col-12 mb-3">
       <div class="row">
         <div class="col-6 mt-3">
-          <router-link
-          :to="`/red/`"
-          class="text-decoration-none text-dark"
-          >
+          <router-link :to="`/red/`" class="text-decoration-none text-dark">
             <!-- <Loader v-if="loading" /> -->
             <p class="text-center fw-bold">{{ totalSeguidores }}</p>
             <p class="text-center fw-bold">Seguidores</p>
           </router-link>
         </div>
         <div class="col-6 mt-3">
-          <router-link
-          :to="`/red/`"
-          class="text-decoration-none text-dark"
-          >
+          <router-link :to="`/red/`" class="text-decoration-none text-dark">
             <!-- <Loader v-if="loading" /> -->
             <p class="text-center fw-bold">{{ totalSiguiendo }}</p>
             <p class="text-center fw-bold">Siguiendo</p>
@@ -140,19 +145,9 @@ const promedioEstrellas = computed(() => {
         <dd class="mb-3 fw-bold">{{ user.email }}</dd>
         <dt class="fw-light">FECHA DE NACIMIENTO</dt>
         <dd class="mb-3 fw-bold">{{ user.nacimiento }}</dd>
-        <dt class="fw-light">NIVEL DE JUEGO</dt>
-        <p class="estrellas">
-          <span
-            v-for="n in 5"
-            :key="n"
-            :class="{ activa: n <= user.valoracion }"
-            >★</span
-          >
-        </p>
-        <p class="comentario">“{{ user.comentario || "No especificado" }}”</p>
-
+        <dt class="fw-light">VALORACIONES</dt>
         <div class="valoracion-general">
-          <h5>Valoración de otros jugadores</h5>
+          <h5></h5>
 
           <div class="estrellas">
             <span
@@ -164,27 +159,11 @@ const promedioEstrellas = computed(() => {
             >
             <span class="promedio">({{ promedioEstrellas }}/5)</span>
           </div>
-
-          <div class="comentarios mt-3" v-if="user.valoraciones?.length">
-            <div
-              v-for="(val, index) in user.valoraciones"
-              :key="index"
-              class="comentario"
-            >
-              <p class="fw-bold m-0">{{ val.nombreUsuario }}</p>
-              <p class="mb-1 text-muted">
-                <span
-                  v-for="n in 5"
-                  :key="n"
-                  :class="{ activa: n <= val.estrellas }"
-                  >★</span
-                >
-              </p>
-              <p>"{{ val.comentario }}"</p>
-              <hr />
-            </div>
+          <div class="mb-1 text-muted">
+            <p class="comentario">
+              {{ ultimaValoracion?.comentario || "No especificado" }}
+            </p>
           </div>
-          <p v-else class="text-muted">Aún no tiene valoraciones.</p>
         </div>
         <dt class="fw-light">GÉNERO</dt>
         <dd class="mb-3 fw-bold">{{ user.genero || "No especificado" }}</dd>
@@ -225,11 +204,11 @@ const promedioEstrellas = computed(() => {
 }
 
 .estrellas span {
-  color: lightgray; /* Por defecto, gris claro */
+  color: lightgray;
 }
 
 .estrellas span.activa {
-  color: gold; /* Solo las activas son doradas */
+  color: gold;
 }
 
 .comentario {
@@ -248,10 +227,5 @@ const promedioEstrellas = computed(() => {
   margin-left: 0.5rem;
   color: #333;
   font-weight: bold;
-}
-.comentario {
-  background: #f9f9f9;
-  padding: 10px;
-  border-radius: 8px;
 }
 </style>

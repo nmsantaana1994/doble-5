@@ -14,7 +14,6 @@ const userAuth = ref(null);
 
 onMounted(() => {
   chat.value = props.chat;
-  console.log(chat.value);
   userAuth.value = props.userAuthenticatedID;
 });
 
