@@ -21,9 +21,9 @@ export async function getCanchaById(idCancha) {
 export async function actualizarCancha(idCancha, reservas) {
   try {
     let cancha = await getCanchaById(idCancha);
-
+    
     // Si no hay reservas para ese día, inicializalo
-    if (!cancha.reservas[reservas.fecha]) {
+    if (!cancha?.reservas[reservas.fecha]) {
       cancha.reservas[reservas.fecha] = {};
     }
 

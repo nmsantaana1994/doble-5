@@ -20,7 +20,8 @@ let user = {
   apellido: null,
   nacimiento: null,
   genero: null,
-  nivel: null,
+  valoraciones: null,
+  comentario: null,
   barrio: null,
   telefono: null,
   terminos: false,
@@ -352,7 +353,7 @@ onAuthStateChanged(auth, async (newUser) => {
       apellido: newUser.apellido,
       nacimiento: newUser.nacimiento,
       genero: newUser.genero,
-      nivel: newUser.nivel,
+      valoraciones: newUser.valoraciones,
       barrio: newUser.barrio,
       telefono: newUser.telefono,
       followers: newUser.followers,
@@ -371,7 +372,7 @@ onAuthStateChanged(auth, async (newUser) => {
         apellido: userData.apellido,
         nacimiento: userData.nacimiento,
         genero: userData.genero,
-        nivel: userData.nivel,
+        valoraciones: userData.valoraciones,
         barrio: userData.barrio,
         telefono: userData.telefono,
         followers: userData.followers,
@@ -404,7 +405,7 @@ export async function register({
   apellido,
   nacimiento,
   genero,
-  nivel,
+  valoraciones,
   barrio,
   telefono,
   terminos,
@@ -418,23 +419,31 @@ export async function register({
     const user = credentials.user;
 
     await createUser(user.uid, {
-        email: user.email,
-        nombre: nombre,
-        apellido: apellido,
-        nacimiento: nacimiento,
-        genero: genero,
-        nivel: nivel,
-        barrio: barrio,
-        telefono: telefono,
-        terminos: terminos,
-        settings: {
-            notifications: {
-                chat: true,
-                comentario: true,
-                like: true,
-                seguir: true,
-            },
+      email: user.email,
+      nombre: nombre,
+      apellido: apellido,
+      nacimiento: nacimiento,
+      genero: genero,
+      barrio: barrio,
+      telefono: telefono,
+      terminos: terminos,
+      settings: {
+        notifications: {
+          chat: true,
+          comentario: true,
+          like: true,
+          seguir: true,
         },
+      },
+      email: user.email,
+      nombre: nombre,
+      apellido: apellido,
+      nacimiento: nacimiento,
+      genero: genero,
+      valoraciones: valoraciones,
+      barrio: barrio,
+      telefono: telefono,
+      terminos: terminos,
     });
 
     return {
@@ -444,7 +453,7 @@ export async function register({
       apellido: apellido,
       nacimiento: nacimiento,
       genero: genero,
-      nivel: nivel,
+      valoraciones: valoraciones,
       barrio: barrio,
       telefono: telefono,
       terminos: terminos,
@@ -469,7 +478,7 @@ export async function updateUserProfile(
     nacimiento,
     followers,
     following,
-    nivel,
+    valoraciones,
     genero,
     barrio,
     telefono,
@@ -493,7 +502,7 @@ export async function updateUserProfile(
       nacimiento,
       followers,
       following,
-      nivel,
+      valoraciones,
       genero,
       barrio,
       telefono,
@@ -509,7 +518,7 @@ export async function updateUserProfile(
       nacimiento,
       followers,
       following,
-      nivel,
+      valoraciones,
       genero,
       barrio,
       telefono,
@@ -526,7 +535,7 @@ export async function updateUserProfile(
       nacimiento,
       followers,
       following,
-      nivel,
+      valoraciones,
       genero,
       barrio,
       telefono,
@@ -556,7 +565,7 @@ function clearUser() {
     apellido: null,
     nacimiento: null,
     genero: null,
-    nivel: null,
+    valoraciones: null,
     barrio: null,
     telefono: null,
     followers: [],
@@ -573,7 +582,7 @@ export function subscribeToAuth(callback) {
 }
 
 function notifyAll() {
-  console.log("[auth.js notifyAll] Notificando a los observers: ", observers);
+  // console.log("[auth.js notifyAll] Notificando a los observers: ", observers);
   observers.forEach((callback) => notify(callback));
 }
 

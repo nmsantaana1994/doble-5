@@ -10,8 +10,9 @@ import Label from "../../components/Label.vue";
 import Button from "../../components/Button.vue";
 
 const { user } = useAuth();
-const { setFeedbackMessage, clearFeedbackMessage } = inject(notificationProvider);
-const emit = defineEmits(['photoUpdated']); // Define the event to emit
+const { setFeedbackMessage, clearFeedbackMessage } =
+  inject(notificationProvider);
+const emit = defineEmits(["photoUpdated"]); // Define the event to emit
 
 const form = ref({
   displayName: "",
@@ -28,7 +29,7 @@ const form = ref({
   photoURL: null,
 });
 
-watch(user, newUser => {
+watch(user, (newUser) => {
   form.value.displayName = newUser.displayName;
   form.value.nombre = newUser.nombre;
   form.value.apellido = newUser.apellido;
@@ -36,7 +37,8 @@ watch(user, newUser => {
   form.value.nacimiento = newUser.nacimiento;
   form.value.followers = newUser.followers;
   form.value.following = newUser.following;
-  form.value.nivel = newUser.nivel;
+  form.value.valoracion = newUser.valoracion;
+  form.value.comentario = newUser.comentario;
   form.value.genero = newUser.genero;
   form.value.barrio = newUser.barrio;
   form.value.telefono = newUser.telefono;
@@ -49,19 +51,20 @@ async function handleSubmit() {
     clearFeedbackMessage();
     console.log("Valores en form:", form.value);
     await updateUserProfile(user.value.id, {
-      ...form.value
+      ...form.value,
     });
     setFeedbackMessage({
       type: "success",
       message: "La foto de perfil fue actualizada con éxito.",
     });
     form.value.photoURL = null;
-    emit('photoUpdated', true); // Emit the event with the boolean value
+    emit("photoUpdated", true); // Emit the event with the boolean value
   } catch (err) {
     console.error("[handleSubmit] Error al actualizar la foto de perfil", err);
     setFeedbackMessage({
       type: "error",
-      message: "Ocurrió un error inesperado al tratar de actualizar la foto de perfil.",
+      message:
+        "Ocurrió un error inesperado al tratar de actualizar la foto de perfil.",
     });
   } finally {
     loading.value = false;
@@ -80,9 +83,7 @@ async function handleFile(ev) {
   reader.readAsDataURL(file);
 }
 
-function sentEmit(){
-
-}
+function sentEmit() {}
 </script>
 
 <template>
@@ -95,7 +96,11 @@ function sentEmit(){
         </div>
         <div v-if="form.photoURL !== null" class="mb-3">
           <p class="mb-3 fw-bold">Previsualización de la imagen:</p>
-          <Image :src="form.photoURL" :alt="'Previsualización foto de perfil'" class="w-100" />
+          <Image
+            :src="form.photoURL"
+            :alt="'Previsualización foto de perfil'"
+            class="w-100"
+          />
         </div>
         <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-3">
           <Button class="btn btn-primary w-100" @click="sentEmit">
