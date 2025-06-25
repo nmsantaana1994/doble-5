@@ -158,7 +158,6 @@ export async function eliminarPartidoCreado() {
 
 export async function eliminarPartidoSiSoyCreador(idPartido, userId) {
   try {
-    debugger;
     const partidoRef = doc(db, "partidos", idPartido);
     const partidoDoc = await getDoc(partidoRef);
 
@@ -182,4 +181,18 @@ export async function eliminarPartidoSiSoyCreador(idPartido, userId) {
     console.error("Error al eliminar el partido:", error.message);
     throw error;
   }
+}
+
+export function escucharPartidos(state = "activo", callback) {
+  const q = query(collection(db, "partidos"), where("estado", "==", state));
+
+  const unsubscribe = onSnapshot(q, (snapshot) => {
+    const partidos = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    callback(partidos); // Actualizás la UI con los datos nuevos
+  });
+
+  return unsubscribe; // Para que puedas detener el listener si es necesario
 }

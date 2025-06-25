@@ -20,6 +20,7 @@ import Red from "../views/Red.vue";
 import Ajustes from "../ajustes/Ajustes.vue";
 import Ayuda from "../views/Ayuda.vue";
 import Notificaciones from "../notifications/pages/notificaciones.vue";
+import AddValoration from "../userProfile/components/addValoration.vue";
 
 const routes = [
   { path: "/", component: Splash },
@@ -46,6 +47,11 @@ const routes = [
   {
     path: "/usuario/:id",
     component: UserProfile,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/usuario/:id/valoration",
+    component: AddValoration,
     meta: { requiresAuth: true },
   },
   {
