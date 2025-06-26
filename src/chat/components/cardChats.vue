@@ -68,9 +68,7 @@ const getLastMessageTime = (messages) => {
     <div class="flex-grow-1">
       <div class="d-flex justify-content-between align-items-center">
         <h5 class="mb-1">{{ getUserDisplayName(chat?.users) }}</h5>
-        <small class="text-muted">{{
-          getLastMessageTime(chat?.messages)
-        }}</small>
+        <p class="text-muted">{{ getLastMessageTime(chat?.messages) }}</p>
       </div>
       <p class="card-text mb-0">{{ getLastMessage(chat?.messages) }}</p>
     </div>
@@ -114,7 +112,8 @@ h5 {
   max-width: 100%;
 }
 
-small {
+p {
   font-size: 0.875rem;
+  color: grey;
 }
 </style>

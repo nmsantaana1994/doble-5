@@ -252,7 +252,7 @@ const partidos = ref([]);
 const Mispartidos = ref([]);
 const auth = getAuth();
 
-const localidadFiltro = ref(null);
+const localidadFiltro = ref("");
 let unsubscribe = null;
 
 function listenToPartidos(userId) {
@@ -378,12 +378,33 @@ onUnmounted(() => {
           aria-labelledby="proximos-partidos-tab"
           tabindex="0"
         >
-          <p>Filtrar por barrio:</p>
-          <ul>
-            <li @click="searchByCountry('caballito')">Caballito</li>
-            <li @click="getPartidosPage()">Quitar filtros</li>
-          </ul>
-
+          <div class="row mb-3 align-items-end">
+            <div class="col-8">
+              <label for="barrioSelect" class="form-label fw-bold"
+                >Filtrar por barrio</label
+              >
+              <select
+                id="barrioSelect"
+                class="form-select"
+                v-model="localidadFiltro"
+                @change="searchByCountry(localidadFiltro)"
+              >
+                <option disabled value="">Selecciona un barrio</option>
+                <option value="caballito">Caballito</option>
+                <option value="palermo">Palermo</option>
+                <option value="flores">Flores</option>
+                <option value="belgrano">Belgrano</option>
+              </select>
+            </div>
+            <div class="col-4">
+              <button
+                class="btn btn-outline-secondary w-100"
+                @click="getPartidosPage"
+              >
+                Quitar filtro
+              </button>
+            </div>
+          </div>
           <template v-if="partidos.length > 0">
             <CardPartido
               v-for="partido in partidos"
@@ -458,5 +479,10 @@ a {
   width: 30%;
   margin: auto;
   text-align: right;
+}
+
+select.form-select {
+  background-color: #f8f9fa;
+  border-radius: 0.375rem;
 }
 </style>
