@@ -43,8 +43,6 @@ const props = defineProps({
   },
 });
 
-// const { user } = props;
-
 function funcChangePhoto() {
   flagChangePhoto.value = !flagChangePhoto.value;
   console.log("cambiar foto");
@@ -52,6 +50,10 @@ function funcChangePhoto() {
 onMounted(() => {
   console.log(props);
 });
+
+function goToList() {
+  router.push("/usuario/" + props.user.id + "/valorationList");
+}
 
 function handlePhotoUpdated(success) {
   if (success) {
@@ -93,7 +95,7 @@ const ultimaValoracion = computed(() => {
         v-if="props.isMyProfile"
       >
         <img src="../../assets/img/lapiz.png" alt="icono lapiz" />
-        <button>Cambiar foto de perfil</button>
+        <button>Editar foto.</button>
       </div>
       <changePhoto
         class="mb-3"
@@ -145,10 +147,8 @@ const ultimaValoracion = computed(() => {
         <dd class="mb-3 fw-bold">{{ user.email }}</dd>
         <dt class="fw-light">FECHA DE NACIMIENTO</dt>
         <dd class="mb-3 fw-bold">{{ user.nacimiento }}</dd>
-        <dt class="fw-light">VALORACIONES</dt>
-        <div class="valoracion-general">
-          <h5></h5>
-
+        <dt class="fw-light" @click="goToList()">VALORACIONES</dt>
+        <div class="valoracion-general" @click="goToList()">
           <div class="estrellas">
             <span
               v-for="n in 5"

@@ -34,6 +34,7 @@ async function enviarValoracion() {
     comentario: comentario.value.trim(),
     fecha: new Date().toISOString(),
     autorId: user.value.id,
+    autorName: user.value.displayName || user.value.nombre,
   };
   try {
     await agregarValoracion(jugadorValoradoId, valoracion);
