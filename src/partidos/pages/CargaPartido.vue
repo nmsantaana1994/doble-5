@@ -30,7 +30,6 @@ function useCargaPartido() {
     cantidadJ: 0,
     contadorInscriptos: [],
     totalJ: 0,
-    cambios: "",
     tipo: "",
     usuarioCreador: "",
     valorCancha: "",
@@ -66,9 +65,9 @@ function useCargaPartido() {
       // Llamar a showModal justo después de crear el partido
       const result = await showModal({
         title: "Partido creado",
-        bodyText: "desea sumarse como jugador al partido?.",
-        closeButtonText: "Cancelar",
-        saveButtonText: "Aceptar",
+        bodyText: "¿Desea sumarse como jugador a este partido?",
+        closeButtonText: "Si",
+        saveButtonText: "No",
       });
       if (result) {
         try {
@@ -151,11 +150,13 @@ const isFormValid = computed(() => {
     selectedDia.value &&
     fields.value.hora &&
     fields.value.cantidadJ &&
-    fields.value.cambios &&
     fields.value.tipo &&
     fields.value.valorCancha
   );
 });
+
+// Computado que formatea el valor:
+const valorFormateado = computed(() => `Total: $${fields.value.valorCancha}`);
 
 watch([() => fields.value.cantidadJ, selectedCancha], ([cantidadJ, cancha]) => {
   if (cancha && cancha.prices && cantidadJ) {
@@ -178,24 +179,27 @@ watch([selectedCancha, selectedDia], handleCanchaChange);
 </script>
 
 <template>
-  <HeaderPage route="/home" title="Crear partido" />
+  <HeaderPage route="/home" title="Crear partido" :hasBackground="false" />
   <Section>
     <div class="col-12">
       <form action="#" method="POST" @submit.prevent="handleSubmit">
-        <h3 class="mb-3">Datos del partido</h3>
+        <h3 class="mb-3">Datos del encuentro</h3>
         <!-- 1. Nombre del partido (siempre habilitado) -->
         <div class="mb-3">
+          <label for="nombre">Nombre del partido:</label>
           <input
             type="text"
             class="form-control"
             id="nombre"
-            placeholder="Nombre del partido"
+            placeholder="Nombre"
             v-model="fields.nombre"
           />
         </div>
 
         <!-- 2. Complejo (habilitado solo si hay nombre) -->
         <div class="mb-3">
+          <label for="complejo">Complejo:</label>
+
           <select
             id="complejo"
             class="form-select"
@@ -211,6 +215,8 @@ watch([selectedCancha, selectedDia], handleCanchaChange);
 
         <!-- 3. Fecha (habilitado solo si hay complejo) -->
         <div class="mb-3">
+          <label for="fecha">Fecha:</label>
+
           <input
             type="date"
             id="fecha"
@@ -222,6 +228,8 @@ watch([selectedCancha, selectedDia], handleCanchaChange);
 
         <!-- 4. Hora (habilitado solo si hay fecha) -->
         <div class="mb-3">
+          <label for="hora">Hora:</label>
+
           <select
             id="hora"
             class="form-select"
@@ -244,6 +252,8 @@ watch([selectedCancha, selectedDia], handleCanchaChange);
 
         <!-- 5. Jugadores (habilitado solo si hay hora) -->
         <div class="mb-3">
+          <label for="cantidadJ">Cantidad de jugadores:</label>
+
           <select
             id="cantidadJ"
             class="form-select"
@@ -260,27 +270,15 @@ watch([selectedCancha, selectedDia], handleCanchaChange);
           </select>
         </div>
 
-        <!-- 6. Cambios (habilitado solo si hay cantidadJ) -->
+        <!-- 7. Tipo (habilitado solo si hay cantidadJ) -->
         <div class="mb-3">
-          <select
-            id="cambios"
-            class="form-select"
-            v-model="fields.cambios"
-            :disabled="!fields.cantidadJ"
-          >
-            <option disabled value="">Cambios</option>
-            <option>Con</option>
-            <option>Sin</option>
-          </select>
-        </div>
+          <label for="tipo">Tipo:</label>
 
-        <!-- 7. Tipo (habilitado solo si hay cambios) -->
-        <div class="mb-3">
           <select
             id="tipo"
             class="form-select"
             v-model="fields.tipo"
-            :disabled="!fields.cambios"
+            :disabled="!fields.cantidadJ"
           >
             <option disabled value="">Tipo de partido</option>
             <option>Femenino</option>
@@ -291,12 +289,14 @@ watch([selectedCancha, selectedDia], handleCanchaChange);
 
         <!-- 8. Valor cancha (calculado, solo visible, no editable) -->
         <div class="mb-3">
+          <label for="valorCancha">Valor total de la cancha:</label>
+
           <input
             type="text"
             class="form-control"
             id="valorCancha"
-            placeholder="Valor total de la cancha"
-            v-model="fields.valorCancha"
+            placeholder="Valor total"
+            v-model="valorFormateado"
             disabled
           />
         </div>
@@ -335,5 +335,10 @@ select {
   background-color: #73a812;
   width: 100%;
   display: inline-block;
+}
+label {
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+  font-weight: 500;
 }
 </style>
