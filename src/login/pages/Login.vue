@@ -36,7 +36,7 @@ async function handleSubmit() {
   } catch (err) {
     setFeedbackMessage({
       type: "error",
-      message: err.message,
+      message: "Usuario y/o contraseña incorrectos.",
     });
   } finally {
     loading.value = false;
