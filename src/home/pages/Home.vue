@@ -1,59 +1,3 @@
-<!-- <script setup>
-import Image from "../../components/Image.vue";
-import { useAuth } from "../../composition/useAuth.js";
-import { getPartidos } from "../../partidos/services/partidos.js";
-import { ref, onUnmounted, onBeforeMount, inject } from "vue";
-import {
-  onSnapshot,
-  getFirestore,
-  collection,
-  where,
-  query,
-} from "firebase/firestore";
-import CardPartido from "../../partidos/components/CardPartido.vue";
-
-function useHome() {
-  const { user } = useAuth();
-  return {
-    user,
-  };
-}
-
-const { user } = useHome();
-const db = getFirestore();
-const partidos = ref([]);
-
-async function getPartidosFromService() {
-  const partidos = await getPartidos();
-  console.log(partidos);
-  return partidos;
-}
-
-onBeforeMount(async () => {
-  partidos.value = await getPartidosFromService();
-  const partidoCollectionRef = query(
-    collection(db, "partidos"),
-    where("estado", "==", "activo")
-  );
-  if (partidoCollectionRef) {
-    listenToChanges(partidoCollectionRef);
-  }
-});
-
-function listenToChanges(partidoCollectionRef) {
-  const unsubscribe = onSnapshot(partidoCollectionRef, (snapshot) => {
-    partidos.value = []; // Limpiamos la lista actual de partidos
-    snapshot.forEach((doc) => {
-      console.log(doc);
-      partidos.value.push({ ...doc.data(), id: doc.id });
-    });
-  });
-
-  // Detenemos la escucha de cambios cuando el componente se desmonta
-  onUnmounted(unsubscribe);
-}
-</script> -->
-
 <script setup>
 import Image from "../../components/Image.vue";
 import { useAuth } from "../../composition/useAuth.js";
@@ -64,17 +8,30 @@ import {
   collection,
   where,
   query,
+  orderBy,
+  limit,
 } from "firebase/firestore";
 import CardPartido from "../../partidos/components/CardPartido.vue";
 
+import { useRoute } from "vue-router";
+
+const route = useRoute();
 const { user } = useAuth();
 const db = getFirestore();
 const partidos = ref([]);
 let unsubscribe = null;
 
-function listenToPartidosActivos() {
-  const q = query(collection(db, "partidos"), where("estado", "==", "activo"));
+function isActive(path) {
+  return route.path === path ? "active-button" : "";
+}
 
+function listenToPartidosActivos() {
+  const q = query(
+    collection(db, "partidos"),
+    orderBy("fecha", "asc"),
+    where("estado", "==", "activo"),
+    limit(3)
+  );
   unsubscribe = onSnapshot(q, (snapshot) => {
     const lista = [];
     snapshot.forEach((doc) => {
@@ -114,7 +71,10 @@ onUnmounted(() => {
 
   <section class="px-3 pb-3">
     <div class="row d-flex justify-content-between mb-3">
-      <div class="col-3 m-auto justify-content-center botonera-home">
+      <div
+        class="col-3 m-auto justify-content-center botonera-home"
+        :class="['botonera-home', isActive('/home')]"
+      >
         <router-link :to="'/home'" class="d-flex flex-column">
           <img
             src="../../assets/img/home-offcanvas.png"
@@ -124,7 +84,10 @@ onUnmounted(() => {
           <p class="m-auto">Home</p>
         </router-link>
       </div>
-      <div class="col-3 m-auto justify-content-center botonera-home">
+      <div
+        class="col-3 m-auto justify-content-center botonera-home"
+        :class="['botonera-home', isActive('/feed')]"
+      >
         <router-link :to="'/feed'" class="d-flex flex-column">
           <img
             src="../../assets/img/red-social.png"
@@ -134,7 +97,10 @@ onUnmounted(() => {
           <p class="m-auto">Feed</p>
         </router-link>
       </div>
-      <div class="col-3 m-auto justify-content-center botonera-home">
+      <div
+        class="col-3 m-auto justify-content-center botonera-home"
+        :class="['botonera-home', isActive('/partidos')]"
+      >
         <router-link :to="'/partidos'" class="d-flex flex-column">
           <img
             src="../../assets/img/pelota.png"
@@ -144,7 +110,10 @@ onUnmounted(() => {
           <p class="m-auto">Partidos</p>
         </router-link>
       </div>
-      <div class="col-3 m-auto justify-content-center botonera-home">
+      <div
+        class="col-3 m-auto justify-content-center botonera-home"
+        :class="['botonera-home', isActive('/red')]"
+      >
         <router-link :to="'/red'" class="d-flex flex-column">
           <img
             src="../../assets/img/usuarios.png"
@@ -160,7 +129,7 @@ onUnmounted(() => {
   <section class="pb-3 px-3">
     <div class="row mb-3">
       <div class="col-10">
-        <h2 class="text-start h3 mb-3">Próximos partidos</h2>
+        <h2 class="text-start h3 mb-3"><span>Próximos</span> partidos</h2>
       </div>
       <div class="col-2">
         <router-link to="/partidos">
@@ -197,6 +166,9 @@ onUnmounted(() => {
   height: 25px;
 }
 
+h2 span {
+  border-bottom: 3px solid #5d880d;
+}
 .bienvenida {
   color: #5d880d;
 }
@@ -213,9 +185,22 @@ onUnmounted(() => {
 a {
   text-decoration: none;
   color: black;
+  font-weight: 400;
+  font-size: 0.9rem;
 }
 
 .icono-card {
-  width: 55%;
+  width: 45%;
+}
+
+.active-button {
+  background-color: #73a812 !important;
+  color: white;
+}
+
+.active-button img,
+.active-button p {
+  filter: brightness(0) invert(1); /* para íconos negros en blanco */
+  color: white;
 }
 </style>

@@ -21,6 +21,7 @@ import Ajustes from "../ajustes/Ajustes.vue";
 import Ayuda from "../views/Ayuda.vue";
 import Notificaciones from "../notifications/pages/notificaciones.vue";
 import AddValoration from "../userProfile/components/addValoration.vue";
+import ValorationList from "../userProfile/pages/ValorationList.vue";
 
 const routes = [
   { path: "/", component: Splash },
@@ -52,6 +53,11 @@ const routes = [
   {
     path: "/usuario/:id/valoration",
     component: AddValoration,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/usuario/:id/valorationList",
+    component: ValorationList,
     meta: { requiresAuth: true },
   },
   {

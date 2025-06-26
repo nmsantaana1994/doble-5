@@ -55,7 +55,7 @@ onMounted(async () => {
 
     <div class="my-3">
       <Button class="btn btn-primary w-100" @click="toggleEditing">{{
-        editing ? "Dejar de Editar" : "Editar mi Perfil"
+        editing ? "Dejar de Editar" : "Editar perfil"
       }}</Button>
     </div>
   </Section>
