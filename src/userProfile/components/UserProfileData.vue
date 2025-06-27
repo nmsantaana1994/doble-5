@@ -5,6 +5,9 @@ import router from "../../router/router";
 import changePhoto from "../components/changePhoto.vue";
 import { onMounted, watch, computed } from "vue";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+
+const Router = useRouter();
 
 const flagChangePhoto = ref(false);
 
@@ -81,6 +84,10 @@ const ultimaValoracion = computed(() => {
   );
   return ordenadas[0];
 });
+
+function goToChat() {
+  Router.push(`/usuario/${props.user.id}/chat`);
+}
 </script>
 
 <template>
@@ -121,16 +128,19 @@ const ultimaValoracion = computed(() => {
           </router-link>
         </div>
       </div>
-      <!-- Mostrar botón de seguir/dejar de seguir -->
-      <div class="d-grid gap-2" v-if="!props.isMyProfile">
-        <!-- Botón para seguir o dejar de seguir -->
-        <button
-          v-if="mostrarBoton"
-          @click="seguirDejarSeguir"
-          class="btn btn-primary w-auto"
-        >
-          {{ userFollowing ? "Dejar de seguir" : "Seguir" }}
-        </button>
+      <div class="row">
+        <div class="d-grid gap-2 col-6" v-if="!props.isMyProfile">
+          <button
+            v-if="mostrarBoton"
+            @click="seguirDejarSeguir"
+            class="button_top"
+          >
+            {{ userFollowing ? "Dejar de seguir" : "Seguir" }}
+          </button>
+        </div>
+        <div class="d-grid gap-2 col-6">
+          <button class="button_top" @click="goToChat()">Mensaje</button>
+        </div>
       </div>
     </div>
     <div class="col-12 mt-3">
@@ -147,7 +157,9 @@ const ultimaValoracion = computed(() => {
         <dd class="mb-3 fw-bold">{{ user.email }}</dd>
         <dt class="fw-light">FECHA DE NACIMIENTO</dt>
         <dd class="mb-3 fw-bold">{{ user.nacimiento }}</dd>
-        <dt class="fw-light" @click="goToList()">VALORACIONES</dt>
+        <dt class="fw-bold" @click="goToList()">
+          VALORACIONES <b style="color: var(--primary-color)">>></b>
+        </dt>
         <div class="valoracion-general" @click="goToList()">
           <div class="estrellas">
             <span
@@ -227,5 +239,13 @@ const ultimaValoracion = computed(() => {
   margin-left: 0.5rem;
   color: #333;
   font-weight: bold;
+}
+
+.button_top {
+  border: none;
+  border-radius: 8px;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.5rem;
 }
 </style>

@@ -130,24 +130,6 @@ const seguirDejarSeguir = async () => {
         />
       </div>
 
-      <div class="col-12 m-bottom-valoration" v-if="!isMyProfile">
-        <router-link
-          :to="`/usuario/${user.id}/valoration`"
-          class="text-blue-400 underline"
-          >¿Queres dejar una valoracion a
-          {{ user.displayName ? user.displayName : user.nombre }} ?</router-link
-        >
-      </div>
-      <div class="col-12 m-bottom" v-if="!isMyProfile">
-        <h2 class="mb-3 fs-4">Chat privado</h2>
-
-        <router-link
-          :to="`/usuario/${user.id}/chat`"
-          class="text-blue-400 underline"
-          >Iniciar chat privado con
-          {{ user.displayName ? user.displayName : user.nombre }}</router-link
-        >
-      </div>
       <div class="my-3" v-if="isMyProfile">
         <Button class="btn btn-primary w-100" @click="toggleEditing">{{
           editing ? "Dejar de Editar" : "Editar mi Perfil"

@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
 import Button from "../../components/Button.vue";
@@ -256,7 +256,9 @@ const formSubmitted = ref(false);
         </div>
         <div class="col-10">
           <p class="m-0">
-            Acepto los <a href="#">términos y condiciones</a> de uso.
+            Acepto los
+            <router-link :to="'/terminos'">términos y condiciones</router-link>
+            de uso.
           </p>
         </div>
         <span v-if="v$.terminos.$error" class="text-danger"

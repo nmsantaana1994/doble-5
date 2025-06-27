@@ -22,11 +22,25 @@ import Ayuda from "../views/Ayuda.vue";
 import Notificaciones from "../notifications/pages/notificaciones.vue";
 import AddValoration from "../userProfile/components/addValoration.vue";
 import ValorationList from "../userProfile/pages/ValorationList.vue";
+import Terminos from "../terminos/Terminos.vue";
+import ResetUser from "../login/pages/ResetUser.vue";
 
 const routes = [
-  { path: "/", component: Splash },
+  {
+    path: "/",
+    beforeEnter: (to, from, next) => {
+      if (user.id) {
+        next("/home");
+      } else {
+        next();
+      }
+    },
+    component: Splash,
+  },
   { path: "/iniciar-sesion", component: Login },
+  { path: "/reset-user", component: ResetUser },
   { path: "/registro", component: Register },
+  { path: "/terminos", component: Terminos },
   { path: "/home", component: Home, meta: { requiresAuth: true } },
   { path: "/chat", component: Chat, meta: { requiresAuth: true } },
   { path: "/partidos", component: Partidos, meta: { requiresAuth: true } },

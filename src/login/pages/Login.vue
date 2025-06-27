@@ -1,5 +1,6 @@
 <script setup>
 import Button from "../../components/Button.vue";
+import Section from "../../components/Section.vue";
 import Input from "../../components/Input.vue";
 import { login } from "../../services/auth.js";
 import { inject, ref } from "vue";
@@ -27,11 +28,6 @@ async function handleSubmit() {
       ...fields.value,
     });
 
-    // setFeedbackMessage({
-    //     type: "success",
-    //     message: "¡Hola de nuevo! Te extrañamos.",
-    // });
-
     router.push("/home");
   } catch (err) {
     setFeedbackMessage({
@@ -45,7 +41,7 @@ async function handleSubmit() {
 </script>
 <template>
   <Loading :loading="loading" />
-  <section class="p-3">
+  <Section>
     <div class="d-flex justify-content-center mb-4">
       <img
         src="../../assets/img/logo-original.png"
@@ -101,7 +97,9 @@ async function handleSubmit() {
 
     <div class="row">
       <div class="col-12 text-center mb-2">
-        <a href="" class="fw-semibold">¿Olvidaste tu contraseña?</a>
+        <router-link to="/reset-user" class="fw-semibold"
+          >¿Olvidaste tu contraseña?</router-link
+        >
       </div>
       <div class="col-12 mt-3 d-flex justify-content-center">
         <router-link to="/registro">
@@ -111,7 +109,7 @@ async function handleSubmit() {
         </router-link>
       </div>
     </div>
-  </section>
+  </Section>
 </template>
 
 <style scoped>
