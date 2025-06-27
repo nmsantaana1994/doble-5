@@ -31,6 +31,7 @@ onMounted(() => {
     flagNavbar.value = !!user.value?.id;
   }
 });
+
 watch(
   () => route.fullPath,
   (newPath) => {
@@ -38,6 +39,18 @@ watch(
       flagNavbar.value = false;
     } else {
       flagNavbar.value = !!user.value?.id;
+    }
+  },
+  { immediate: true }
+);
+
+watch(
+  () => user.value,
+  (value) => {
+    if (value.id != null) {
+      flagNavbar.value = true;
+    } else {
+      flagNavbar.value = false;
     }
   },
   { immediate: true }
