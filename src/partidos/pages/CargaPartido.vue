@@ -32,7 +32,6 @@ function useCargaPartido() {
     totalJ: 0,
     tipo: "",
     usuarioCreador: "",
-    valorCancha: "",
     estado: "activo", // NUEVO CAMPO
   });
 
@@ -154,9 +153,6 @@ const isFormValid = computed(() => {
     fields.value.valorCancha
   );
 });
-
-// Computado que formatea el valor:
-const valorFormateado = computed(() => `Total: $${fields.value.valorCancha}`);
 
 watch([() => fields.value.cantidadJ, selectedCancha], ([cantidadJ, cancha]) => {
   if (cancha && cancha.prices && cantidadJ) {
@@ -289,16 +285,9 @@ watch([selectedCancha, selectedDia], handleCanchaChange);
 
         <!-- 8. Valor cancha (calculado, solo visible, no editable) -->
         <div class="mb-3">
-          <label for="valorCancha">Valor total de la cancha:</label>
-
-          <input
-            type="text"
-            class="form-control"
-            id="valorCancha"
-            placeholder="Valor total"
-            v-model="valorFormateado"
-            disabled
-          />
+          <label for="valorCancha"
+            >Valor total de la cancha: ${{ fields.valorCancha }}</label
+          >
         </div>
         <button
           type="submit"

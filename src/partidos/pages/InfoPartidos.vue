@@ -14,6 +14,7 @@ import { useAuth } from "../../composition/useAuth";
 import Image from "../../components/Image.vue";
 import HeaderPage from "../../components/HeaderPage.vue";
 import Loading from "../../components/Loading.vue";
+import Section from "../../components/Section.vue";
 
 const db = getFirestore();
 const { user } = useAuth();
@@ -125,7 +126,7 @@ function estaInscripto() {
 <template class="main">
   <Loading :loading="loading" />
   <HeaderPage title="Informacion" route="/home"></HeaderPage>
-  <section class="row p-1" style="margin: 75px 0 50px 0">
+  <Section class="row p-1" style="margin: 75px 0 120px 0">
     <div class="col-12 fotoCancha mb-3">
       <img src="../../assets/img/cancha.jpg" />
     </div>
@@ -146,12 +147,6 @@ function estaInscripto() {
     </div>
 
     <div class="row mx-auto mt-2 infoPartido">
-      <div class="col-12">
-        <p>
-          <span class="fw-bold text-black">Estado:</span>
-          {{ partidoFiltrado ? partidoFiltrado.estado : "-" }}
-        </p>
-      </div>
       <div class="col-12">
         <p>
           <span class="fw-bold text-black">Direccion:</span>
@@ -177,14 +172,6 @@ function estaInscripto() {
           Organizado por: <br />{{
             partidoFiltrado ? partidoFiltrado.usuarioCreador : "-"
           }}
-          -
-          <button
-            class="button__delete"
-            @click="eliminarPartido(user.id)"
-            v-show="myMatch"
-          >
-            ELIMINAR PARTIDO
-          </button>
         </p>
       </div>
     </div>
@@ -205,30 +192,35 @@ function estaInscripto() {
       <div class="col-3">
         <Image :src="nombreJugador.image" />
       </div>
-      <div class="col-9 pt-3">
+      <div class="col-6 pt-3 jugadores">
         <p>
-          <span class="fw-bold">{{ nombreJugador.nombre }}&nbsp;&nbsp;</span>
+          <span class="fw-bold">{{ nombreJugador.nombre }}</span>
+          <br />
           <router-link :to="`/usuario/${nombreJugador.uid}`">
             ver perfil
           </router-link>
-          <button
-            class="button__delete"
-            @click="eliminarDePartido(nombreJugador.uid)"
-            v-show="myMatch"
-          >
-            X
-          </button>
         </p>
       </div>
-    </div>
-    <div class="row sumarPartidoButton">
-      <div class="col-12">
-        <button @click="inscribirseAlPartido" v-show="!flagInscription">
-          Unirme al partido
+      <div class="col-3 pt-3">
+        <button
+          class="button__delete"
+          @click="eliminarDePartido(nombreJugador.uid)"
+          v-show="myMatch"
+        >
+          <i class="fa-solid fa-trash-can"></i>
         </button>
       </div>
     </div>
-  </section>
+    <div class="botones_inferiores">
+      <button @click="inscribirseAlPartido" v-show="!flagInscription">
+        UNIRME AL PARTIDO
+      </button>
+
+      <button @click="eliminarPartido(user.id)" v-show="myMatch">
+        ELIMINAR PARTIDO
+      </button>
+    </div>
+  </Section>
 </template>
 
 <style scoped>
@@ -243,21 +235,13 @@ ul {
 .nombreComplejo {
   color: rgb(75, 75, 75);
 }
-.sumarPartidoButton {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  padding: 0;
-  margin: 0 0 54px 0;
-  background-color: rgb(2, 169, 2);
-}
-.sumarPartidoButton button {
-  width: 100%;
+.button__delete {
   border: none;
   background-color: transparent;
-  color: white;
-  font-weight: 500;
-  padding: 0.5rem;
+  font-size: 1.5rem;
+}
+i {
+  color: red;
 }
 .fotoCancha {
   width: 100%;
@@ -268,12 +252,32 @@ ul {
 .fotoCancha img {
   width: 100%;
 }
-.button__delete {
-  border: none;
-  background-color: red;
-  border-radius: 8px;
-  color: white;
-  font-weight: 500;
-  margin: 0 0.3rem;
+
+.botones_inferiores {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 0;
+  margin: 0 0 0 0;
+
+  & :first-child,
+  :last-child {
+    width: 100%;
+    margin: 0;
+    border: none;
+    color: white;
+    padding: 0.3rem;
+  }
+  & :first-child {
+    height: 60px;
+    width: 100%;
+    background-color: var(--primary-color);
+  }
+  & :last-child {
+    height: 60px;
+    width: 100%;
+
+    background-color: red;
+  }
 }
 </style>

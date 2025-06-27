@@ -5,22 +5,33 @@ import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
 import { useAuth } from "../../composition/useAuth";
 import { notificationProvider } from "../../symbols/symbols";
-
+import HeaderPage from "../../components/HeaderPage.vue";
+import Section from "../../components/Section.vue";
+import { getUserById } from "../../services/users";
+import Loading from "../../components/Loading.vue";
 const { setFeedbackMessage } = inject(notificationProvider);
 const route = useRoute();
 const router = useRouter();
 const jugadorValoradoId = route.params.id;
 const { user } = useAuth();
-
+const profile = ref(null);
 const estrellasSeleccionadas = ref(0);
 const comentario = ref("");
+const loading = ref(false);
 
 function seleccionarEstrellas(n) {
   estrellasSeleccionadas.value = n;
 }
 
-onMounted(() => {
-  console.log(user.id);
+onMounted(async () => {
+  try {
+    loading.value = true;
+    profile.value = await getUserById(jugadorValoradoId);
+    console.log(user.id);
+    loading.value = false;
+  } catch {
+    loading.value = false;
+  }
 });
 
 async function enviarValoracion() {
@@ -53,9 +64,15 @@ async function enviarValoracion() {
 </script>
 
 <template>
-  <div class="valoracion-container">
-    <h2 class="mb-3">Dejar una valoración</h2>
-
+  <HeaderPage
+    route="/home"
+    :title="
+      user ? 'Valorá a ' + profile?.displayName || profile?.nombre : 'perfil'
+    "
+    v-if="!loading"
+  ></HeaderPage>
+  <Loading :loading="loading" />
+  <Section>
     <!-- Estrellas -->
     <div class="estrellas mb-3">
       <span
@@ -76,10 +93,10 @@ async function enviarValoracion() {
     ></textarea>
 
     <!-- Botón -->
-    <button class="btn btn-primary w-100" @click="enviarValoracion">
+    <button class="button_send" @click="enviarValoracion">
       Enviar valoración
     </button>
-  </div>
+  </Section>
 </template>
 
 <style scoped>
@@ -101,5 +118,15 @@ async function enviarValoracion() {
 
 .estrellas span.activa {
   color: gold;
+}
+
+.button_send {
+  border: none;
+  border-radius: 8px;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.5rem;
+  width: 100%;
+  font-weight: 600;
 }
 </style>

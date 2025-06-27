@@ -1,3 +1,6 @@
 :root {
   --primary-color: #5d880d;
 }
+body {
+  font-family: "Quicksand", sans-serif;
+}

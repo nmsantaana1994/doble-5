@@ -14,8 +14,9 @@ const route = useRoute();
 const loading = ref(false);
 
 onMounted(async () => {
+  loading.value = true;
   const profileID = route.params.id;
-  console.log("profileID:", profileID); // 👈 Verificá esto
+  console.log("profileID:", profileID);
 
   if (!profileID) {
     console.warn("No se encontró un ID de perfil en la ruta.");
@@ -23,6 +24,7 @@ onMounted(async () => {
   }
   ruta.value = getRuta(profileID);
   profile.value = await getUserById(profileID);
+  loading.value = false;
 });
 
 function getRuta(profileID) {
@@ -41,6 +43,15 @@ function getRuta(profileID) {
   <Loading :loading="loading" />
   <HeaderPage :route="ruta" :title="'Valoraciones'" />
   <Section>
+    <div class="col-12 go_valoration" v-if="profile">
+      <router-link
+        :to="`/usuario/${profile.id}/valoration`"
+        class="text-blue-400 underline"
+        >¿Queres dejar una valoracion a
+        {{ profile.displayName ? profile.displayName : profile.nombre }}
+        ?</router-link
+      >
+    </div>
     <template v-if="profile && profile.valoraciones?.length > 0">
       <div
         v-for="(valoracion, index) in profile.valoraciones"
@@ -87,5 +98,8 @@ function getRuta(profileID) {
 .comentario {
   font-style: italic;
   color: #555;
+}
+.go_valoration {
+  margin: 1rem 0;
 }
 </style>
