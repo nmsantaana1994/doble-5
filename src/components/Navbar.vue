@@ -17,7 +17,6 @@ function useLogout() {
   return {
     handleLogout() {
       logout();
-      // Redireccionamos al usuario al login.
       router.push({ path: "/iniciar-sesion" });
     },
   };
@@ -26,10 +25,13 @@ function useLogout() {
 // Escuchar el número de notificaciones no leídas en tiempo real
 onMounted(() => {
   if (user.value && user.value.id) {
-    unsubscribe = obtenerNumeroNotificacionesNoLeidas(user.value.id, (numero) => {
-      console.log("Actualizando badge de notificaciones:", numero); // Depuración
-      notificacionesNoLeidas.value = numero;
-    });
+    unsubscribe = obtenerNumeroNotificacionesNoLeidas(
+      user.value.id,
+      (numero) => {
+        console.log("Actualizando badge de notificaciones:", numero); // Depuración
+        notificacionesNoLeidas.value = numero;
+      }
+    );
   }
 });
 
@@ -42,7 +44,9 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <nav class="navbar container-fluid d-flex flex-column justify-content-between fixed-bottom bg-dark">
+  <nav
+    class="navbar container-fluid d-flex flex-column justify-content-between fixed-bottom bg-dark"
+  >
     <div class="w-100 align-items-center p-0">
       <ul class="row m-0 p-0 justify-content-between nav-bottom">
         <li class="col-2 p-0 mx-1">
@@ -290,7 +294,7 @@ ul {
   list-style: none;
 }
 
-.nav-bottom li a{
+.nav-bottom li a {
   max-width: 70px;
 }
 
