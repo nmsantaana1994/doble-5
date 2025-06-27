@@ -78,7 +78,7 @@ async function inscribirseAlPartido(idPartido) {
           </div>
           <div class="col-10 d-flex align-items-end">
             <p class="card-subtitle text-body-secondary text-start">
-              Direccion: <b> {{ partido?.complejo?.direction }}</b>
+              Complejo: <b> {{ partido?.complejo?.name }}</b>
             </p>
           </div>
         </div>

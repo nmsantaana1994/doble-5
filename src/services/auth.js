@@ -3,6 +3,7 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
   signOut,
   updateProfile,
 } from "firebase/auth";
@@ -588,4 +589,14 @@ function notifyAll() {
 
 function notify(callback) {
   callback({ ...user });
+}
+
+export async function sendResetPassword(email) {
+  try {
+    await sendPasswordResetEmail(auth, email);
+    console.log("Correo de restablecimiento enviado");
+  } catch (error) {
+    console.error("Error enviando el correo:", error.message);
+    return { success: false, error: error.message };
+  }
 }
