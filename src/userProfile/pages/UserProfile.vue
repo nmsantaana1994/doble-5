@@ -104,6 +104,7 @@ const seguirDejarSeguir = async () => {
   <HeaderPage
     route="/home"
     :title="user ? user?.displayName || user?.nombre : 'perfil'"
+    :hasBackground="false"
     v-if="!loading"
   ></HeaderPage>
   <Loading :loading="loading" />

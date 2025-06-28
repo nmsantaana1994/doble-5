@@ -71,10 +71,11 @@ const formSubmitted = ref(false);
   <HeaderPage route="/iniciar-sesion" title="Registrarme"></HeaderPage>
   <Section>
     <section class="row">
-      <h2 class="ms-3">Tus Datos</h2>
+      <p class="h6 fw-bold ms-3 mt-3">TUS DATOS</p>
+      <p class="border m-line w-15"></p>
     </section>
     <form @submit.prevent="handleSubmit">
-      <div class="mb-3">
+      <div class="">
         <label for="nombre">Nombre:</label>
         <Input
           :class="v$.nombre.$error ? 'inputError' : ''"
@@ -89,7 +90,7 @@ const formSubmitted = ref(false);
           >Por favor, ingrese un nombre.</span
         >
       </div>
-      <div class="mb-3">
+      <div class="">
         <label for="apellido">Apellido:</label>
         <Input
           :class="v$.apellido.$error ? 'inputError' : ''"
@@ -104,7 +105,7 @@ const formSubmitted = ref(false);
           >Por favor, ingrese un apellido.</span
         >
       </div>
-      <div class="mb-3">
+      <div class="">
         <label for="email">Email:</label>
         <Input
           :class="v$.email.$error ? '' : ''"
@@ -119,7 +120,7 @@ const formSubmitted = ref(false);
           >Por favor, ingrese un correo electrónico válido.</span
         >
       </div>
-      <div class="mb-3">
+      <div class="">
         <label for="password">Contraseña:</label>
         <Input
           :class="v$.password.$error ? '' : ''"
@@ -135,7 +136,7 @@ const formSubmitted = ref(false);
           caracteres.</span
         >
       </div>
-      <div class="mb-3">
+      <div class="">
         <label for="nacimiento">Fecha de nacimiento:</label>
         <Input
           :class="v$.nacimiento.$error ? '' : ''"
@@ -150,7 +151,7 @@ const formSubmitted = ref(false);
           >Por favor, ingrese una fecha de nacimiento.</span
         >
       </div>
-      <div class="mb-3">
+      <div class="">
         <label for="genero">Genero:</label>
         <select
           name="genero"
@@ -167,7 +168,7 @@ const formSubmitted = ref(false);
           >Por favor, seleccione una opción.</span
         >
       </div>
-      <div class="mb-3">
+      <div class="">
         <label for="barrio">Barrio:</label>
         <select
           name="barrio"
@@ -229,7 +230,7 @@ const formSubmitted = ref(false);
           >Por favor, seleccione un barrio.</span
         >
       </div>
-      <div class="mb-3">
+      <div class="">
         <label for="telefono">Telefono:</label>
         <Input
           :class="v$.telefono.$error ? '' : ''"
@@ -275,6 +276,19 @@ img {
   width: 80%;
 }
 
+.w-15 {
+  width: 15%;
+}
+
+.m-line {
+  margin-left: 1.8rem;
+  border-color: #5d880d !important;
+  border-radius: 25px;
+  height: 3px;
+  background-color: #5d880d;
+  margin-top: 0.5rem;
+}
+
 .inputError {
   border: 1px solid red;
   /* background-color: green; */
@@ -287,7 +301,7 @@ form {
 }
 
 form div {
-  margin: 1rem 0;
+  margin: 0.5rem 0;
 }
 
 input,
@@ -298,7 +312,7 @@ select {
   border-radius: 20px;
 }
 label {
-  font-weight: 500;
+  font-weight: 900;
   padding: 0 0 0.3rem 0.2rem;
 }
 

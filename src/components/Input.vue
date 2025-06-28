@@ -7,6 +7,10 @@ const props = defineProps({
     type: String,
     default: "text",
   },
+  placeholder: {
+    type: String,
+    default: "",
+  },
 });
 
 const emit = defineEmits(["update:modelValue"]);
@@ -31,6 +35,7 @@ function togglePassword() {
   <div class="input-wrapper">
     <input
       :type="inputType"
+      :placeholder="placeholder"
       class="w-100 p-2 border border-slate-400 rounded-xl"
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
@@ -52,7 +57,7 @@ function togglePassword() {
 }
 
 input {
-  border-radius: 8px;
+  border-radius: 20px;
   width: 100%;
   padding-right: 2.5rem; /* espacio para el ícono */
 }

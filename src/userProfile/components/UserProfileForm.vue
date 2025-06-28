@@ -109,31 +109,31 @@ function useEditProfile(user) {
 <template>
   <div class="row d-flex">
     <div class="col-12 mb-3 d-flex justify-content-center">
-      <Image :src="user.photoURL" />
+      <div class="w-50">
+        <Image :src="user.photoURL" />
+      </div>
     </div>
     <div class="col-12">
       <form action="#" method="POST" @submit.prevent="handleSubmit">
         <div class="mb-3">
-          <Label for="displayName" class="me-3 fw-bold"
-            >Nombre de Usuario:
+          <Label for="displayName" class="me-3 fw-bold">NOMBRE DE USUARIO:
           </Label>
           <Input id="displayName" v-model="form.displayName" />
         </div>
         <div class="mb-3">
-          <Label for="nombre" class="me-3 fw-bold">Nombre: </Label>
+          <Label for="nombre" class="me-3 fw-bold">NOMBRE: </Label>
           <Input id="nombre" v-model="form.nombre" />
         </div>
         <div class="mb-3">
-          <Label for="apellido" class="me-3 fw-bold">Apellido: </Label>
+          <Label for="apellido" class="me-3 fw-bold">APELLIDO: </Label>
           <Input id="apellido" v-model="form.apellido" />
         </div>
         <div class="mb-3">
-          <Label for="email" class="me-3 fw-bold">Email: </Label>
+          <Label for="email" class="me-3 fw-bold">EMAIL: </Label>
           <Input id="Email" v-model="form.email" />
         </div>
         <div class="mb-3">
-          <Label for="nacimiento" class="me-3 fw-bold"
-            >Fecha de Nacimiento:
+          <Label for="nacimiento" class="me-3 fw-bold">FECHA DE NACIMIENTO:
           </Label>
           <Input type="date" id="nacimiento" v-model="form.nacimiento" />
         </div>
@@ -143,7 +143,7 @@ function useEditProfile(user) {
         </div> -->
 
         <div class="mb-3">
-          <Label class="me-3 fw-bold">Valoración (1 a 5):</Label>
+          <Label class="me-3 fw-bold">VALORACIONES</Label>
           <div class="estrellas-editables">
             <span
               v-for="n in 5"
@@ -157,7 +157,7 @@ function useEditProfile(user) {
         </div>
 
         <div class="mb-3">
-          <Label for="comentario" class="me-3 fw-bold">Comentario:</Label>
+          <Label for="comentario" class="me-3 fw-bold">COMENTARIO:</Label>
           <textarea
             id="comentario"
             v-model="form.comentario"
@@ -168,19 +168,19 @@ function useEditProfile(user) {
         </div>
 
         <div class="mb-3">
-          <Label for="genero" class="me-3 fw-bold">Genero: </Label>
+          <Label for="genero" class="me-3 fw-bold">GÉNERO: </Label>
           <Input id="genero" v-model="form.genero" />
         </div>
         <div class="mb-3">
-          <Label for="barrio" class="me-3 fw-bold">Barrio: </Label>
+          <Label for="barrio" class="me-3 fw-bold">BARRIO: </Label>
           <Input id="barrio" v-model="form.barrio" />
         </div>
         <div class="mb-3">
-          <Label for="telefono" class="me-3 fw-bold">Teléfono: </Label>
+          <Label for="telefono" class="me-3 fw-bold">TELÉFONO: </Label>
           <Input id="telefono" v-model="form.telefono" />
         </div>
         <div class="mb-3">
-          <Label for="photoURL" class="fw-bold">Foto de Perfil: </Label>
+          <Label for="photoURL" class="fw-bold">FOTO DE PERFIL: </Label>
           <Input type="file" id="photoURL" @change="handleFile" />
         </div>
         <div v-if="form.photoURL !== null" class="mb-3">

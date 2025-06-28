@@ -94,7 +94,9 @@ function goToChat() {
   <div class="row">
     <div class="col-12 mb-3">
       <div class="d-flex justify-content-center mb-3">
-        <Image :src="user.photoURL" />
+        <div class="w-50">
+          <Image :src="user.photoURL" />
+        </div>
       </div>
       <div
         class="change_photo d-flex justify-content-center mb-3"
