@@ -125,42 +125,44 @@ function estaInscripto() {
 
 <template class="main">
   <Loading :loading="loading" />
-  <HeaderPage title="Informacion" route="/home"></HeaderPage>
+  <HeaderPage title="Informacion" route="/home" :hasBackground="false"></HeaderPage>
   <Section class="row p-1" style="margin: 75px 0 120px 0">
     <div class="col-12 fotoCancha mb-3">
       <img src="../../assets/img/cancha.jpg" />
     </div>
-    <div class="row infoPartido">
-      <div class="col-6 fw-bold nombreComplejo">
-        {{ partidoFiltrado ? partidoFiltrado.complejo.name : "-" }}
+    <div class="row mx-auto infoPartido">
+      <div class="col-9 fw-bold nombreComplejo">
+        <p>
+          {{ partidoFiltrado ? partidoFiltrado.complejo.name : "-" }}
+        </p>
       </div>
-      <div class="col-3">
-        {{ partidoFiltrado ? partidoFiltrado.tipo : "-" }}
-      </div>
-      <div class="col-3">
-        {{
-          partidoFiltrado
-            ? partidoFiltrado.cantidadJ + " vs " + partidoFiltrado.cantidadJ
-            : "-"
-        }}
+      <div class="col-3 d-flex justify-content-center">
+        <p class="text-center mb-0 lh-sm">
+          {{
+            partidoFiltrado
+              ? partidoFiltrado.cantidadJ + " vs " + partidoFiltrado.cantidadJ
+              : "-"
+          }}
+          {{ partidoFiltrado ? partidoFiltrado.tipo : "-" }}
+        </p>
       </div>
     </div>
 
-    <div class="row mx-auto mt-2 infoPartido">
+    <div class="row mx-auto my-2 infoPartido">
       <div class="col-12">
-        <p>
+        <p class="mb-0">
           <span class="fw-bold text-black">Direccion:</span>
           {{ partidoFiltrado ? partidoFiltrado.complejo.direction : "-" }}
         </p>
       </div>
       <div class="col-12">
-        <p>
+        <p class="mb-0">
           <span class="fw-bold"> Dia:</span>
           {{ partidoFiltrado ? partidoFiltrado.fecha : "-" }}
         </p>
       </div>
       <div class="col-12">
-        <p>
+        <p class="mb-0">
           <span class="fw-bold"> Horario:</span>
           {{ partidoFiltrado ? partidoFiltrado.hora : "-" }}
         </p>
@@ -169,14 +171,15 @@ function estaInscripto() {
     <div class="row mx-auto mt-2 infoPartido">
       <div class="col-12">
         <p>
-          Organizado por: <br />{{
+          Organizado por: <br />
+          <small>{{
             partidoFiltrado ? partidoFiltrado.usuarioCreador : "-"
-          }}
+          }}</small>
         </p>
       </div>
     </div>
 
-    <div class="row">
+    <div class="row mx-auto">
       <div class="col-12">
         <p class="text-center fs-2 fw-bold">Jugadores</p>
       </div>
@@ -192,16 +195,16 @@ function estaInscripto() {
       <div class="col-3">
         <Image :src="nombreJugador.image" />
       </div>
-      <div class="col-6 pt-3 jugadores">
+      <div class="col-8 pt-3 jugadores">
         <p>
           <span class="fw-bold">{{ nombreJugador.nombre }}</span>
           <br />
-          <router-link :to="`/usuario/${nombreJugador.uid}`">
-            ver perfil
+          <router-link :to="`/usuario/${nombreJugador.uid}`" class="text-decoration-none">
+            Ver Perfil
           </router-link>
         </p>
       </div>
-      <div class="col-3 pt-3">
+      <div class="col-1 pt-0">
         <button
           class="button__delete"
           @click="eliminarDePartido(nombreJugador.uid)"
@@ -250,7 +253,8 @@ i {
   padding: 0;
 }
 .fotoCancha img {
-  width: 100%;
+  width: calc(100% + 2rem);
+  margin: 0 -1rem;
 }
 
 .botones_inferiores {

@@ -177,9 +177,10 @@ watch([selectedCancha, selectedDia], handleCanchaChange);
 <template>
   <HeaderPage route="/home" title="Crear partido" :hasBackground="false" />
   <Section>
-    <div class="col-12">
+    <div class="col-12 px-3">
       <form action="#" method="POST" @submit.prevent="handleSubmit">
         <h3 class="mb-3">Datos del encuentro</h3>
+        <p class="border m-line w-15 mb-4"></p>
         <!-- 1. Nombre del partido (siempre habilitado) -->
         <div class="mb-3">
           <label for="nombre">Nombre del partido:</label>
@@ -306,6 +307,18 @@ img {
   width: 80%;
 }
 
+.w-15 {
+  width: 15%;
+}
+
+.m-line {
+  margin-left: 0rem;
+  border-color: #5d880d !important;
+  border-radius: 25px;
+  height: 3px;
+  background-color: #5d880d;
+}
+
 form {
   display: flex;
   flex-direction: column;
@@ -327,7 +340,7 @@ select {
 }
 label {
   font-size: 1rem;
-  margin-bottom: 0.2rem;
-  font-weight: 500;
+  margin-bottom: 0.5rem;
+  font-weight: 900;
 }
 </style>

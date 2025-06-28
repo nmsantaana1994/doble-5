@@ -37,7 +37,7 @@ onMounted(async () => {
 
 <template>
   <Loading :loading="loading" />
-  <HeaderPage route="/home" title="Mi Perfil" />
+  <HeaderPage route="/home" title="Mi Perfil" :hasBackground="false" />
   <Section>
     <template v-if="editing">
       <UserProfileForm />

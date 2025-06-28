@@ -314,7 +314,7 @@ onUnmounted(() => {
   <HeaderPage route="/home" title="Partidos" />
   <Section>
     <div class="row mb-3">
-      <ul class="nav nav-tabs mb-3" role="tablist">
+      <ul class="nav nav-tabs mb-5 mt-3 px-3" role="tablist">
         <li class="nav-item" role="presentation">
           <button
             class="nav-link active"
@@ -485,4 +485,49 @@ select.form-select {
   background-color: #f8f9fa;
   border-radius: 0.375rem;
 }
+
+/* 1) Eliminar bordes por defecto de Bootstrap */
+ul.nav-tabs {
+  border-bottom: none;
+  justify-content: flex-start; /* o center si querés centrar todas */
+}
+
+/* 2) Estilos del enlace en todas (inactivo) */
+.nav-link {
+  color: #000;                  /* texto negro */
+  font-weight: 700;             /* negrita */
+  padding: 0.5rem 1rem;         /* más espacio arriba/abajo y laterales */
+  border: none;                 /* quita el borde de pestaña */
+  border-radius: 0;             /* sin redondeo */
+  position: relative;           /* para el pseudo-elemento ::after */
+  transition: color 0.2s;
+}
+
+/* 3) Hover suave */
+.nav-link:hover {
+  color: #5d880d;
+}
+
+/* 4) Pestaña activa: texto verde y subrayado */
+.nav-link.active {
+  color: #5d880d !important;
+}
+
+/* 5) Línea verde debajo solo en activa */
+.nav-link.active::after {
+  content: "";
+  display: block;
+  width: 50%;
+  height: 3px;               /* grosor de la línea */
+  background-color: #5d880d;
+  position: absolute;
+  bottom: -1px;              /* justo debajo del área del link */
+  left: 10;
+}
+
+/* 6) Si querés separar un toque las dos pestañas */
+.nav-item + .nav-item {
+  margin-left: 1rem;
+}
+
 </style>
