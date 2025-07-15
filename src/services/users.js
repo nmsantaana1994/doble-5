@@ -1,6 +1,12 @@
 import { db } from "./firebase.js";
 import { setDoc, doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
 import { getFileURL } from "./storage.js";
+import {
+    getStorage,
+    ref as storageRef,
+    uploadString,
+    getDownloadURL,
+} from "firebase/storage";
 
 /**
  *
@@ -133,4 +139,24 @@ export async function agregarValoracion(userId, valoraciones) {
     console.error("Error al agregar la valoración:", error);
     throw error;
   }
+}
+
+/**
+ * Sube el DataURL al Storage y actualiza solo el campo photoURL en Firestore.
+ * @param {string} userId 
+ * @param {string} dataUrl 
+ * @returns {Promise<string>} La URL pública del avatar
+ */
+export async function updateUserPhoto(userId, dataUrl) {
+  // 1) Sube la imagen a Firebase Storage
+  const storage = getStorage();
+  const imgRef = storageRef(storage, `avatars/${userId}.jpg`);
+  await uploadString(imgRef, dataUrl, "data_url");
+  const downloadURL = await getDownloadURL(imgRef);
+
+  // 2) Guarda solo la URL en el documento de usuario
+  const userDoc = doc(db, "users", userId);
+  await updateDoc(userDoc, { photoURL: downloadURL });
+
+  return downloadURL;
 }
