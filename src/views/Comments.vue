@@ -116,8 +116,8 @@
               <button @click="toggleLikeView" class="action-btn">
                 <img
                   :src="post.liked
-                    ? '../src/assets/img/like-filled.png'
-                    : '../src/assets/img/like.png'"
+                    ? '../assets/img/like-filled.png'
+                    : '../assets/img/like.png'"
                   alt="Me gusta"
                 />
                 <span class="ms-2">{{ post.likes.length }} Me gusta</span>
