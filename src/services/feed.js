@@ -64,6 +64,7 @@ export async function addComment(postId, user, newComment) {
             const newCommentData = {
                 userId: user.id,
                 userDisplayName: user.displayName,
+                userPhoto: user.photoURL,
                 content: newComment,
                 created_at: Timestamp.now(),
             };

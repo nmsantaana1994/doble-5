@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 import { ref, watch, defineEmits } from "vue";
 import { useAuth } from "../../composition/useAuth.js";
 import { inject } from "vue";
@@ -23,6 +23,7 @@ const form = ref({
   followers: [],
   following: [],
   nivel: "",
+  valoraciones: "",
   genero: "",
   barrio: "",
   telefono: "",
@@ -45,20 +46,48 @@ watch(user, (newUser) => {
 });
 const loading = ref(false);
 
+// async function handleSubmit() {
+//   loading.value = true;
+//   try {
+//     clearFeedbackMessage();
+//     console.log("Valores en form:", form.value);
+//     await updateUserProfile(user.value.id, {
+//       ...form.value,
+//     });
+//     setFeedbackMessage({
+//       type: "success",
+//       message: "La foto de perfil fue actualizada con éxito.",
+//     });
+//     form.value.photoURL = null;
+//     emit("photoUpdated", true); // Emit the event with the boolean value
+//   } catch (err) {
+//     console.error("[handleSubmit] Error al actualizar la foto de perfil", err);
+//     setFeedbackMessage({
+//       type: "error",
+//       message:
+//         "Ocurrió un error inesperado al tratar de actualizar la foto de perfil.",
+//     });
+//   } finally {
+//     loading.value = false;
+//     // location.reload();
+//   }
+// }
+
+// changePhoto.vue (solo la parte relevante)
 async function handleSubmit() {
   loading.value = true;
   try {
     clearFeedbackMessage();
-    console.log("Valores en form:", form.value);
+    // Solo enviamos photoURL: así no mandamos campos indefinidos
     await updateUserProfile(user.value.id, {
-      ...form.value,
+      photoURL: form.value.photoURL,
     });
     setFeedbackMessage({
       type: "success",
       message: "La foto de perfil fue actualizada con éxito.",
     });
-    form.value.photoURL = null;
-    emit("photoUpdated", true); // Emit the event with the boolean value
+    // Emito la URL limpia al padre
+    emit("photoUpdated", form.value.photoURL);
   } catch (err) {
     console.error("[handleSubmit] Error al actualizar la foto de perfil", err);
     setFeedbackMessage({
@@ -68,7 +97,7 @@ async function handleSubmit() {
     });
   } finally {
     loading.value = false;
-    // location.reload();
+    // flagChangePhoto.value = false;
   }
 }
 
@@ -110,4 +139,73 @@ function sentEmit() {}
       </form>
     </div>
   </div>
+</template> -->
+
+<script setup>
+import { ref, defineEmits, inject } from "vue";
+import { useAuth } from "../../composition/useAuth.js";
+import { updateUserPhoto } from "../../services/users.js";
+import { notificationProvider } from "../../symbols/symbols.js";
+
+import Label from "../../components/Label.vue";
+import Input from "../../components/Input.vue";
+import Button from "../../components/Button.vue";
+
+const { user } = useAuth();
+const { setFeedbackMessage, clearFeedbackMessage } = inject(notificationProvider);
+const emit = defineEmits(["preview", "saved"]);
+
+const form = ref({ photoURL: null });
+const loading = ref(false);
+
+function handleFile(ev) {
+  const file = ev.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.addEventListener("load", () => {
+    form.value.photoURL = reader.result;
+    // Emito preview
+    emit("preview", reader.result);
+  });
+  reader.readAsDataURL(file);
+}
+
+async function handleSubmit() {
+  if (!form.value.photoURL) return;
+  loading.value = true;
+  clearFeedbackMessage();
+  try {
+    const newUrl = await updateUserPhoto(user.value.id, form.value.photoURL);
+    setFeedbackMessage({
+      type: "success",
+      message: "La foto de perfil fue actualizada con éxito.",
+    });
+    emit("saved", newUrl);
+  } catch (err) {
+    console.error("[handleSubmit] error al actualizar foto:", err);
+    setFeedbackMessage({
+      type: "error",
+      message:
+        "Ocurrió un error inesperado al tratar de actualizar la foto de perfil: " +
+        (err.message || err),
+    });
+  } finally {
+    loading.value = false;
+  }
+}
+
+</script>
+
+<template>
+  <form @submit.prevent="handleSubmit" class="row d-flex">
+    <div class="col-12 mb-3">
+      <Label for="photoURL" class="fw-bold">Foto de Perfil:</Label>
+      <Input type="file" id="photoURL" @change="handleFile" />
+    </div>
+    <div class="col-12 d-grid gap-2">
+      <Button class="btn btn-primary w-100" type="submit" :loading="loading">
+        Actualizar mi foto
+      </Button>
+    </div>
+  </form>
 </template>
