@@ -53,7 +53,7 @@ async function enviarValoracion() {
     comentario.value = "";
     setFeedbackMessage({
       type: "success",
-      message: "Valoracion enviada correctamente.",
+      message: "Valoración enviada correctamente.",
     });
 
     router.back();
@@ -94,7 +94,7 @@ async function enviarValoracion() {
 
     <!-- Botón -->
     <button class="button_send" @click="enviarValoracion">
-      Enviar valoración
+      ENVIAR VALORACIÓN
     </button>
   </Section>
 </template>

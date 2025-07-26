@@ -151,11 +151,11 @@ function onSave(url) {
             @click="seguirDejarSeguir"
             class="button_top"
           >
-            {{ userFollowing ? "Dejar de seguir" : "Seguir" }}
+            {{ userFollowing ? "DEJAR DE SEGUIR" : "SEGUIR" }}
           </button>
         </div>
         <div v-if="userFollowing" class="d-grid gap-2 col-6">
-          <button class="button_top" @click="goToChat()">Mensaje</button>
+          <button class="button_top" @click="goToChat()">MENSAJE</button>
         </div>
       </div>
     </div>

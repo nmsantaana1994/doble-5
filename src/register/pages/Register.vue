@@ -70,7 +70,7 @@ const formSubmitted = ref(false);
 <template>
   <HeaderPage route="/iniciar-sesion" title="Registrarme"></HeaderPage>
   <Section>
-    <section class="row">
+    <section class="col-12">
       <p class="h6 fw-bold ms-3 mt-3">TUS DATOS</p>
       <p class="border m-line w-15"></p>
     </section>
@@ -234,7 +234,7 @@ const formSubmitted = ref(false);
         <label for="telefono">Telefono:</label>
         <Input
           :class="v$.telefono.$error ? '' : ''"
-          type="text"
+          type="number"
           name="telefono"
           id="telefono"
           placeholder="Teléfono"

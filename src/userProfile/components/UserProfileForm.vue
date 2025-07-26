@@ -193,7 +193,7 @@ function useEditProfile(user) {
         </div>
         <Button class="btn btn-primary w-100">
           <LoadingContext :loading="loading">
-            Actualizar mis datos
+            ACTUALIZAR MIS DATOS
           </LoadingContext>
         </Button>
       </form>

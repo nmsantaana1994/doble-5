@@ -46,8 +46,8 @@ function getRuta(profileID) {
     <div class="col-12 go_valoration" v-if="profile">
       <router-link
         :to="`/usuario/${profile.id}/valoration`"
-        class="text-blue-400 underline"
-        >¿Queres dejar una valoracion a
+        class="text-decoration-none text-dark"
+        >¿Querés dejar una valoracion a
         {{ profile.displayName ? profile.displayName : profile.nombre }}
         ?</router-link
       >

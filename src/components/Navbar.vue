@@ -45,7 +45,7 @@ onUnmounted(() => {
 
 <template>
   <nav
-    class="navbar container-fluid d-flex flex-column justify-content-between fixed-bottom bg-dark p-3"
+    class="navbar container-fluid d-flex flex-column justify-content-between fixed-bottom bg-dark p-3 py-4"
   >
     <div class="w-100 align-items-center p-0">
       <ul class="row m-0 p-0 justify-content-between nav-bottom">

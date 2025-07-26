@@ -128,7 +128,7 @@ const filteredChats = computed(() => {
 
 <template>
   <Loading :loading="loading" />
-  <HeaderPage title="Mensajes" route="home" :hasBackground="false" />
+  <HeaderPage title="Mensajes" route="home" :hasBackground="true" />
   <Section>
     <div class="mb-3">
       <input

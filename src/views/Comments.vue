@@ -97,15 +97,17 @@
 
         <!-- Card de la publicación -->
         <div class="post-card mb-4 p-3">
-          <div class="row mb-2 align-items-center">
-            <div class="col-2">
-              <Image :src="post.photoURL" />
+          <router-link :to="`/usuario/${ post?.userId }`" class="col-12 mb-3 text-decoration-none text-dark">
+            <div class="row mb-2 align-items-center">
+              <div class="col-2">
+                <Image :src="post.photoURL" />
+              </div>
+              <div class="col-10">
+                <p class="m-0"><strong>{{ post.userDisplayName }}</strong></p>
+                <p class="font-date">{{ dateToString(post.created_at) }}</p>
+              </div>
             </div>
-            <div class="col-10">
-              <p class="m-0"><strong>{{ post.userDisplayName }}</strong></p>
-              <p class="font-date">{{ dateToString(post.created_at) }}</p>
-            </div>
-          </div>
+          </router-link>
           <div class="row">
             <div class="col-12">
               <p class="post-content">{{ post.content }}</p>
@@ -116,8 +118,8 @@
               <button @click="toggleLikeView" class="action-btn">
                 <img
                   :src="post.liked
-                    ? '../assets/img/like-filled.png'
-                    : '../assets/img/like.png'"
+                    ? 'src/assets/img/like-filled.png'
+                    : 'src/assets/img/like.png'"
                   alt="Me gusta"
                 />
                 <span class="ms-2">{{ post.likes.length }} Me gusta</span>
@@ -142,7 +144,7 @@
                 <div class="col-8 d-flex align-items-center">
                   <textarea
                     v-model="newComment"
-                    placeholder="Deja un comentario"
+                    placeholder="Dejá un comentario"
                     rows="1"
                     class="form-control flex-grow-1"
                   ></textarea>
@@ -169,19 +171,21 @@
               :key="idx"
               class="comment-card mb-3 p-3"
             >
-              <div class="row">
-                <div class="col-2 pt-2">
-                  <Image
-                    :src="comment.photoURL || comment.userPhoto"
-                    class="comment-avatar"
-                  />
+              <router-link :to="`/usuario/${ comment?.userId }`" class="col-12 mb-3 text-decoration-none text-dark">
+                <div class="row">
+                  <div class="col-2 pt-2">
+                    <Image
+                      :src="comment.photoURL || comment.userPhoto"
+                      class="comment-avatar"
+                    />
+                  </div>
+                  <div class="col-10">
+                    <p class="m-0"><strong>{{ comment.userDisplayName }}</strong></p>
+                    <p class="font-date">{{ dateToString(comment.created_at) }}</p>
+                    <p class="comment-content mt-1">{{ comment.content }}</p>
+                  </div>
                 </div>
-                <div class="col-10">
-                  <p class="m-0"><strong>{{ comment.userDisplayName }}</strong></p>
-                  <p class="font-date">{{ dateToString(comment.created_at) }}</p>
-                  <p class="comment-content mt-1">{{ comment.content }}</p>
-                </div>
-              </div>
+              </router-link>
             </div>
           </div>
           <div v-else class="text-center text-muted">
