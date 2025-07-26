@@ -75,7 +75,7 @@ function useCargaPartido() {
             await inscribirPartido(partido.id, user);
             setFeedbackMessage({
               type: "success",
-              message: "usuario inscripto correctamente.",
+              message: "Usuario inscripto correctamente.",
             });
             router.push(`/info-partido/${partido.id}`);
           } else {

@@ -33,9 +33,9 @@ const enviar = async () => {
 <template>
   <HeaderPage route="/iniciar-sesion" title="Olvide mi contraseña" />
   <Section>
-    <h2>Restablecer contraseña</h2>
+    <h2>Reestablecer contraseña</h2>
     <input v-model="email" placeholder="Tu correo" type="email" />
-    <button @click="enviar">Enviar enlace</button>
+    <button @click="enviar">ENVIAR ENLACE</button>
     <p>{{ mensaje }}</p>
   </Section>
 </template>
@@ -68,7 +68,7 @@ input {
 button {
   width: 100%;
   padding: 0.75rem;
-  background-color: #000;
+  background-color: #73a812;
   color: #fff;
   font-weight: 600;
   border: none;

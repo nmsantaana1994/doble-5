@@ -415,7 +415,7 @@ onUnmounted(() => {
           <template v-else>
             <div class="row px-3">
               <div class="col-12">
-                <p>No hay partidos para mostrar</p>
+                <p>No existen partidos en la zona seleccionada.</p>
               </div>
             </div>
           </template>

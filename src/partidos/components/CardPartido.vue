@@ -22,7 +22,7 @@ async function inscribirseAlPartido(idPartido) {
       await inscribirPartido(idPartido, user);
       setFeedbackMessage({
         type: "success",
-        message: "usuario inscripto correctamente.",
+        message: "Usuario inscripto correctamente.",
       });
       console.log("Usuario inscrito correctamente.");
     } else {
@@ -63,7 +63,7 @@ async function inscribirseAlPartido(idPartido) {
           <div class="col-10 d-flex align-items-end">
             <p class="card-subtitle text-body-secondary text-start">
               <b
-                >{{ convertirFecha(partido?.fecha) }} - {{ partido?.hora }}hs</b
+                >{{ convertirFecha(partido?.fecha) }} - {{ partido?.hora }}hs.</b
               >
             </p>
           </div>
@@ -106,14 +106,14 @@ async function inscribirseAlPartido(idPartido) {
             <router-link
               :to="`/info-partido/${partido?.id}`"
               class="text-white fw-light py-2"
-              >Ver más</router-link
+              >VER MÁS</router-link
             >
           </div>
           <div
             @click="inscribirseAlPartido(partido?.id)"
             class="col-6 fondo-boton-card rounded d-flex justify-content-center text-white align-items-center"
           >
-            Inscribirme
+            INSCRIBIRME
           </div>
         </div>
       </div>

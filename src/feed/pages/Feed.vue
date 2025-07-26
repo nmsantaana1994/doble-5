@@ -160,15 +160,17 @@
       >
         <div class="card-body">
           <!-- Header de usuario + fecha -->
-          <div class="row mb-3 align-items-center">
-            <div class="col-2">
-              <Image :src="post.photoURL" />
+          <router-link :to="`/usuario/${ post?.userId }`" class="col-12 mb-3 text-decoration-none text-dark">
+            <div class="row mb-3 align-items-center">
+              <div class="col-2">
+                <Image :src="post.photoURL" />
+              </div>
+              <div class="col-10">
+                <p class="m-0"><strong>{{ post.userDisplayName }}</strong></p>
+                <p class="font-date">{{ dateToString(post.created_at) }}</p>
+              </div>
             </div>
-            <div class="col-10">
-              <p class="m-0"><strong>{{ post.userDisplayName }}</strong></p>
-              <p class="font-date">{{ dateToString(post.created_at) }}</p>
-            </div>
-          </div>
+          </router-link>
 
           <!-- Contenido -->
           <div class="row">
@@ -186,8 +188,8 @@
               >
                 <img
                   :src="post.liked
-                    ? '../../assets/img/like-filled.png'
-                    : '.../.../assets/img/like.png'"
+                    ? 'src/assets/img/like-filled.png'
+                    : 'src/assets/img/like.png'"
                   alt="Me gusta"
                 />
                 <span class="ms-2">{{ post.likes.length }}</span>

@@ -125,7 +125,7 @@ function estaInscripto() {
 
 <template class="main">
   <Loading :loading="loading" />
-  <HeaderPage title="Informacion" route="/home" :hasBackground="false"></HeaderPage>
+  <HeaderPage title="Información" route="/home" :hasBackground="false"></HeaderPage>
   <Section class="row p-1" style="margin: 75px 0 120px 0">
     <div class="col-12 fotoCancha mb-3">
       <img src="../../assets/img/cancha.jpg" />
@@ -157,14 +157,14 @@ function estaInscripto() {
       </div>
       <div class="col-12">
         <p class="mb-0">
-          <span class="fw-bold"> Dia:</span>
+          <span class="fw-bold">Día:</span>
           {{ partidoFiltrado ? partidoFiltrado.fecha : "-" }}
         </p>
       </div>
       <div class="col-12">
         <p class="mb-0">
           <span class="fw-bold"> Horario:</span>
-          {{ partidoFiltrado ? partidoFiltrado.hora : "-" }}
+          {{ partidoFiltrado ? partidoFiltrado.hora + 'hs.' : "-" }}
         </p>
       </div>
     </div>
@@ -172,9 +172,11 @@ function estaInscripto() {
       <div class="col-12">
         <p>
           Organizado por: <br />
-          <small>{{
-            partidoFiltrado ? partidoFiltrado.usuarioCreador : "-"
-          }}</small>
+          <router-link :to="`/usuario/${ partidoFiltrado?.userId }`" class="col-12 mb-3 text-decoration-none text-dark">
+            <small>{{
+              partidoFiltrado ? partidoFiltrado.usuarioCreador : "-"
+            }}</small>
+          </router-link>
         </p>
       </div>
     </div>
