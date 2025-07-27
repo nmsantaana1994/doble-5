@@ -125,6 +125,13 @@ const minDate = computed(() => {
   return today.toISOString().split("T")[0];
 });
 
+const cantidadJugadoresOptions = computed(() => {
+  if (selectedCancha.value && selectedCancha.value.prices) {
+    return Object.keys(selectedCancha.value.prices);
+  }
+  return [];
+});
+
 function handleCanchaChange() {
   if (selectedCancha.value && selectedDia.value) {
     const horarios = Object.keys(selectedCancha.value.horarios || {});
@@ -258,12 +265,13 @@ watch([selectedCancha, selectedDia], handleCanchaChange);
             :disabled="!fields.hora"
           >
             <option disabled value="">Cantidad de jugadores</option>
-            <option value="5">5 vs 5</option>
-            <option value="6">6 vs 6</option>
-            <option value="7">7 vs 7</option>
-            <option value="8">8 vs 8</option>
-            <option value="9">9 vs 9</option>
-            <option value="10">10 vs 10</option>
+            <option
+              v-for="cantidad in cantidadJugadoresOptions"
+              :value="cantidad"
+              :key="cantidad"
+            >
+              {{ cantidad }} vs {{ cantidad }}
+            </option>
           </select>
         </div>
 

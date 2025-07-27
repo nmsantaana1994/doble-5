@@ -319,7 +319,8 @@ ul {
   font-size: 0.8rem;
   padding: 0.4em 0.6em;
 }
-
+nav {
+  padding-bottom: 1.5rem;
 .pt-6 {
   padding-top: 6rem;
 }
