@@ -45,7 +45,7 @@ onUnmounted(() => {
 
 <template>
   <nav
-    class="navbar container-fluid d-flex flex-column justify-content-between fixed-bottom bg-dark"
+    class="navbar container-fluid d-flex flex-column justify-content-between fixed-bottom bg-dark p-3 py-4"
   >
     <div class="w-100 align-items-center p-0">
       <ul class="row m-0 p-0 justify-content-between nav-bottom">
@@ -129,7 +129,7 @@ onUnmounted(() => {
               <div class="col-5">
                 <Image :src="user.photoURL" />
               </div>
-              <div class="col-7">
+              <div class="col-7 p-0">
                 <p class="text-start h4 m-0">
                   {{ user.displayName ? user.displayName : user.nombre }}
                 </p>
@@ -220,7 +220,7 @@ onUnmounted(() => {
                 <p class="text-start col-8 m-0">Notificaciones</p>
               </router-link>
             </li>
-            <hr />
+            <hr style="border: none; height: 3px; background-color: #5d880d; width: 100%; opacity: 100;" />
             <li>
               <router-link
                 :to="'/ajustes'"
@@ -265,7 +265,7 @@ onUnmounted(() => {
               </form>
             </li>
           </ul>
-          <div class="row d-flex justify-content-center pt-5">
+          <div class="row d-flex justify-content-center pt-6">
             <img
               src="../assets/img/logo-original.png"
               alt="Logo Doble-5"
@@ -321,5 +321,7 @@ ul {
 }
 nav {
   padding-bottom: 1.5rem;
+.pt-6 {
+  padding-top: 6rem;
 }
 </style>

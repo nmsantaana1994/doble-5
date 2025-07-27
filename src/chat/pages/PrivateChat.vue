@@ -190,7 +190,7 @@ onUnmounted(async () => {
     </div>
 
     <!-- ChatInput.vue (o directamente en PrivateChat.vue) -->
-    <div class="chat-input bg-light p-2 border-top">
+    <div class="chat-input bg-light p-2 border-top mb-3">
       <form @submit.prevent="handleSubmit" class="d-flex align-items-end">
         <!-- Área de texto -->
         <div class="flex-grow-1 me-2">
@@ -253,7 +253,7 @@ ul {
 
 .chat-input {
   position: fixed;
-  bottom: calc(56px + 1.5rem); /* ajusta si tu navbar inferior cambia */
+  bottom: calc(56px + 1.5rem);
   width: 100%;
   left: 0;
   z-index: 10;

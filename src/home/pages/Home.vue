@@ -53,12 +53,12 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <section class="p-3">
+  <section class="px-5 py-4">
     <div class="header row mb-3">
-      <div class="col-5">
+      <div class="col-5 w-home">
         <Image :src="user.photoURL" />
       </div>
-      <div class="col-5 d-flex align-items-center">
+      <div class="col-7 d-flex align-items-center">
         <p class="text-start h3">
           {{ user.displayName ? user.displayName : user.nombre }} <br /><span
             class="h4 bienvenida"
@@ -69,7 +69,7 @@ onUnmounted(() => {
     </div>
   </section>
 
-  <section class="px-3 pb-3">
+  <section class="px-5 pb-3">
     <div class="row d-flex justify-content-between mb-3">
       <div
         class="col-3 m-auto justify-content-center botonera-home"
@@ -126,10 +126,10 @@ onUnmounted(() => {
     </div>
   </section>
 
-  <section class="pb-3 px-3">
+  <section class="pb-3 px-4">
     <div class="row mb-3">
       <div class="col-10">
-        <h2 class="text-start h3 mb-3"><span>Próximos</span> partidos</h2>
+        <h2 class="text-start h3 mb-3 fw-bold"><span>Próximos</span> partidos</h2>
       </div>
       <div class="col-2">
         <router-link to="/partidos">
@@ -160,10 +160,15 @@ onUnmounted(() => {
     </template>
   </section>
 </template>
+
 <style scoped>
 .icono-h2 {
   width: 25px;
   height: 25px;
+}
+
+.w-home{
+  width: 30%;
 }
 
 h2 span {
