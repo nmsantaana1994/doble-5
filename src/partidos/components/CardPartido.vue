@@ -63,7 +63,8 @@ async function inscribirseAlPartido(idPartido) {
           <div class="col-10 d-flex align-items-end">
             <p class="card-subtitle text-body-secondary text-start">
               <b
-                >{{ convertirFecha(partido?.fecha) }} - {{ partido?.hora }}hs.</b
+                >{{ convertirFecha(partido?.fecha) }} -
+                {{ partido?.hora }}hs.</b
               >
             </p>
           </div>

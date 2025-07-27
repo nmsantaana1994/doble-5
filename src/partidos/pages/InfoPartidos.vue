@@ -121,6 +121,14 @@ function estaInscripto() {
     (usuario) => usuario.uid === user.value.id
   );
 }
+
+function formatFecha(fecha) {
+  const date = new Date(fecha);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+}
 </script>
 
 <template class="main">
@@ -156,15 +164,15 @@ function estaInscripto() {
         </p>
       </div>
       <div class="col-12">
-        <p class="mb-0">
-          <span class="fw-bold">Día:</span>
-          {{ partidoFiltrado ? partidoFiltrado.fecha : "-" }}
+        <p>
+          <span class="fw-bold"> Dia:</span>
+          {{ partidoFiltrado ? formatFecha(partidoFiltrado.fecha) : "-" }}
         </p>
       </div>
       <div class="col-12">
         <p class="mb-0">
           <span class="fw-bold"> Horario:</span>
-          {{ partidoFiltrado ? partidoFiltrado.hora + 'hs.' : "-" }}
+          {{ partidoFiltrado ? partidoFiltrado.hora : "-" }} hs.
         </p>
       </div>
     </div>
