@@ -253,7 +253,7 @@ ul {
 
 .chat-input {
   position: fixed;
-  bottom: 56px; /* ajusta si tu navbar inferior cambia */
+  bottom: calc(56px + 1.5rem); /* ajusta si tu navbar inferior cambia */
   width: 100%;
   left: 0;
   z-index: 10;

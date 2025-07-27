@@ -233,7 +233,7 @@ const formSubmitted = ref(false);
         <label for="telefono">Telefono:</label>
         <Input
           :class="v$.telefono.$error ? '' : ''"
-          type="text"
+          type="number"
           name="telefono"
           id="telefono"
           placeholder="Teléfono"

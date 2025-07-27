@@ -4,7 +4,7 @@ import Section from "../components/Section.vue";
 </script>
 
 <template>
-  <HeaderPage route="/registro" title="TÉRMINOS Y CONDICIONES" />
+  <HeaderPage route="/registro" title="Términos y condiciones" />
   <Section>
     <p>
       Esta aplicación móvil es propiedad y está operada por [Nombre o Razón
