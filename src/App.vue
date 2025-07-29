@@ -83,7 +83,7 @@ provide(modalProvider, {
         @save="handleModalSave"
       />
     </header>
-    <main style="padding-bottom: 70px">
+    <main style="padding-bottom: 85px">
       <router-view />
     </main>
     <footer v-show="flagNavbar">
