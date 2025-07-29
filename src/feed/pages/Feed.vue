@@ -106,129 +106,213 @@
 </script>
 
 <template>
-    <div class="feed-wrapper">
-        <HeaderPage route="/home" title="Feed" />
-        <!-- <hr> -->
-        <section class="container-fluid p-3 mt-6">
-            <div class="row mb-3">
-                <div class="col-2">
-                    <Image :src="user.photoURL"/>
+  <div class="feed-wrapper">
+    <HeaderPage route="/home" title="Feed" class=""/>
+
+    <!-- Barra de nuevo post -->
+    <section class="container-fluid p-3 mt-6">
+      <div class="row mb-3 px-2 align-items-center">
+        <div class="col-2 p-0">
+          <Image :src="user.photoURL" />
+        </div>
+        <div class="col-10">
+          <form @submit.prevent="handleSubmit" class="create-post-bar">
+            <div class="row">
+                <div class="col-12">
+                    <textarea
+                      v-model="newPostContent"
+                      placeholder="¿Qué estás pensando?"
+                      rows="1"
+                      class="form-control flex-grow-1"
+                    ></textarea>
+                    <!-- <button type="submit" class="btn-publish ms-2">
+                      <img
+                        src="../../assets/img/publicar.png"
+                        alt="Enviar"
+                      />
+                    </button> -->
                 </div>
-                <div class="col-10 d-flex align-items-center">
-                    <form 
-                        action=""
-                        method="post"
-                        @submit.prevent="handleSubmit"
-                        class="w-100"
-                    >
-                        <textarea
-                            name="post"
-                            id="post"
-                            rows="1"
-                            placeholder="¿Qué estas pensado?"
-                            v-model="newPostContent"
-                            class="form-control"
-                        >
-                        </textarea>
-                        <button type="submit" class="icono-publicar">
-                            <img src="../../assets/img/publicar.png" alt="Icono Publicar" class="publicar" />
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </section>
-        <hr>
-        <Loader v-if="loading" />
-        <section v-else class="p-3">
-            <div class="card p-3 mb-3" v-for="post in posts" :key="post.id">
-                <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-2">
-                            <Image :src="post.photoURL"/>
-                        </div>
-                        <div class="col-10">
-                            <p class="m-0"><strong>{{ post.userDisplayName }}</strong></p>
-                            <p class="font-date">{{ dateToString(post.created_at) }}</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <p class="font-content">{{ post.content }}</p>
-                        </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-6">
-                            <button @click="toggleLikeView(post)" class="icono-publicar">
-                                <div class="d-flex align-items-center">
-                                    <img :src="post.liked ? '../src/assets/img/like-filled.png' : '../src/assets/img/like.png'" alt="Icono Me Gusta" class="publicar" />
-                                    <p class="m-0 ps-2 fw-bold">{{ post.likes ? post.likes.length : 0 }}</p>
-                                </div>
-                            </button>
-                        </div>
-                        <div class="col-6">
-                            <router-link :to="`/comments/${post.id}`">
-                                <button class="icono-publicar">
-                                    <div class="d-flex align-items-center">
-                                        <img src="../../assets/img/comment.png" alt="Icono Comentarios" class="publicar" />
-                                        <p class="m-0 ps-2 fw-bold">{{ post.comments.length }} Comentarios</p>
-                                    </div>
-                                </button>
-                            </router-link>
-                        </div>
-                    </div>
+                <div class="col-12 d-flex justify-content-end">
+                    <button type="submit" class="btn-publish ms-2">
+                      <img
+                        src="../../assets/img/publicar.png"
+                        alt="Enviar"
+                      />
+                    </button>
                 </div>
             </div>
-        </section>
-    </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <hr />
+
+    <!-- Loader mientras carga -->
+    <Loader v-if="loading" />
+
+    <!-- Listado de posts -->
+    <section v-else class="p-3">
+      <div
+        class="card mb-3"
+        v-for="post in posts"
+        :key="post.id"
+      >
+        <div class="card-body">
+          <!-- Header de usuario + fecha -->
+          <router-link :to="`/usuario/${ post?.userId }`" class="col-12 mb-3 text-decoration-none text-dark">
+            <div class="row mb-3 align-items-center">
+              <div class="col-2">
+                <Image :src="post.photoURL" />
+              </div>
+              <div class="col-10">
+                <p class="m-0"><strong>{{ post.userDisplayName }}</strong></p>
+                <p class="font-date">{{ dateToString(post.created_at) }}</p>
+              </div>
+            </div>
+          </router-link>
+
+          <!-- Contenido -->
+          <div class="row">
+            <div class="col-12">
+              <p class="font-content">{{ post.content }}</p>
+            </div>
+          </div>
+
+          <!-- Footer de acciones -->
+          <div class="row mt-3">
+            <div class="col-6 d-flex align-items-center">
+              <button
+                @click="toggleLikeView(post)"
+                class="action-btn"
+              >
+                <img
+                  :src="post.liked
+                    ? 'src/assets/img/like-filled.png'
+                    : 'src/assets/img/like.png'"
+                  alt="Me gusta"
+                />
+                <span class="ms-2">{{ post.likes.length }}</span>
+              </button>
+            </div>
+            <div class="col-6 d-flex align-items-center justify-content-end">
+              <router-link :to="`/comments/${post.id}`" class="text-decoration-none">
+                <button class="action-btn">
+                  <img
+                    src="../../assets/img/comment.png"
+                    alt="Comentarios"
+                  />
+                  <span class="ms-2">{{ post.comments.length }}</span>
+                </button>
+              </router-link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 </template>
 
 <style scoped>
-    .icono-h2 {
-        width: 25px;
-        height: 25px;
-    }
+.feed-wrapper {
+  background-color: #fafafa;
+  padding-bottom: 4rem;
+  overflow-x: hidden;
+  padding-top: 120px;
+}
 
-    textarea {
-        resize: none;
-        border: none;
-        outline: none;
-    }
+/* ————————————————————————
+   1) Barra de nuevo post
+   ———————————————————————— */
+.create-post-bar {
+  background-color: #f2f2f2;
+  border-radius: 12px;
+  padding: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
 
-    /* Todas las imágenes dentro del feed no exceden el ancho de su columna */
-    img, .publicar {
-        max-width: 100%;
-        height: auto;
-    }
+.create-post-bar textarea {
+  background: transparent;
+  border: none;
+  resize: none;
+  padding: 0.75rem;
+  font-size: 0.9rem;
+}
 
-    .feed-wrapper {
-        overflow-x: hidden;
-        /* Opcional: para móviles un padding extra */
-        /* padding-right: 0.5rem;
-        padding-left: 0.5rem; */
-    }
+.create-post-bar textarea::placeholder {
+  color: #bbb;
+}
 
-    .icono-publicar {
-        border: none;
-        background: none;
-        padding: 0;
-        cursor: pointer;
-    }
+.btn-publish {
+  background-color: transparent;
+  border: none;
+  /* border-radius: 50%; */
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .publicar {
-        width: 25px;
-        height: 25px;
-    }
+.btn-publish img {
+  width: 1.2rem;
+  height: 1.2rem;
+}
 
-    .font-date {
-        font-size: 0.7rem;
-    }
+/* ————————————————————————
+   2) Separador
+   ———————————————————————— */
+hr {
+  border: none;
+  height: 1px;
+  background-color: #eee;
+  margin: 0.5rem 0;
+}
 
-    .font-content {
-        color: #828282;
-        font-weight: 500;
-    }
+/* ————————————————————————
+   3) Tarjeta de publicación
+   ———————————————————————— */
+.card {
+  background-color: #fff !important;
+  border: none !important;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
 
-    .mt-6 {
-        margin-top: 6rem;
-    }
+.card-body {
+  padding: 1rem;
+}
+
+/* Fecha y contenido */
+.font-date {
+  color: #aaa;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.font-content {
+  color: #444;
+  line-height: 1.5;
+  margin-top: 0.5rem;
+}
+
+/* Botones de acciones */
+.action-btn {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.action-btn img {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.action-btn span {
+  font-size: 0.9rem;
+  color: #555;
+}
 </style>

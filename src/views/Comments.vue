@@ -6,6 +6,8 @@
     import { dateToString } from "../helpers/date.js";
     import { useAuth } from "../composition/useAuth.js";
     import Loader from "../components/Loader.vue";
+    import HeaderPage from "../components/HeaderPage.vue";
+    import Section from "../components/Section.vue";
     
     const {post, user, newComment, loading, addCommentView, toggleLikeView} = useComments();
 
@@ -80,136 +82,241 @@
 </script>
 
 <template>
-    <section class="p-3 m-0">
-        <div class="row">
-            <div class="col-3 d-flex justify-content-center">
-                <router-link :to="`/feed`">
-                    <img src="../assets/img/flecha-izquierda.png" style="width: 80%;" />
-                    <i class="fi fi-sr-angle-left"></i>
-                </router-link>
-            </div>
-            <div class="col-9 d-flex align-items-center">
-                <h1 class="text-center m-0 ps-4">Publicación</h1>
-            </div>
-        </div>
-    </section>
+    <HeaderPage route="/feed" title="Feed" :hasBackground="false"/>
     <Loader v-if="loading" />
-    <section v-else class="p-3">
-        <div v-if="post">
-            <div class="row mb-3">
-                <!-- Renderizar los detalles de la publicación -->
-                <div class="col-2">
-                    <Image :src="post.photoURL" />
-                </div>
-                <div class="col-10">
-                    <p class="m-0"><strong>{{ post.userDisplayName }}</strong></p>
-                    <p class="font-date">{{ dateToString(post.created_at) }}</p>
-                </div>
+    <Section v-else class="p-0">
+    
+
+      <!-- Si no hay post -->
+      <div v-if="!post" class="not-found text-center py-4">
+        <p>La publicación no se ha encontrado o ha sido eliminada.</p>
+      </div>
+
+      <!-- Si el post existe -->
+      <div v-else>
+
+        <!-- Card de la publicación -->
+        <div class="post-card mb-4 p-3">
+          <router-link :to="`/usuario/${ post?.userId }`" class="col-12 mb-3 text-decoration-none text-dark">
+            <div class="row mb-2 align-items-center">
+              <div class="col-2">
+                <Image :src="post.photoURL" />
+              </div>
+              <div class="col-10">
+                <p class="m-0"><strong>{{ post.userDisplayName }}</strong></p>
+                <p class="font-date">{{ dateToString(post.created_at) }}</p>
+              </div>
             </div>
-            <div class="row mb-3">
-                <div class="col-12">
-                    <p>{{ post.content }}</p>
-                </div>
+          </router-link>
+          <div class="row">
+            <div class="col-12">
+              <p class="post-content">{{ post.content }}</p>
             </div>
-            <div class="row mb-3">
-                <div class="col-12">
-                    <div class="row">
-                        <div class="col-6">
-                            <button @click="toggleLikeView(post)" class="icono-publicar">
-                                <div class="d-flex align-items-center">
-                                    <img :src="post.liked ? '../src/assets/img/like-filled.png' : '../src/assets/img/like.png'" alt="Icono Me Gusta" class="publicar" />
-                                    <p class="m-0 ps-2 fw-bold">{{ post.likes ? post.likes.length : 0 }} Me gusta</p>
-                                </div>
-                            </button>
-                        </div>
-                        <div class="col-6">
-                            <button class="icono-publicar">
-                                <div class="d-flex align-items-center">
-                                    <img src="../assets/img/comment.png" alt="Icono Comentarios" class="publicar" />
-                                    <p class="m-0 ps-2 fw-bold" v-if="post.comments">{{ post.comments.length }} Comentarios</p>
-                                </div>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-6 d-flex align-items-center">
+              <button @click="toggleLikeView" class="action-btn">
+                <img
+                  :src="post.liked
+                    ? 'src/assets/img/like-filled.png'
+                    : 'src/assets/img/like.png'"
+                  alt="Me gusta"
+                />
+                <span class="ms-2">{{ post.likes.length }} Me gusta</span>
+              </button>
             </div>
-            <!-- Sección para agregar comentarios -->
-            <div class="row mb-3">
-                <div class="col-2">
-                    <Image :src="user.photoURL"/>
-                </div>
-                <div class="col-10">
-                    <form 
-                        action=""
-                        method="post"
-                        @submit.prevent="addCommentView"
-                    >
-                        <div class="row">
-                            <div class="col-10">
-                                <textarea
-                                    name="post"
-                                    id="post"
-                                    cols="41"
-                                    rows="1"
-                                    placeholder="Deja un comentario"
-                                    v-model="newComment"
-                                >
-                                </textarea>
-                            </div>
-                            <div class="col-2">
-                                <button type="submit" class="icono-publicar">
-                                    <img src="../assets/img/publicar.png" alt="Icono Publicar" class="publicar" />
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+            <div class="col-6 d-flex align-items-center justify-content-end">
+              <button class="action-btn">
+                <img src="../assets/img/comment.png" alt="Comentarios" />
+                <span class="ms-2">{{ post.comments.length }} Comentarios</span>
+              </button>
             </div>
-            <!-- Sección para mostrar comentarios -->
-            <div class="row">
-                <div class="col-12">
-                    <div class="row mt-3" v-if="post.comments && post.comments.length > 0">
-                        <div v-for="comment in post.comments" :key="comment.created_at" class="col-12">
-                            <p>
-                                <strong>{{ comment.userDisplayName }}</strong>: {{ comment.content }}
-                            </p>
-                            <p class="font-date">{{ dateToString(comment.created_at) }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <!-- Otros detalles de la publicación, si es necesario -->
+          </div>
         </div>
-        <div v-else>
-            <p>La publicación no se ha encontrado o ha sido eliminada.</p>
+
+        <!-- Barra para dejar un comentario -->
+        <div class="create-comment-bar mb-3 px-1 pt-2">
+          <div class="d-flex align-items-center justify-content-center">
+              <form @submit.prevent="addCommentView" class="row w-100">
+                <div class="col-2 d-flex align-items-center">
+                    <Image :src="user.photoURL" class="comment-avatar me-3" />
+                </div>
+                <div class="col-8 d-flex align-items-center">
+                  <textarea
+                    v-model="newComment"
+                    placeholder="Dejá un comentario"
+                    rows="1"
+                    class="form-control flex-grow-1"
+                  ></textarea>
+                </div>
+                <div class="col-2 d-flex align-items-center justify-content-end">
+                  <button type="submit" class="btn-publish ms-2">
+                    <img src="../assets/img/publicar.png" alt="Enviar" />
+                  </button>
+                </div>
+              </form>
+            </div>
         </div>
-    </section>
+
+        <!-- Título de sección -->
+        <div class="px-3">
+          <h2 class="comments-title">Comentarios</h2>
+        </div>
+
+        <!-- Lista de comentarios -->
+        <div class="px-3 pb-4">
+          <div v-if="post.comments && post.comments.length" class="comments-list">
+            <div
+              v-for="(comment, idx) in post.comments"
+              :key="idx"
+              class="comment-card mb-3 p-3"
+            >
+              <router-link :to="`/usuario/${ comment?.userId }`" class="col-12 mb-3 text-decoration-none text-dark">
+                <div class="row">
+                  <div class="col-2 pt-2">
+                    <Image
+                      :src="comment.photoURL || comment.userPhoto"
+                      class="comment-avatar"
+                    />
+                  </div>
+                  <div class="col-10">
+                    <p class="m-0"><strong>{{ comment.userDisplayName }}</strong></p>
+                    <p class="font-date">{{ dateToString(comment.created_at) }}</p>
+                    <p class="comment-content mt-1">{{ comment.content }}</p>
+                  </div>
+                </div>
+              </router-link>
+            </div>
+          </div>
+          <div v-else class="text-center text-muted">
+            <p>No hay comentarios aún</p>
+          </div>
+        </div>
+
+      </div>
+    
+  </Section>
 </template>
 
 <style scoped>
-    .icono-h2 {
-        width: 25px;
-        height: 25px;
-    }
+/* ————————————————————————
+  Mensaje “no encontrado”
+———————————————————————— */
+.not-found p {
+  color: #888;
+  font-size: 0.9rem;
+}
 
-    .icono-publicar {
-        border: none;
-        background: none;
-        padding: 0;
-        cursor: pointer;
-    }
+/* ————————————————————————
+  Card de Publicación
+———————————————————————— */
+.post-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+.post-card .font-date {
+  color: #aaa;
+  font-size: 0.75rem;
+  margin-top: 0.2rem;
+}
+.post-content {
+  color: #444;
+  line-height: 1.5;
+}
 
-    .publicar {
-        width: 25px;
-        height: 25px;
-    }
+/* Botones de Like / Comentarios */
+.action-btn {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0;
+}
+.action-btn img {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+.action-btn span {
+  font-size: 0.9rem;
+  color: #555;
+}
 
-    .font-date {
-        font-size: 0.7rem;
-    }
+/* ————————————————————————
+  Barra de Nuevo Comentario
+———————————————————————— */
+.create-comment-bar {
+  background-color: #f2f2f2;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+/* 1) Fijo la caja del avatar y recorto overflow */
+.comment-avatar {
+  /* width: 2.5rem;
+  height: 2.5rem; */
+  border-radius: 50%;
+  overflow: hidden;       /* recorta cualquier parte que sobresalga */
+  flex: 0 0 auto;         /* no permita que crezca o encoja */
+}
 
-    .font-content {
-        color: #828282;
-        font-weight: 500;
-    }
+/* 2) Aseguro que la imagen llene la caja correctamente */
+.comment-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;      /* centra y recorta la imagen para llenar la caja */
+}
+/* 3) Ajusto la altura de la barra de comentario para que sea consistente */
+.create-comment-bar {
+  align-items: center;    /* centra verticalmente */
+  min-height: 3.5rem;     /* altura mínima que dé espacio al textarea y al avatar */
+  overflow: hidden;       /* evita que algo “asome” hacia afuera */
+}
+.create-comment-bar textarea {
+  background: transparent;
+  border: none;
+  resize: none;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+}
+.create-comment-bar textarea::placeholder {
+  color: #bbb;
+}
+.btn-publish {
+  /* background-color: #5d880d; */
+  border: none;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-publish img {
+  width: 1.8rem;
+  height: 1.8rem;
+}
+
+/* ————————————————————————
+  Título y Lista de Comentarios
+———————————————————————— */
+.comments-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #555;
+}
+.comment-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+.comment-content {
+  color: #444;
+  line-height: 1.4;
+  margin-top: 0.25rem;
+}
+.font-date {
+  font-size: 0.75rem;
+  color: #aaa;
+}
 </style>

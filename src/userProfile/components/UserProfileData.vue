@@ -88,13 +88,28 @@ const ultimaValoracion = computed(() => {
 function goToChat() {
   Router.push(`/usuario/${props.user.id}/chat`);
 }
+
+function onPreview(url) {
+  // Sólo actualizo la vista del avatar
+  props.user.photoURL = url;
+}
+
+function onSave(url) {
+  // Actualizo la vista (por las dudas) y cierro el modal
+  props.user.photoURL = url;
+  flagChangePhoto.value = false;
+}
+
+
 </script>
 
 <template>
   <div class="row">
     <div class="col-12 mb-3">
       <div class="d-flex justify-content-center mb-3">
-        <Image :src="user.photoURL" />
+        <div class="w-50">
+          <Image :src="user.photoURL" />
+        </div>
       </div>
       <div
         class="change_photo d-flex justify-content-center mb-3"
@@ -107,7 +122,8 @@ function goToChat() {
       <changePhoto
         class="mb-3"
         v-if="flagChangePhoto"
-        @photoUpdated="handlePhotoUpdated"
+        @preview="onPreview"
+        @saved="onSave"
       />
       <p class="h2 text-center m-0">{{ user.nombre }} {{ user.apellido }}</p>
     </div>
@@ -135,11 +151,11 @@ function goToChat() {
             @click="seguirDejarSeguir"
             class="button_top"
           >
-            {{ userFollowing ? "Dejar de seguir" : "Seguir" }}
+            {{ userFollowing ? "DEJAR DE SEGUIR" : "SEGUIR" }}
           </button>
         </div>
-        <div class="d-grid gap-2 col-6">
-          <button class="button_top" @click="goToChat()">Mensaje</button>
+        <div v-if="userFollowing" class="d-grid gap-2 col-6">
+          <button class="button_top" @click="goToChat()">MENSAJE</button>
         </div>
       </div>
     </div>

@@ -22,7 +22,7 @@ async function inscribirseAlPartido(idPartido) {
       await inscribirPartido(idPartido, user);
       setFeedbackMessage({
         type: "success",
-        message: "usuario inscripto correctamente.",
+        message: "Usuario inscripto correctamente.",
       });
       console.log("Usuario inscrito correctamente.");
     } else {

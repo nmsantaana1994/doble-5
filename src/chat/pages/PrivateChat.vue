@@ -190,7 +190,7 @@ onUnmounted(async () => {
     </div>
 
     <!-- ChatInput.vue (o directamente en PrivateChat.vue) -->
-    <div class="chat-input bg-light p-2 border-top">
+    <div class="chat-input bg-light p-2 border-top mb-3">
       <form @submit.prevent="handleSubmit" class="d-flex align-items-end">
         <!-- Área de texto -->
         <div class="flex-grow-1 me-2">

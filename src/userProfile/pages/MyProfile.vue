@@ -37,7 +37,7 @@ onMounted(async () => {
 
 <template>
   <Loading :loading="loading" />
-  <HeaderPage route="/home" title="Mi Perfil" />
+  <HeaderPage route="/home" title="Mi Perfil" :hasBackground="false" />
   <Section>
     <template v-if="editing">
       <UserProfileForm />
@@ -50,12 +50,13 @@ onMounted(async () => {
         :totalSiguiendo="totalSiguiendo"
         :mostrarBoton="false"
         :loading="loading"
+        @photoUpdated="user.value.photoURL = $event"
       />
     </template>
 
     <div class="my-3">
       <Button class="btn btn-primary w-100" @click="toggleEditing">{{
-        editing ? "Dejar de Editar" : "Editar Perfil"
+        editing ? "DEJAR DE EDITAR" : "EDITAR PERFIL"
       }}</Button>
     </div>
   </Section>
