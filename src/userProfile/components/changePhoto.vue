@@ -204,7 +204,7 @@ async function handleSubmit() {
     </div>
     <div class="col-12 d-grid gap-2">
       <Button class="btn btn-primary w-100" type="submit" :loading="loading">
-        Actualizar mi foto
+        ACTUALIZAR MI FOTO
       </Button>
     </div>
   </form>

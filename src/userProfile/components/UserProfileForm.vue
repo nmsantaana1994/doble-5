@@ -107,7 +107,7 @@ function useEditProfile(user) {
 </script>
 
 <template>
-  <div class="row d-flex">
+  <div class="row">
     <div class="col-12 mb-3 d-flex justify-content-center">
       <div class="w-50">
         <Image :src="user.photoURL" />
@@ -179,7 +179,7 @@ function useEditProfile(user) {
           <Label for="telefono" class="me-3 fw-bold">TELÉFONO: </Label>
           <Input id="telefono" v-model="form.telefono" />
         </div>
-        <div class="mb-3">
+        <!-- <div class="mb-3">
           <Label for="photoURL" class="fw-bold">FOTO DE PERFIL: </Label>
           <Input type="file" id="photoURL" @change="handleFile" />
         </div>
@@ -190,7 +190,7 @@ function useEditProfile(user) {
             alt="Previsualización foto de perfil"
             class="w-100"
           />
-        </div>
+        </div> -->
         <Button class="btn btn-primary w-100">
           <LoadingContext :loading="loading">
             ACTUALIZAR MIS DATOS
