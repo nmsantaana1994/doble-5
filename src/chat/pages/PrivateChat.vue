@@ -253,7 +253,7 @@ ul {
 
 .chat-input {
   position: fixed;
-  bottom: calc(56px + 1.5rem); /* ajusta si tu navbar inferior cambia */
+  bottom: 70px; /* ajusta si tu navbar inferior cambia */
   width: 100%;
   left: 0;
   z-index: 10;
@@ -262,8 +262,6 @@ ul {
 .chat-textarea {
   resize: none;
   border-radius: 20px;
-  /* padding: 0.75rem 1rem; */
-  /* Opcional: ajustar altura mínima */
   min-height: 40px;
   max-height: 100px;
   overflow-y: auto;
