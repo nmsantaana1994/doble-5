@@ -220,7 +220,15 @@ onUnmounted(() => {
                 <p class="text-start col-8 m-0">Notificaciones</p>
               </router-link>
             </li>
-            <hr style="border: none; height: 3px; background-color: #5d880d; width: 100%; opacity: 100;" />
+            <hr
+              style="
+                border: none;
+                height: 3px;
+                background-color: #5d880d;
+                width: 100%;
+                opacity: 100;
+              "
+            />
             <li>
               <router-link
                 :to="'/ajustes'"
@@ -321,6 +329,7 @@ ul {
 }
 nav {
   padding-bottom: 1.5rem;
+}
 .pt-6 {
   padding-top: 6rem;
 }
