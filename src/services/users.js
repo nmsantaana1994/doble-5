@@ -67,7 +67,6 @@ export async function updateUser(
     nacimiento,
     followers,
     following,
-    valoraciones,
     genero,
     barrio,
     telefono,

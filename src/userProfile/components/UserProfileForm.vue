@@ -27,8 +27,6 @@ function useEditProfile(user) {
     barrio: "",
     telefono: "",
     photoURL: null,
-    valoracion: 0, // ✔
-    comentario: "", // ✔
   });
 
   const loading = ref(false);
@@ -46,8 +44,6 @@ function useEditProfile(user) {
     form.value.nacimiento = newUser.nacimiento;
     form.value.followers = newUser.followers;
     form.value.following = newUser.following;
-    form.value.valoracion = newUser.valoracion;
-    form.value.comentario = newUser.comentario;
     form.value.genero = newUser.genero;
     form.value.barrio = newUser.barrio;
     form.value.telefono = newUser.telefono;
@@ -141,7 +137,7 @@ function useEditProfile(user) {
           <Label for="nivel" class="me-3 fw-bold">Nivel de Juego: </Label>
           <Input id="nivel" v-model="form.nivel" />
         </div> -->
-
+        <!-- 
         <div class="mb-3">
           <Label class="me-3 fw-bold">VALORACIONES</Label>
           <div class="estrellas-editables">
@@ -165,7 +161,7 @@ function useEditProfile(user) {
             class="form-control"
             placeholder="¿Qué tipo de jugador sos?"
           ></textarea>
-        </div>
+        </div> -->
 
         <div class="mb-3">
           <Label for="genero" class="me-3 fw-bold">GÉNERO: </Label>
