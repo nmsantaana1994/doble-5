@@ -190,7 +190,7 @@ onUnmounted(async () => {
     </div>
 
     <!-- ChatInput.vue (o directamente en PrivateChat.vue) -->
-    <div class="chat-input bg-light p-2 border-top mb-3">
+    <div class="chat-input bg-light p-2 border-top">
       <form @submit.prevent="handleSubmit" class="d-flex align-items-end">
         <!-- Área de texto -->
         <div class="flex-grow-1 me-2">
@@ -253,7 +253,7 @@ ul {
 
 .chat-input {
   position: fixed;
-  bottom: calc(56px + 1.5rem);
+  bottom: 85px;
   width: 100%;
   left: 0;
   z-index: 10;
@@ -262,8 +262,6 @@ ul {
 .chat-textarea {
   resize: none;
   border-radius: 20px;
-  /* padding: 0.75rem 1rem; */
-  /* Opcional: ajustar altura mínima */
   min-height: 40px;
   max-height: 100px;
   overflow-y: auto;

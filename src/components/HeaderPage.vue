@@ -1,8 +1,10 @@
 <script setup>
-import { defineProps } from "vue";
+import { defineProps, onMounted, ref } from "vue";
+import router from "../router/router";
 
 import flechaBlanca from "../assets/img/flecha-izquierda-blanca.png";
 import flechaNegra from "../assets/img/flecha-izquierda.png";
+const goBack = ref("/"); // fallback a home
 const props = defineProps({
   route: {
     type: String,
@@ -17,6 +19,13 @@ const props = defineProps({
     default: true,
   },
 });
+
+onMounted(() => {
+  const lastRoute = sessionStorage.getItem("previousRoute");
+  if (lastRoute && lastRoute !== window.location.hash.slice(1)) {
+    goBack.value = lastRoute;
+  }
+});
 </script>
 
 <template>
@@ -28,7 +37,7 @@ const props = defineProps({
     }"
   >
     <div class="col-3">
-      <router-link :to="props.route">
+      <router-link :to="goBack">
         <img
           :src="props.hasBackground ? flechaBlanca : flechaNegra"
           alt="Volver"
