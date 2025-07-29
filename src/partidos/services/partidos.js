@@ -87,19 +87,19 @@ export async function inscribirPartido(idPartido, usuarioInscripto) {
       nombre: usuarioInscripto.value.displayName,
       image: usuarioInscripto.value.photoURL,
     };
-    // Verificar si el usuario ya está inscrito en el partido
-    const usuarioYaInscrito = partido.contadorInscriptos.some(
+    // Verificar si el usuario ya está inscripto en el partido
+    const usuarioYaInscripto = partido.contadorInscriptos.some(
       (inscrito) => inscrito.uid === usuario.uid
     );
-    if (usuarioYaInscrito && partido.contadorInscriptos.length < 10) {
-      throw new Error("El usuario ya está inscrito en este partido.");
+    if (usuarioYaInscripto && partido.contadorInscriptos.length < 10) {
+      throw new Error("El usuario ya está inscripto en este partido.");
     }
 
-    // Si el usuario no está inscrito, agregarlo a la lista de inscritos
+    // Si el usuario no está inscripto, agregarlo a la lista de inscriptos
 
     partido.contadorInscriptos.push(usuario);
     await actualizarListaInscriptos(idPartido, partido.contadorInscriptos);
-    console.log("Usuario inscrito correctamente.");
+    console.log("Usuario inscripto correctamente.");
   } catch (error) {
     console.error("Error al inscribirse al partido:", error);
     throw error;

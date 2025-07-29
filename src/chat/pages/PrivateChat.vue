@@ -262,8 +262,6 @@ ul {
 .chat-textarea {
   resize: none;
   border-radius: 20px;
-  /* padding: 0.75rem 1rem; */
-  /* Opcional: ajustar altura mínima */
   min-height: 40px;
   max-height: 100px;
   overflow-y: auto;
