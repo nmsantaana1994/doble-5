@@ -1,113 +1,108 @@
 <script setup>
-    import Image from "../../components/Image.vue";
-    import { useAuth } from "../../composition/useAuth.js";
-    import { ref, onMounted } from "vue";
-    import { publishPost, getPosts, toggleLike } from "../../services/feed.js";
-    import { dateToString } from "../../helpers/date.js";
-    import Loader from "../../components/Loader.vue";
-    import HeaderPage from "../../components/HeaderPage.vue";
-    const {user, newPostContent, loading, posts, handleSubmit, toggleLikeView } = useFeed();
+import Image from "../../components/Image.vue";
+import { useAuth } from "../../composition/useAuth.js";
+import { ref, onMounted } from "vue";
+import { publishPost, getPosts, toggleLike } from "../../services/feed.js";
+import { dateToString } from "../../helpers/date.js";
+import Loader from "../../components/Loader.vue";
+import HeaderPage from "../../components/HeaderPage.vue";
+const { user, newPostContent, loading, posts, handleSubmit, toggleLikeView } =
+  useFeed();
 
-    function useFeed() {
-        const { user } = useAuth();
-    
-        const newPostContent = ref("");
-    
-        const loading = ref(false);
-    
-        const posts = ref([]);
-    
-        
-        onMounted(async () => {
-            loading.value = true;
+function useFeed() {
+  const { user } = useAuth();
 
-            try {
+  const newPostContent = ref("");
 
-                // Recupera las publicaciones desde el servicio al cargar el componente
-                const postSnapshot = await getPosts();
+  const loading = ref(false);
 
-                posts.value = postSnapshot.docs.map(doc => {
-                    const postData = doc.data();
-                    postData.likes = postData.likes || [];
-                    postData.liked = postData.likes.includes(user.value.id);
-                    return { id: doc.id, ...postData };
-                });
-            console.log(posts.value)
-            } catch (error) {
-                console.error('Error al obtener las publicaciones:', error);
-            }
+  const posts = ref([]);
 
-            loading.value = false;
-        });
-    
-        const handleSubmit = async () => {
-    
-            loading.value = true;
-    
-            try {
-                if (newPostContent.value.trim() !== "" && user.value.id) {
-                    await publishPost(
-                        {
-                            content: newPostContent.value,
-                            userId: user.value.id,
-                            userDisplayName: user.value.displayName,
-                            photoURL: user.value.photoURL,
-                            likes: [],
-                            comments: [],
-                            // Otros campos que desees agregar
-                        }
-                    );
-    
-                    newPostContent.value = "";
-    
-                    // Después de publicar, actualiza la lista de posts
-                    const updatedPostSnapshot = await getPosts();
-                    posts.value = updatedPostSnapshot.docs.map(doc => {
-                        const postData = doc.data();
-                        postData.likes = postData.likes || [];
-                        postData.liked = postData.likes.includes(user.value.id);
-                        return { id: doc.id, ...postData };
-                    });
-                } else {
-                    console.error("El ID del usuario no está definido o es inválido.");
-                }
-            } catch (error) {
-                console.error('Error al publicar la publicación:', error);
-            }
-    
-            loading.value = false;
-        };
-    
-        const toggleLikeView = async (post) => {
-            try {
-                // Llama a la función del servicio para manejar el "Me gusta"
-                const updatedPost = await toggleLike(post.id, user.value);
-    
-                // Actualiza el post en la lista con los nuevos datos
-                const postIndex = posts.value.findIndex((p) => p.id === updatedPost.id);
-                if (postIndex !== -1) {
-                    posts.value[postIndex] = updatedPost;
-                }
-            } catch (error) {
-                console.error("Error al manejar el 'Me gusta':", error);
-            }
-        };
+  onMounted(async () => {
+    loading.value = true;
 
-        return {
-            user,
-            newPostContent,
-            loading,
-            posts,
-            handleSubmit,
-            toggleLikeView
-        }
+    try {
+      // Recupera las publicaciones desde el servicio al cargar el componente
+      const postSnapshot = await getPosts();
+
+      posts.value = postSnapshot.docs.map((doc) => {
+        const postData = doc.data();
+        postData.likes = postData.likes || [];
+        postData.liked = postData.likes.includes(user.value.id);
+        return { id: doc.id, ...postData };
+      });
+      console.log(posts.value);
+    } catch (error) {
+      console.error("Error al obtener las publicaciones:", error);
     }
 
+    loading.value = false;
+  });
+
+  const handleSubmit = async () => {
+    loading.value = true;
+
+    try {
+      if (newPostContent.value.trim() !== "" && user.value.id) {
+        await publishPost({
+          content: newPostContent.value,
+          userId: user.value.id,
+          userDisplayName: user.value.displayName,
+          photoURL: user.value.photoURL,
+          likes: [],
+          comments: [],
+          // Otros campos que desees agregar
+        });
+
+        newPostContent.value = "";
+
+        // Después de publicar, actualiza la lista de posts
+        const updatedPostSnapshot = await getPosts();
+        posts.value = updatedPostSnapshot.docs.map((doc) => {
+          const postData = doc.data();
+          postData.likes = postData.likes || [];
+          postData.liked = postData.likes.includes(user.value.id);
+          return { id: doc.id, ...postData };
+        });
+      } else {
+        console.error("El ID del usuario no está definido o es inválido.");
+      }
+    } catch (error) {
+      console.error("Error al publicar la publicación:", error);
+    }
+
+    loading.value = false;
+  };
+
+  const toggleLikeView = async (post) => {
+    try {
+      // Llama a la función del servicio para manejar el "Me gusta"
+      const updatedPost = await toggleLike(post.id, user.value);
+
+      // Actualiza el post en la lista con los nuevos datos
+      const postIndex = posts.value.findIndex((p) => p.id === updatedPost.id);
+      if (postIndex !== -1) {
+        posts.value[postIndex] = updatedPost;
+      }
+    } catch (error) {
+      console.error("Error al manejar el 'Me gusta':", error);
+    }
+  };
+
+  return {
+    user,
+    newPostContent,
+    loading,
+    posts,
+    handleSubmit,
+    toggleLikeView,
+  };
+}
 </script>
 
 <template>
   <div class="feed-wrapper">
-    <HeaderPage route="/home" title="Feed" class=""/>
+    <HeaderPage route="/home" title="Feed" class="" />
 
     <!-- Barra de nuevo post -->
     <section class="container-fluid p-3 mt-6">
@@ -118,28 +113,25 @@
         <div class="col-10">
           <form @submit.prevent="handleSubmit" class="create-post-bar">
             <div class="row">
-                <div class="col-12">
-                    <textarea
-                      v-model="newPostContent"
-                      placeholder="¿Qué estás pensando?"
-                      rows="1"
-                      class="form-control flex-grow-1"
-                    ></textarea>
-                    <!-- <button type="submit" class="btn-publish ms-2">
+              <div class="col-12">
+                <textarea
+                  v-model="newPostContent"
+                  placeholder="¿Qué estás pensando?"
+                  rows="1"
+                  class="form-control flex-grow-1"
+                ></textarea>
+                <!-- <button type="submit" class="btn-publish ms-2">
                       <img
                         src="../../assets/img/publicar.png"
                         alt="Enviar"
                       />
                     </button> -->
-                </div>
-                <div class="col-12 d-flex justify-content-end">
-                    <button type="submit" class="btn-publish ms-2">
-                      <img
-                        src="../../assets/img/publicar.png"
-                        alt="Enviar"
-                      />
-                    </button>
-                </div>
+              </div>
+              <div class="col-12 d-flex justify-content-end">
+                <button type="submit" class="btn-publish ms-2">
+                  <img src="../../assets/img/publicar.png" alt="Enviar" />
+                </button>
+              </div>
             </div>
           </form>
         </div>
@@ -153,20 +145,21 @@
 
     <!-- Listado de posts -->
     <section v-else class="p-3">
-      <div
-        class="card mb-3"
-        v-for="post in posts"
-        :key="post.id"
-      >
+      <div class="card mb-3" v-for="post in posts" :key="post.id">
         <div class="card-body">
           <!-- Header de usuario + fecha -->
-          <router-link :to="`/usuario/${ post?.userId }`" class="col-12 mb-3 text-decoration-none text-dark">
+          <router-link
+            :to="`/usuario/${post?.userId}`"
+            class="col-12 mb-3 text-decoration-none text-dark"
+          >
             <div class="row mb-3 align-items-center">
               <div class="col-2">
                 <Image :src="post.photoURL" />
               </div>
               <div class="col-10">
-                <p class="m-0"><strong>{{ post.userDisplayName }}</strong></p>
+                <p class="m-0">
+                  <strong>{{ post.userDisplayName }}</strong>
+                </p>
                 <p class="font-date">{{ dateToString(post.created_at) }}</p>
               </div>
             </div>
@@ -182,26 +175,25 @@
           <!-- Footer de acciones -->
           <div class="row mt-3">
             <div class="col-6 d-flex align-items-center">
-              <button
-                @click="toggleLikeView(post)"
-                class="action-btn"
-              >
+              <button @click="toggleLikeView(post)" class="action-btn">
                 <img
-                  :src="post.liked
-                    ? 'src/assets/img/like-filled.png'
-                    : 'src/assets/img/like.png'"
+                  :src="
+                    post.liked
+                      ? 'src/assets/img/like-filled.png'
+                      : 'src/assets/img/like.png'
+                  "
                   alt="Me gusta"
                 />
                 <span class="ms-2">{{ post.likes.length }}</span>
               </button>
             </div>
             <div class="col-6 d-flex align-items-center justify-content-end">
-              <router-link :to="`/comments/${post.id}`" class="text-decoration-none">
+              <router-link
+                :to="`/comments/${post.id}`"
+                class="text-decoration-none"
+              >
                 <button class="action-btn">
-                  <img
-                    src="../../assets/img/comment.png"
-                    alt="Comentarios"
-                  />
+                  <img src="../../assets/img/comment.png" alt="Comentarios" />
                   <span class="ms-2">{{ post.comments.length }}</span>
                 </button>
               </router-link>
@@ -228,7 +220,7 @@
   background-color: #f2f2f2;
   border-radius: 12px;
   padding: 0.5rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .create-post-bar textarea {
@@ -276,7 +268,7 @@ hr {
   background-color: #fff !important;
   border: none !important;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .card-body {
