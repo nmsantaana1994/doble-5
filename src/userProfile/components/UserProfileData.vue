@@ -58,14 +58,14 @@ function goToList() {
   router.push("/usuario/" + props.user.id + "/valorationList");
 }
 
-function handlePhotoUpdated(success) {
-  if (success) {
-    console.log("Foto de perfil actualizada con éxito");
-  } else {
-    console.log("Error al actualizar la foto de perfil");
-  }
-  flagChangePhoto.value = false;
-}
+// function handlePhotoUpdated(success) {
+//   if (success) {
+//     console.log("Foto de perfil actualizada con éxito");
+//   } else {
+//     console.log("Error al actualizar la foto de perfil");
+//   }
+//   flagChangePhoto.value = false;
+// }
 
 const promedioEstrellas = computed(() => {
   const valoraciones = props.user.valoraciones || [];
@@ -93,10 +93,10 @@ function onPreview(url) {
   props.user.photoURL = url;
 }
 
-function onSave(url) {
-  props.user.photoURL = url;
-  flagChangePhoto.value = false;
-}
+// function onSave(url) {
+//   props.user.photoURL = url;
+//   flagChangePhoto.value = false;
+// }
 </script>
 
 <template>
@@ -119,7 +119,7 @@ function onSave(url) {
         class="mb-3"
         v-if="flagChangePhoto"
         @preview="onPreview"
-        @saved="onSave"
+        @saved="() => (flagChangePhoto = false)"
       />
       <p class="h2 text-center m-0">{{ user.nombre }} {{ user.apellido }}</p>
     </div>

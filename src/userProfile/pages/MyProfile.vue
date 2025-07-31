@@ -50,7 +50,7 @@ onMounted(async () => {
         :totalSiguiendo="totalSiguiendo"
         :mostrarBoton="false"
         :loading="loading"
-        @photoUpdated="user.value.photoURL = $event"
+        @photoUpdated="user.photoURL = $event"
       />
     </template>
 
