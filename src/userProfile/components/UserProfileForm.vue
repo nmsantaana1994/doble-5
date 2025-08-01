@@ -181,13 +181,17 @@ function useEditProfile(user) {
           <Label for="photoURL" class="fw-bold">FOTO DE PERFIL: </Label>
           <Input type="file" id="photoURL" @change="handleFile" />
         </div>
-        <div v-if="form.photoURL !== null" class="mb-3">
-          <p class="mb-3 fw-bold">Previsualización de la imagen:</p>
-          <img
-            :src="form.photoURL"
-            alt="Previsualización foto de perfil"
-            class="w-100"
-          />
+        <div v-if="form.photoURL !== null" class="row mb-3">
+          <div class="col-12 d-flex flex-column align-items-center">
+            <p class="mb-3 fw-bold">Previsualización de la imagen:</p>
+            <div class="w-50">
+              <img
+                :src="form.photoURL"
+                alt="Previsualización foto de perfil"
+                class="w-100"
+              />
+            </div>
+          </div>
         </div>
         <Button class="btn btn-primary w-100">
           <LoadingContext :loading="loading"> GUARDAR CAMBIOS </LoadingContext>
