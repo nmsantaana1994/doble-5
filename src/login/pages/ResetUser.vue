@@ -31,9 +31,9 @@ const enviar = async () => {
 </script>
 
 <template>
-  <HeaderPage route="/iniciar-sesion" title="Olvide mi contraseña" />
+  <HeaderPage route="/iniciar-sesion" title="Olvidé mi contraseña" />
   <Section>
-    <h2>Reestablecer contraseña</h2>
+    <h2>Restablecer contraseña</h2>
     <input v-model="email" placeholder="Tu correo" type="email" />
     <button @click="enviar">ENVIAR ENLACE</button>
     <p>{{ mensaje }}</p>
