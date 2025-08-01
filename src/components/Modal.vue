@@ -48,11 +48,11 @@ const handleSave = () => {
         <p>{{ bodyText }}</p>
       </main>
       <footer>
-        <button class="btn" @click="handleClose()">
-          {{ closeButtonText }}
-        </button>
         <button class="btn" @click="handleSave()">
           {{ saveButtonText }}
+        </button>
+        <button class="btn" @click="handleClose()">
+          {{ closeButtonText }}
         </button>
       </footer>
     </div>
