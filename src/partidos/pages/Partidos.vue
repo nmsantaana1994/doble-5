@@ -79,16 +79,8 @@ function getPartidosPage() {
   }
 }
 
-// onMounted(() => {
-//   const user = auth.currentUser;
-//   if (user) {
-//     listenToPartidos(user.uid);
-//   }
-// });
-
 onMounted(async () => {
   const docRef = doc(db, "barrios", "capital_federal");
-  debugger;
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
     barrios.value = docSnap.data().nombres || [];
@@ -194,11 +186,12 @@ onUnmounted(() => {
               </select>
             </div>
             <div class="col-2">
-              <button
-                class="btn btn-outline-secondary w-100"
-                @click="getPartidosPage"
-              >
-                X
+              <button class="boton_filtro" @click="getPartidosPage">
+                <img
+                  class="img_filtro"
+                  src="../../../src/assets/img/iconos_filtro .png"
+                  alt="icono-filtro"
+                />
               </button>
             </div>
           </div>
@@ -325,5 +318,16 @@ ul.nav-tabs {
 /* 6) Si querés separar un toque las dos pestañas */
 .nav-item + .nav-item {
   margin-left: 1rem;
+}
+
+.boton_filtro {
+  border: 1px solid grey;
+  border-radius: 4px;
+  background-color: transparent;
+  outline: none;
+  padding: 0.4rem;
+}
+.img_filtro {
+  width: 100%;
 }
 </style>

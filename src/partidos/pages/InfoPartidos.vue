@@ -61,7 +61,6 @@ function listenToChanges() {
       const data = snapshot.data();
       partidoFiltrado.value = { ...data, id: snapshot.id };
 
-      // Obtener datos actualizados de cada usuario inscripto
       const jugadores = await Promise.all(
         data.contadorInscriptos.map(async (jugador) => {
           const userDoc = await getDoc(doc(db, "usuarios", jugador.uid));
@@ -94,7 +93,7 @@ async function inscribirseAlPartido() {
       flagInscription.value = estaInscripto();
       setFeedbackMessage({
         type: "success",
-        message: "Usuario inscripto correctamente",
+        message: "Usuario inscripto correctamente.",
       });
     }
   } catch (error) {
@@ -110,7 +109,7 @@ async function eliminarDePartido(userid) {
       flagInscription.value = estaInscripto();
       setFeedbackMessage({
         type: "success",
-        message: "Usuario eliminado correctamente",
+        message: "Usuario eliminado correctamente.",
       });
     }
   } catch (error) {
@@ -133,7 +132,7 @@ async function eliminarPartido(userid) {
           await eliminarPartidoSiSoyCreador(route.params.id, userid);
           setFeedbackMessage({
             type: "success",
-            message: "se cambio el estado a eliminado",
+            message: "Partido eliminado con éxito.",
           });
           router.push("/home");
         }
@@ -201,13 +200,13 @@ function formatFecha(fecha) {
     <div class="row mx-auto my-2 infoPartido">
       <div class="col-12">
         <p class="mb-0">
-          <span class="fw-bold text-black">Direccion:</span>
+          <span class="fw-bold text-black">Dirección:</span>
           {{ partidoFiltrado ? partidoFiltrado.complejo.direction : "-" }}
         </p>
       </div>
       <div class="col-12">
         <p>
-          <span class="fw-bold"> Dia:</span>
+          <span class="fw-bold"> Día:</span>
           {{ partidoFiltrado ? formatFecha(partidoFiltrado.fecha) : "-" }}
         </p>
       </div>
@@ -226,7 +225,7 @@ function formatFecha(fecha) {
             :to="`/usuario/${partidoFiltrado?.userId}`"
             class="col-12 mb-3 text-decoration-none text-dark"
           >
-            <small>{{
+            <small style="color: var(--primary-color)">{{
               partidoFiltrado ? partidoFiltrado.usuarioCreador : "-"
             }}</small>
           </router-link>
@@ -253,7 +252,7 @@ function formatFecha(fecha) {
           <br />
           <router-link
             :to="`/usuario/${nombreJugador.uid}`"
-            class="text-decoration-none"
+            style="color: var(--primary-color)"
           >
             Ver Perfil
           </router-link>
