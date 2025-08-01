@@ -4,7 +4,6 @@ import router from "../router/router";
 
 import flechaBlanca from "../assets/img/flecha-izquierda-blanca.png";
 import flechaNegra from "../assets/img/flecha-izquierda.png";
-const goBack = ref("/"); // fallback a home
 const props = defineProps({
   route: {
     type: String,
@@ -20,12 +19,9 @@ const props = defineProps({
   },
 });
 
-onMounted(() => {
-  const lastRoute = sessionStorage.getItem("previousRoute");
-  if (lastRoute && lastRoute !== window.location.hash.slice(1)) {
-    goBack.value = lastRoute;
-  }
-});
+function goBack() {
+  router.back();
+}
 </script>
 
 <template>
@@ -37,12 +33,12 @@ onMounted(() => {
     }"
   >
     <div class="col-3">
-      <router-link :to="goBack">
+      <button @click="goBack">
         <img
           :src="props.hasBackground ? flechaBlanca : flechaNegra"
           alt="Volver"
         />
-      </router-link>
+      </button>
     </div>
     <div class="col-9">
       <h1>{{ props.title }}</h1>
@@ -97,5 +93,10 @@ h1 {
   margin: auto;
   text-align: right;
   font-size: 1.5rem;
+}
+
+button {
+  background-color: transparent;
+  border: none;
 }
 </style>
