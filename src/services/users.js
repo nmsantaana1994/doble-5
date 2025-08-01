@@ -1,11 +1,19 @@
 import { db } from "./firebase.js";
-import { setDoc, doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import {
+  setDoc,
+  doc,
+  getDoc,
+  updateDoc,
+  arrayUnion,
+  collection,
+  getDocs,
+} from "firebase/firestore";
 import { getFileURL } from "./storage.js";
 import {
-    getStorage,
-    ref as storageRef,
-    uploadString,
-    getDownloadURL,
+  getStorage,
+  ref as storageRef,
+  uploadString,
+  getDownloadURL,
 } from "firebase/storage";
 
 /**
@@ -142,8 +150,8 @@ export async function agregarValoracion(userId, valoraciones) {
 
 /**
  * Sube el DataURL al Storage y actualiza solo el campo photoURL en Firestore.
- * @param {string} userId 
- * @param {string} dataUrl 
+ * @param {string} userId
+ * @param {string} dataUrl
  * @returns {Promise<string>} La URL pública del avatar
  */
 export async function updateUserPhoto(userId, dataUrl) {
@@ -158,4 +166,16 @@ export async function updateUserPhoto(userId, dataUrl) {
   await updateDoc(userDoc, { photoURL: downloadURL });
 
   return downloadURL;
+}
+
+export async function getAllUsers() {
+  const usersRef = collection(db, "users");
+  const snapshot = await getDocs(usersRef);
+
+  const users = snapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  return users;
 }

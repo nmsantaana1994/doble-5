@@ -8,6 +8,7 @@ import HeaderPage from "../../components/HeaderPage.vue";
 import Section from "../../components/Section.vue";
 import { notificationProvider, modalProvider } from "../../symbols/symbols.js";
 import { inscribirPartido } from "../services/partidos.js";
+import Loading from "../../components/Loading.vue";
 
 const { feedback, setFeedbackMessage, clearFeedbackMessage } =
   inject(notificationProvider);
@@ -32,7 +33,7 @@ function useCargaPartido() {
     totalJ: 0,
     tipo: "",
     usuarioCreador: "",
-    estado: "activo", // NUEVO CAMPO
+    estado: "activo",
   });
 
   const loading = ref(false);
@@ -61,12 +62,11 @@ function useCargaPartido() {
         type: "success",
         message: "Partido creado correctamente",
       });
-      // Llamar a showModal justo después de crear el partido
       const result = await showModal({
         title: "Partido creado",
         bodyText: "¿Desea sumarse como jugador a este partido?",
-        closeButtonText: "Si",
-        saveButtonText: "No",
+        closeButtonText: "NO",
+        saveButtonText: "SI",
       });
       if (result) {
         try {
@@ -182,6 +182,7 @@ watch([selectedCancha, selectedDia], handleCanchaChange);
 </script>
 
 <template>
+  <Loading :loading="loading" />
   <HeaderPage route="/home" title="Crear partido" :hasBackground="false" />
   <Section>
     <div class="col-12 px-3">
