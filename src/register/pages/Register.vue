@@ -22,14 +22,14 @@ function useRegister() {
     comentario: "",
     barrio: "",
     telefono: "",
-    terminos: false,
+    terminos: null,
   });
 
   const loading = ref(false);
 
   async function handleSubmit() {
     formSubmitted.value = true;
-    v$.value.$touch(); // Ensure all fields are touched to trigger validation
+    v$.value.$touch();
     if (v$.value.$invalid) {
       return;
     }
@@ -50,6 +50,8 @@ function useRegister() {
 }
 
 const { fields, loading, handleSubmit } = useRegister();
+const soloNumeros = (value) => /^\d+$/.test(value);
+const mustBeTrue = (value) => value === true;
 
 const rules = {
   nombre: { required },
@@ -59,8 +61,8 @@ const rules = {
   nacimiento: { required },
   genero: { required },
   barrio: { required },
-  telefono: { required },
-  terminos: { required },
+  telefono: { required, soloNumeros },
+  terminos: { mustBeTrue },
 };
 
 const v$ = useVuelidate(rules, fields);
@@ -262,9 +264,9 @@ const formSubmitted = ref(false);
             de uso.
           </p>
         </div>
-        <span v-if="v$.terminos.$error" class="text-danger"
-          >Por favor, acepte los términos y condiciones para continuar.</span
-        >
+        <span v-if="v$.terminos.$error" class="text-danger">
+          Por favor, acepte los términos y condiciones para continuar.
+        </span>
       </div>
       <Button full class="mb-3 fw-semibold text-white">REGISTRARME</Button>
     </form>

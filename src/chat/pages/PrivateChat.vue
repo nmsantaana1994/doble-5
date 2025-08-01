@@ -132,7 +132,6 @@ function usePrivateChatForm(authUser, otherUser) {
   };
 }
 
-// Gestión de presencia al entrar y salir del chat
 async function setUserOnlineStatus(online) {
   if (!authUser.value || !otherUser.value) return;
 
@@ -221,22 +220,6 @@ onUnmounted(async () => {
             <i class="bi bi-send-fill"></i>
           </template>
         </button>
-
-        <!-- Botón enviar -->
-        <!-- <button
-                    type="submit"
-                    class="btn btn-primary d-flex align-items-center justify-content-center"
-                    :disabled="!fields.message || formLoading"
-                    >
-                    <i class="bi bi-send-fill"></i>
-                    </button> -->
-
-        <!-- Spinner pequeño para “enviando” -->
-        <!-- <div v-if="formLoading" class="ms-2"> -->
-        <!-- <div class="spinner-border spinner-border-sm text-primary" role="status">
-                        <span class="visually-hidden">Enviando…</span>
-                    </div> -->
-        <!-- </div> -->
       </form>
     </div>
   </Section>

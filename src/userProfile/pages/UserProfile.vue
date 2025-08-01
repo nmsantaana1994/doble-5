@@ -39,6 +39,7 @@ const fetchUserData = async () => {
     } else {
       isMyProfile.value = false;
     }
+    loading.value = true;
     const seguidores = await obtenerSeguidores(user.value.id);
     const siguiendo = await obtenerSiguiendo(user.value.id);
 
@@ -49,6 +50,7 @@ const fetchUserData = async () => {
     userFollowing.value = seguidores.some(
       (usuario) => usuario.id === userAuth.value.id
     );
+    loading.value = false;
   } catch (error) {
     console.error("Error al obtener seguidores y siguiendo:", error);
   }

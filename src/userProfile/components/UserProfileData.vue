@@ -72,7 +72,7 @@ const promedioEstrellas = computed(() => {
   if (valoraciones.length === 0) return 0;
 
   const suma = valoraciones.reduce((acc, v) => acc + v.estrellas, 0);
-  return suma / valoraciones.length;
+  return parseFloat((suma / valoraciones.length).toFixed(1));
 });
 
 const ultimaValoracion = computed(() => {

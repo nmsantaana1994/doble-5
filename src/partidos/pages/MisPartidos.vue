@@ -17,21 +17,8 @@ onAuthStateChanged(auth, (user) => {
   }
 });
 
-// async function getPartidosForUser(UsuarioId) {
-//   const partidosData = await getPartidos();
-//   console.log(partidosData);
-
-//   const filteredPartidos = partidosData.filter(
-//     (partido) => partido.userId === UsuarioId
-//   );
-
-//   partidos.value = filteredPartidos;
-// }
-
 async function getPartidosForUser(UsuarioId) {
   const partidosData = await getPartidos();
-  console.log("hola", partidosData);
-  debugger;
 
   const filteredPartidos = partidosData.filter((partido) => {
     const esCreador = partido.userId === UsuarioId;
