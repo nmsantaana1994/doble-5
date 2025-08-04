@@ -1,5 +1,5 @@
 <script setup>
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { useAuth } from "../../composition/useAuth.js";
 import {
   getFirestore,
@@ -10,7 +10,7 @@ import {
   getDoc,
   onSnapshot,
 } from "firebase/firestore";
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, watch } from "vue";
 import CardPartido from "../components/CardPartido.vue";
 import HeaderPage from "../../components/HeaderPage.vue";
 import Section from "../../components/Section.vue";
@@ -26,13 +26,25 @@ const partidos = ref([]);
 const Mispartidos = ref([]);
 const auth = getAuth();
 
-const barrios = ref([]); // para guardar los barrios cargados
+const barrios = ref([]);
 
 const localidadFiltro = ref("");
 let unsubscribe = null;
 
 function listenToPartidos(userId) {
-  const q = query(collection(db, "partidos"), where("estado", "==", "activo"));
+  if (unsubscribe) unsubscribe();
+
+  let q;
+
+  if (localidadFiltro.value) {
+    q = query(
+      collection(db, "partidos"),
+      where("estado", "==", "activo"),
+      where("complejo.localidad", "==", localidadFiltro.value)
+    );
+  } else {
+    q = query(collection(db, "partidos"), where("estado", "==", "activo"));
+  }
 
   unsubscribe = onSnapshot(q, (snapshot) => {
     const todos = [];
@@ -41,12 +53,7 @@ function listenToPartidos(userId) {
     snapshot.forEach((doc) => {
       const partido = { ...doc.data(), id: doc.id };
 
-      if (
-        !localidadFiltro.value ||
-        partido.localidad === localidadFiltro.value
-      ) {
-        todos.push(partido);
-      }
+      todos.push(partido);
 
       const esCreador = partido.userId === userId;
       const estaInscripto = partido.contadorInscriptos?.some(
@@ -60,19 +67,20 @@ function listenToPartidos(userId) {
 
     partidos.value = todos;
     Mispartidos.value = mios;
+
+    console.log("partidos actuales:", partidos.value);
   });
 }
 
-function searchByCountry(localidad) {
-  localidadFiltro.value = localidad;
+watch(localidadFiltro, (newValue) => {
   const user = auth.currentUser;
   if (user) {
     listenToPartidos(user.uid);
   }
-}
+});
 
 function getPartidosPage() {
-  localidadFiltro.value = null;
+  localidadFiltro.value = "";
   const user = auth.currentUser;
   if (user) {
     listenToPartidos(user.uid);
@@ -160,7 +168,6 @@ onUnmounted(() => {
           </template>
         </div>
 
-        <!-- PROXIMOS PARTIDOS -->
         <div
           class="tab-pane fade"
           id="proximos-partidos-tab-pane"
@@ -177,7 +184,6 @@ onUnmounted(() => {
                 id="barrioSelect"
                 class="form-select"
                 v-model="localidadFiltro"
-                @change="searchByCountry(localidadFiltro)"
               >
                 <option disabled value="">Selecciona un barrio</option>
                 <option v-for="barrio in barrios" :key="barrio" :value="barrio">
@@ -276,46 +282,40 @@ select.form-select {
   border-radius: 0.375rem;
 }
 
-/* 1) Eliminar bordes por defecto de Bootstrap */
 ul.nav-tabs {
   border-bottom: none;
-  justify-content: flex-start; /* o center si querés centrar todas */
+  justify-content: flex-start;
 }
 
-/* 2) Estilos del enlace en todas (inactivo) */
 .nav-link {
-  color: #000; /* texto negro */
-  font-weight: 700; /* negrita */
-  padding: 0.5rem 1rem; /* más espacio arriba/abajo y laterales */
-  border: none; /* quita el borde de pestaña */
-  border-radius: 0; /* sin redondeo */
-  position: relative; /* para el pseudo-elemento ::after */
+  color: #000;
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0;
+  position: relative;
   transition: color 0.2s;
 }
 
-/* 3) Hover suave */
 .nav-link:hover {
   color: #5d880d;
 }
 
-/* 4) Pestaña activa: texto verde y subrayado */
 .nav-link.active {
   color: #5d880d !important;
 }
 
-/* 5) Línea verde debajo solo en activa */
 .nav-link.active::after {
   content: "";
   display: block;
   width: 50%;
-  height: 3px; /* grosor de la línea */
+  height: 3px;
   background-color: #5d880d;
   position: absolute;
-  bottom: -1px; /* justo debajo del área del link */
+  bottom: -1px;
   left: 10;
 }
 
-/* 6) Si querés separar un toque las dos pestañas */
 .nav-item + .nav-item {
   margin-left: 1rem;
 }
