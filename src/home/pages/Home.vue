@@ -53,7 +53,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <section class="px-5 py-4">
+  <section class="px-3 py-4">
     <div class="header row mb-3">
       <div class="col-5 w-home">
         <Image :src="user.photoURL" />
@@ -69,7 +69,7 @@ onUnmounted(() => {
     </div>
   </section>
 
-  <section class="px-5 pb-3">
+  <section class="px-3 pb-3">
     <div class="row d-flex justify-content-between mb-3">
       <div
         class="col-3 m-auto justify-content-center botonera-home"
@@ -129,7 +129,9 @@ onUnmounted(() => {
   <section class="pb-3 px-4">
     <div class="row mb-3">
       <div class="col-10">
-        <h2 class="text-start h3 mb-3 fw-bold"><span>Próximos</span> partidos</h2>
+        <h2 class="text-start h3 mb-3 fw-bold">
+          <span>Próximos</span> partidos
+        </h2>
       </div>
       <div class="col-2">
         <router-link to="/partidos">
@@ -167,7 +169,7 @@ onUnmounted(() => {
   height: 25px;
 }
 
-.w-home{
+.w-home {
   width: 30%;
 }
 

@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import { RouterLink, useRouter } from "vue-router";
 import { useVuelidate } from "@vuelidate/core";
-import { required, email, minLength } from "@vuelidate/validators";
+import { required, email, minLength, helpers } from "@vuelidate/validators";
 import Button from "../../components/Button.vue";
 import Input from "../../components/Input.vue";
 import HeaderPage from "../../components/HeaderPage.vue";
@@ -51,8 +51,11 @@ function useRegister() {
 
 const { fields, loading, handleSubmit } = useRegister();
 const soloNumeros = (value) => /^\d+$/.test(value);
-const mustBeTrue = (value) => value === true;
 
+const mustBeTrue = helpers.withMessage(
+  "Debes aceptar los términos y condiciones",
+  (value) => value === true
+);
 const rules = {
   nombre: { required },
   apellido: { required },
@@ -62,7 +65,7 @@ const rules = {
   genero: { required },
   barrio: { required },
   telefono: { required, soloNumeros },
-  terminos: { mustBeTrue },
+  terminos: { required, mustBeTrue },
 };
 
 const v$ = useVuelidate(rules, fields);
@@ -249,7 +252,7 @@ const formSubmitted = ref(false);
       </div>
       <div class="mb-3 row d-flex align-items-center">
         <div class="col-2">
-          <Input
+          <input
             type="checkbox"
             name="terminos"
             id="terminos"
