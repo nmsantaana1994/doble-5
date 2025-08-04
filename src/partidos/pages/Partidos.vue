@@ -195,7 +195,7 @@ onUnmounted(() => {
               <button class="boton_filtro" @click="getPartidosPage">
                 <img
                   class="img_filtro"
-                  src="../../../src/assets/img/iconos_filtro .png"
+                  src="../../../src/assets/img/iconos_filtro.png"
                   alt="icono-filtro"
                 />
               </button>
