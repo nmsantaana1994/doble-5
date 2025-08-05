@@ -6,8 +6,8 @@ import {
   eliminarJugadorDePartido,
   eliminarPartidoSiSoyCreador,
 } from "../services/partidos";
-import { getFirestore, doc, onSnapshot } from "firebase/firestore";
-import { notificationProvider } from "../../symbols/symbols.js";
+import { getFirestore, doc, onSnapshot, getDoc } from "firebase/firestore";
+import { notificationProvider, modalProvider } from "../../symbols/symbols.js";
 import { usePartido } from "../../composition/usePartidos";
 import { useRoute } from "vue-router";
 import { useAuth } from "../../composition/useAuth";
@@ -15,7 +15,11 @@ import Image from "../../components/Image.vue";
 import HeaderPage from "../../components/HeaderPage.vue";
 import Loading from "../../components/Loading.vue";
 import Section from "../../components/Section.vue";
+import router from "../../router/router.js";
 
+const { showModal } = inject(modalProvider);
+
+const jugadoresActualizados = ref([]);
 const db = getFirestore();
 const { user } = useAuth();
 const route = useRoute();
@@ -32,7 +36,6 @@ onMounted(async () => {
   try {
     const partido = await getPartidoById(route.params.id);
     partidoFiltrado.value = partido;
-    console.log(partidoFiltrado.value);
     flagInscription.value = estaInscripto();
     listenToChanges();
     if (user.value.id === partidoFiltrado.value.userId) {
@@ -51,16 +54,33 @@ watch(partidoFiltrado, (newVal, oldVal) => {
   }
 });
 
-// // Función para suscribirse a los cambios en el documento del partido
 function listenToChanges() {
-  const unsubscribe = onSnapshot(partidoDocRef, (snapshot) => {
+  const unsubscribe = onSnapshot(partidoDocRef, async (snapshot) => {
     if (snapshot.exists()) {
-      partidoFiltrado.value = { ...snapshot.data(), id: snapshot.id };
+      const data = snapshot.data();
+      partidoFiltrado.value = { ...data, id: snapshot.id };
+
+      const jugadores = await Promise.all(
+        data.contadorInscriptos.map(async (jugador) => {
+          const userDoc = await getDoc(doc(db, "usuarios", jugador.uid));
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            return {
+              uid: jugador.uid,
+              nombre: userData.displayName || jugador.nombre,
+              image: userData.photoURL || jugador.image,
+            };
+          }
+          return jugador;
+        })
+      );
+
+      jugadoresActualizados.value = jugadores;
     } else {
       partidoFiltrado.value = null;
     }
   });
-  // Detener la escucha de cambios cuando el componente se desmonte
+
   onUnmounted(unsubscribe);
 }
 
@@ -72,7 +92,7 @@ async function inscribirseAlPartido() {
       flagInscription.value = estaInscripto();
       setFeedbackMessage({
         type: "success",
-        message: "Usuario inscripto correctamente",
+        message: "Usuario inscripto correctamente.",
       });
     }
   } catch (error) {
@@ -88,7 +108,7 @@ async function eliminarDePartido(userid) {
       flagInscription.value = estaInscripto();
       setFeedbackMessage({
         type: "success",
-        message: "Usuario eliminado correctamente",
+        message: "Usuario eliminado correctamente.",
       });
     }
   } catch (error) {
@@ -98,15 +118,30 @@ async function eliminarDePartido(userid) {
 
 async function eliminarPartido(userid) {
   try {
-    clearFeedbackMessage();
-    if (partidoFiltrado.value) {
-      // await eliminarJugadorDePartido(userid, route.params.id);
-      await eliminarPartidoSiSoyCreador(route.params.id, userid);
-      // flagInscription.value = estaInscripto();
-      setFeedbackMessage({
-        type: "success",
-        message: "se cambio el estado a eliminado",
-      });
+    const result = await showModal({
+      title: "Eliminar partido",
+      bodyText: "¿Desea eliminar el partido?",
+      closeButtonText: "NO",
+      saveButtonText: "SI",
+    });
+    if (result) {
+      try {
+        clearFeedbackMessage();
+        if (partidoFiltrado.value) {
+          await eliminarPartidoSiSoyCreador(route.params.id, userid);
+          setFeedbackMessage({
+            type: "success",
+            message: "Partido eliminado con éxito.",
+          });
+          router.push("/home");
+        }
+        return;
+      } catch (error) {
+        console.error("Error al eliminar el partido:", error);
+        setFeedbackMessage({ type: "error", message: error });
+      }
+    } else if (result === "closex") {
+      return;
     }
   } catch (error) {
     setFeedbackMessage({ type: "error", message: error.message });
@@ -121,11 +156,23 @@ function estaInscripto() {
     (usuario) => usuario.uid === user.value.id
   );
 }
+
+function formatFecha(fecha) {
+  const date = new Date(fecha);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+}
 </script>
 
 <template class="main">
   <Loading :loading="loading" />
-  <HeaderPage title="Información" route="/home" :hasBackground="false"></HeaderPage>
+  <HeaderPage
+    title="Información"
+    route="/home"
+    :hasBackground="false"
+  ></HeaderPage>
   <Section class="row p-1" style="margin: 75px 0 120px 0">
     <div class="col-12 fotoCancha mb-3">
       <img src="../../assets/img/cancha.jpg" />
@@ -151,20 +198,20 @@ function estaInscripto() {
     <div class="row mx-auto my-2 infoPartido">
       <div class="col-12">
         <p class="mb-0">
-          <span class="fw-bold text-black">Direccion:</span>
+          <span class="fw-bold text-black">Dirección:</span>
           {{ partidoFiltrado ? partidoFiltrado.complejo.direction : "-" }}
         </p>
       </div>
       <div class="col-12">
-        <p class="mb-0">
-          <span class="fw-bold">Día:</span>
-          {{ partidoFiltrado ? partidoFiltrado.fecha : "-" }}
+        <p>
+          <span class="fw-bold"> Día:</span>
+          {{ partidoFiltrado ? formatFecha(partidoFiltrado.fecha) : "-" }}
         </p>
       </div>
       <div class="col-12">
         <p class="mb-0">
           <span class="fw-bold"> Horario:</span>
-          {{ partidoFiltrado ? partidoFiltrado.hora + 'hs.' : "-" }}
+          {{ partidoFiltrado ? partidoFiltrado.hora : "-" }} hs.
         </p>
       </div>
     </div>
@@ -172,8 +219,11 @@ function estaInscripto() {
       <div class="col-12">
         <p>
           Organizado por: <br />
-          <router-link :to="`/usuario/${ partidoFiltrado?.userId }`" class="col-12 mb-3 text-decoration-none text-dark">
-            <small>{{
+          <router-link
+            :to="`/usuario/${partidoFiltrado?.userId}`"
+            class="col-12 mb-3 text-decoration-none text-dark"
+          >
+            <small style="color: var(--primary-color)">{{
               partidoFiltrado ? partidoFiltrado.usuarioCreador : "-"
             }}</small>
           </router-link>
@@ -189,10 +239,7 @@ function estaInscripto() {
 
     <div
       class="row d-flex align-items-center border-bottom mb-2 pb-2 mx-auto"
-      v-for="nombreJugador in partidoFiltrado
-        ? partidoFiltrado.contadorInscriptos
-        : []"
-      :key="nombreJugador"
+      v-for="nombreJugador in jugadoresActualizados"
     >
       <div class="col-3">
         <Image :src="nombreJugador.image" />
@@ -201,7 +248,10 @@ function estaInscripto() {
         <p>
           <span class="fw-bold">{{ nombreJugador.nombre }}</span>
           <br />
-          <router-link :to="`/usuario/${nombreJugador.uid}`" class="text-decoration-none">
+          <router-link
+            :to="`/usuario/${nombreJugador.uid}`"
+            style="color: var(--primary-color)"
+          >
             Ver Perfil
           </router-link>
         </p>
@@ -210,7 +260,7 @@ function estaInscripto() {
         <button
           class="button__delete"
           @click="eliminarDePartido(nombreJugador.uid)"
-          v-show="myMatch"
+          v-show="myMatch || nombreJugador.uid === user.id"
         >
           <i class="fa-solid fa-trash-can"></i>
         </button>

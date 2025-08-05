@@ -50,7 +50,7 @@ onMounted(async () => {
         :totalSiguiendo="totalSiguiendo"
         :mostrarBoton="false"
         :loading="loading"
-        @photoUpdated="user.value.photoURL = $event"
+        @photoUpdated="user.photoURL = $event"
       />
     </template>
 
@@ -61,3 +61,9 @@ onMounted(async () => {
     </div>
   </Section>
 </template>
+
+<style scoped>
+.save_changes {
+  color: white;
+}
+</style>

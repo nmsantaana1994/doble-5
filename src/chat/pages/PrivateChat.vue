@@ -132,7 +132,6 @@ function usePrivateChatForm(authUser, otherUser) {
   };
 }
 
-// Gestión de presencia al entrar y salir del chat
 async function setUserOnlineStatus(online) {
   if (!authUser.value || !otherUser.value) return;
 
@@ -190,7 +189,7 @@ onUnmounted(async () => {
     </div>
 
     <!-- ChatInput.vue (o directamente en PrivateChat.vue) -->
-    <div class="chat-input bg-light p-2 border-top mb-3">
+    <div class="chat-input bg-light p-2 border-top">
       <form @submit.prevent="handleSubmit" class="d-flex align-items-end">
         <!-- Área de texto -->
         <div class="flex-grow-1 me-2">
@@ -221,22 +220,6 @@ onUnmounted(async () => {
             <i class="bi bi-send-fill"></i>
           </template>
         </button>
-
-        <!-- Botón enviar -->
-        <!-- <button
-                    type="submit"
-                    class="btn btn-primary d-flex align-items-center justify-content-center"
-                    :disabled="!fields.message || formLoading"
-                    >
-                    <i class="bi bi-send-fill"></i>
-                    </button> -->
-
-        <!-- Spinner pequeño para “enviando” -->
-        <!-- <div v-if="formLoading" class="ms-2"> -->
-        <!-- <div class="spinner-border spinner-border-sm text-primary" role="status">
-                        <span class="visually-hidden">Enviando…</span>
-                    </div> -->
-        <!-- </div> -->
       </form>
     </div>
   </Section>
@@ -253,7 +236,7 @@ ul {
 
 .chat-input {
   position: fixed;
-  bottom: 70px; /* ajusta si tu navbar inferior cambia */
+  bottom: 85px;
   width: 100%;
   left: 0;
   z-index: 10;
@@ -262,8 +245,6 @@ ul {
 .chat-textarea {
   resize: none;
   border-radius: 20px;
-  /* padding: 0.75rem 1rem; */
-  /* Opcional: ajustar altura mínima */
   min-height: 40px;
   max-height: 100px;
   overflow-y: auto;

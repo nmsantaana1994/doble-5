@@ -32,7 +32,7 @@ const getUserPhotoURL = (users) => {
 };
 
 const getLastMessage = (messages) => {
-  if (!messages || messages.length === 0) return "No messages yet";
+  if (!messages || messages.length === 0) return "";
 
   // Ordenar los mensajes por fecha ascendente
   const sortedMessages = messages.sort((a, b) => {

@@ -1,76 +1,3 @@
-<!-- <script setup>
-import { ref, onMounted } from "vue";
-import { useAuth } from "../../composition/useAuth.js";
-import { getChatsByUser, getMessagesByChat } from "../services/chat.js";
-import Section from "../../components/Section.vue";
-import HeaderPage from "../../components/HeaderPage.vue";
-import Loading from "../../components/Loading.vue";
-import cardChats from "../components/cardChats.vue";
-import { useRouter } from "vue-router";
-
-const { user } = useAuth();
-const chats = ref([]);
-const loading = ref(true);
-const router = useRouter();
-
-onMounted(async () => {
-  try {
-    if (user.value) {
-      chats.value = await getChatsByUser(user.value.id);
-      getMessagesByChat;
-    }
-  } catch (error) {
-    console.error("Error getting chats: ", error);
-  } finally {
-    loading.value = false;
-  }
-});
-
-function goToChat(chat) {
-  const otherUserId = Object.keys(chat.users).find(
-    (id) => id !== user.value.id
-  );
-  router.push(`/usuario/${otherUserId}/chat`);
-}
-</script>
-
-<template>
-  <Loading :loading="loading" />
-  <HeaderPage title="Mensajes" route="home" :hasBackground="false" />
-  <Section>
-    <div>
-      <ul>
-        <li v-for="chat in chats" :key="chat.id" @click="goToChat(chat)">
-          <cardChats :chat="chat" :userAuthenticatedID="user?.id" />
-        </li>
-      </ul>
-    </div>
-  </Section>
-</template>
-
-<style scoped>
-img {
-  width: 80%;
-}
-
-.m-bottom {
-  margin-bottom: 4em;
-}
-
-.font-date {
-  font-size: 0.7rem;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-li {
-  margin: 0 0 0.2rem 0;
-}
-</style> -->
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import { useAuth } from "../../composition/useAuth.js";
@@ -80,6 +7,7 @@ import HeaderPage from "../../components/HeaderPage.vue";
 import Loading from "../../components/Loading.vue";
 import cardChats from "../components/cardChats.vue";
 import { useRouter } from "vue-router";
+import { getAllUsers } from "../../services/users.js";
 
 const { user } = useAuth();
 const chats = ref([]);
@@ -88,14 +16,17 @@ const router = useRouter();
 
 const searchTerm = ref("");
 
+const allUsers = ref([]);
+
 onMounted(async () => {
   try {
     if (user.value) {
       chats.value = await getChatsByUser(user.value.id);
-      console.log(chats.value);
+      allUsers.value = await getAllUsers();
+      allUsers.value = allUsers.value.filter((u) => u.id !== user.value.id);
     }
   } catch (error) {
-    console.error("Error getting chats: ", error);
+    console.error("Error: ", error);
   } finally {
     loading.value = false;
   }
@@ -105,7 +36,14 @@ function goToChat(chat) {
   const otherUserId = Object.keys(chat.users).find(
     (id) => id !== user.value.id
   );
-  router.push(`/usuario/${otherUserId}/chat`);
+
+  if (chat.id) {
+    // chat ya existente
+    router.push(`/usuario/${otherUserId}/chat`);
+  } else {
+    // iniciar un nuevo chat
+    router.push(`/usuario/${otherUserId}/chat?nuevo=true`);
+  }
 }
 
 const filteredChats = computed(() => {
@@ -113,16 +51,45 @@ const filteredChats = computed(() => {
 
   const term = searchTerm.value.toLowerCase().trim();
 
-  return chats.value.filter((chat) => {
-    const otherUser = Object.entries(chat.users).find(
-      ([id]) => id !== user.value.id
-    );
+  const chatUserIds = chats.value.map((chat) =>
+    Object.keys(chat.users).find((id) => id !== user.value.id)
+  );
 
-    const nombre = otherUser?.[1]?.nombre?.toLowerCase() || "";
-    const displayName = otherUser?.[1]?.displayName?.toLowerCase() || "";
-
-    return nombre.includes(term) || displayName.includes(term);
+  // Usuarios que coinciden con búsqueda
+  const matchingUsers = allUsers.value.filter((u) => {
+    const name = u.nombre?.toLowerCase() || "";
+    const displayName = u.displayName?.toLowerCase() || "";
+    return name.includes(term) || displayName.includes(term);
   });
+
+  // Dividir entre usuarios con chat y sin chat
+  const usersWithChat = matchingUsers.filter((u) => chatUserIds.includes(u.id));
+  const usersWithoutChat = matchingUsers.filter(
+    (u) => !chatUserIds.includes(u.id)
+  );
+
+  // Convertir usuarios con chat a su chat correspondiente
+  const chatsMatching = chats.value.filter((chat) => {
+    const otherUserId = Object.keys(chat.users).find(
+      (id) => id !== user.value.id
+    );
+    return usersWithChat.some((u) => u.id === otherUserId);
+  });
+
+  // Convertir usuarios sin chat a "fake chats" para mostrar
+  const fakeChats = usersWithoutChat.map((userData) => ({
+    id: null,
+    isNew: true,
+    users: {
+      [user.value.id]: { nombre: user.value.nombre },
+      [userData.id]: {
+        nombre: userData.nombre,
+        displayName: userData.displayName,
+      },
+    },
+  }));
+
+  return [...chatsMatching, ...fakeChats];
 });
 </script>
 

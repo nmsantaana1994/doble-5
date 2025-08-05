@@ -27,8 +27,6 @@ function useEditProfile(user) {
     barrio: "",
     telefono: "",
     photoURL: null,
-    valoracion: 0, // ✔
-    comentario: "", // ✔
   });
 
   const loading = ref(false);
@@ -46,8 +44,6 @@ function useEditProfile(user) {
     form.value.nacimiento = newUser.nacimiento;
     form.value.followers = newUser.followers;
     form.value.following = newUser.following;
-    form.value.valoracion = newUser.valoracion;
-    form.value.comentario = newUser.comentario;
     form.value.genero = newUser.genero;
     form.value.barrio = newUser.barrio;
     form.value.telefono = newUser.telefono;
@@ -116,7 +112,8 @@ function useEditProfile(user) {
     <div class="col-12">
       <form action="#" method="POST" @submit.prevent="handleSubmit">
         <div class="mb-3">
-          <Label for="displayName" class="me-3 fw-bold">NOMBRE DE USUARIO:
+          <Label for="displayName" class="me-3 fw-bold"
+            >NOMBRE DE USUARIO:
           </Label>
           <Input id="displayName" v-model="form.displayName" />
         </div>
@@ -133,40 +130,11 @@ function useEditProfile(user) {
           <Input id="Email" v-model="form.email" />
         </div>
         <div class="mb-3">
-          <Label for="nacimiento" class="me-3 fw-bold">FECHA DE NACIMIENTO:
+          <Label for="nacimiento" class="me-3 fw-bold"
+            >FECHA DE NACIMIENTO:
           </Label>
           <Input type="date" id="nacimiento" v-model="form.nacimiento" />
         </div>
-        <!-- <div class="mb-3">
-          <Label for="nivel" class="me-3 fw-bold">Nivel de Juego: </Label>
-          <Input id="nivel" v-model="form.nivel" />
-        </div> -->
-
-        <div class="mb-3">
-          <Label class="me-3 fw-bold">VALORACIONES</Label>
-          <div class="estrellas-editables">
-            <span
-              v-for="n in 5"
-              :key="n"
-              class="estrella"
-              :class="{ activa: n <= form.valoracion }"
-              @click="form.valoracion = n"
-              >★</span
-            >
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <Label for="comentario" class="me-3 fw-bold">COMENTARIO:</Label>
-          <textarea
-            id="comentario"
-            v-model="form.comentario"
-            rows="3"
-            class="form-control"
-            placeholder="¿Qué tipo de jugador sos?"
-          ></textarea>
-        </div>
-
         <div class="mb-3">
           <Label for="genero" class="me-3 fw-bold">GÉNERO: </Label>
           <Input id="genero" v-model="form.genero" />
@@ -215,5 +183,8 @@ function useEditProfile(user) {
 
 .estrella.activa {
   color: gold;
+}
+.save_changes {
+  color: white;
 }
 </style>

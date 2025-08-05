@@ -8,6 +8,7 @@ import HeaderPage from "../../components/HeaderPage.vue";
 import Section from "../../components/Section.vue";
 import { notificationProvider, modalProvider } from "../../symbols/symbols.js";
 import { inscribirPartido } from "../services/partidos.js";
+import Loading from "../../components/Loading.vue";
 
 const { feedback, setFeedbackMessage, clearFeedbackMessage } =
   inject(notificationProvider);
@@ -32,7 +33,7 @@ function useCargaPartido() {
     totalJ: 0,
     tipo: "",
     usuarioCreador: "",
-    estado: "activo", // NUEVO CAMPO
+    estado: "activo",
   });
 
   const loading = ref(false);
@@ -61,12 +62,11 @@ function useCargaPartido() {
         type: "success",
         message: "Partido creado correctamente",
       });
-      // Llamar a showModal justo después de crear el partido
       const result = await showModal({
         title: "Partido creado",
         bodyText: "¿Desea sumarse como jugador a este partido?",
-        closeButtonText: "Si",
-        saveButtonText: "No",
+        closeButtonText: "NO",
+        saveButtonText: "SI",
       });
       if (result) {
         try {
@@ -86,10 +86,8 @@ function useCargaPartido() {
           setFeedbackMessage({ type: "error", message: error });
         }
       } else if (!result) {
-        console.log("no sumarme al partido");
         router.push("/home");
       } else if (result === "closex") {
-        console.log("no hacer nada");
         router.push("/home");
         return;
       }
@@ -113,7 +111,6 @@ onMounted(async () => {
   try {
     const canchasData = await getCanchas();
     canchas.value = canchasData;
-    console.log(canchas.value);
   } catch (error) {
     console.error(error.message);
   }
@@ -123,6 +120,13 @@ onMounted(async () => {
 const minDate = computed(() => {
   const today = new Date();
   return today.toISOString().split("T")[0];
+});
+
+const cantidadJugadoresOptions = computed(() => {
+  if (selectedCancha.value && selectedCancha.value.prices) {
+    return Object.keys(selectedCancha.value.prices);
+  }
+  return [];
 });
 
 function handleCanchaChange() {
@@ -139,7 +143,6 @@ function handleCanchaChange() {
   } else {
     availableHorarios.value = [];
   }
-  console.log("availableHorarios", availableHorarios);
 }
 
 const isFormValid = computed(() => {
@@ -175,6 +178,7 @@ watch([selectedCancha, selectedDia], handleCanchaChange);
 </script>
 
 <template>
+  <Loading :loading="loading" />
   <HeaderPage route="/home" title="Crear partido" :hasBackground="false" />
   <Section>
     <div class="col-12 px-3">
@@ -258,12 +262,13 @@ watch([selectedCancha, selectedDia], handleCanchaChange);
             :disabled="!fields.hora"
           >
             <option disabled value="">Cantidad de jugadores</option>
-            <option value="5">5 vs 5</option>
-            <option value="6">6 vs 6</option>
-            <option value="7">7 vs 7</option>
-            <option value="8">8 vs 8</option>
-            <option value="9">9 vs 9</option>
-            <option value="10">10 vs 10</option>
+            <option
+              v-for="cantidad in cantidadJugadoresOptions"
+              :value="cantidad"
+              :key="cantidad"
+            >
+              {{ cantidad }} vs {{ cantidad }}
+            </option>
           </select>
         </div>
 

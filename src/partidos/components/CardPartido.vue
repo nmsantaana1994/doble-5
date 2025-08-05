@@ -24,7 +24,6 @@ async function inscribirseAlPartido(idPartido) {
         type: "success",
         message: "Usuario inscripto correctamente.",
       });
-      console.log("Usuario inscrito correctamente.");
     } else {
       console.error("No se ha encontrado el partido para inscribirse.");
     }
@@ -63,7 +62,8 @@ async function inscribirseAlPartido(idPartido) {
           <div class="col-10 d-flex align-items-end">
             <p class="card-subtitle text-body-secondary text-start">
               <b
-                >{{ convertirFecha(partido?.fecha) }} - {{ partido?.hora }}hs.</b
+                >{{ convertirFecha(partido?.fecha) }} -
+                {{ partido?.hora }}hs.</b
               >
             </p>
           </div>

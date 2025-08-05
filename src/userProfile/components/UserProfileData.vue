@@ -58,21 +58,12 @@ function goToList() {
   router.push("/usuario/" + props.user.id + "/valorationList");
 }
 
-function handlePhotoUpdated(success) {
-  if (success) {
-    console.log("Foto de perfil actualizada con éxito");
-  } else {
-    console.log("Error al actualizar la foto de perfil");
-  }
-  flagChangePhoto.value = false;
-}
-
 const promedioEstrellas = computed(() => {
   const valoraciones = props.user.valoraciones || [];
   if (valoraciones.length === 0) return 0;
 
   const suma = valoraciones.reduce((acc, v) => acc + v.estrellas, 0);
-  return suma / valoraciones.length;
+  return parseFloat((suma / valoraciones.length).toFixed(1));
 });
 
 const ultimaValoracion = computed(() => {
@@ -90,16 +81,8 @@ function goToChat() {
 }
 
 function onPreview(url) {
-  // Sólo actualizo la vista del avatar
   props.user.photoURL = url;
 }
-
-function onSave(url) {
-  // Actualizo la vista (por las dudas) y cierro el modal
-  props.user.photoURL = url;
-  flagChangePhoto.value = false;
-}
-
 
 </script>
 
@@ -123,20 +106,20 @@ function onSave(url) {
         class="mb-3"
         v-if="flagChangePhoto"
         @preview="onPreview"
-        @saved="onSave"
+        @saved="() => (flagChangePhoto = false)"
       />
       <p class="h2 text-center m-0">{{ user.nombre }} {{ user.apellido }}</p>
     </div>
     <div class="col-12 mb-3">
       <div class="row">
-        <div class="col-6 mt-3">
+        <div class="col-6 mt-3 seguidores">
           <router-link :to="`/red/`" class="text-decoration-none text-dark">
             <!-- <Loader v-if="loading" /> -->
             <p class="text-center fw-bold">{{ totalSeguidores }}</p>
             <p class="text-center fw-bold">Seguidores</p>
           </router-link>
         </div>
-        <div class="col-6 mt-3">
+        <div class="col-6 mt-3 seguidores">
           <router-link :to="`/red/`" class="text-decoration-none text-dark">
             <!-- <Loader v-if="loading" /> -->
             <p class="text-center fw-bold">{{ totalSiguiendo }}</p>
@@ -263,5 +246,11 @@ function onSave(url) {
   background-color: var(--primary-color);
   color: white;
   padding: 0.5rem;
+}
+
+.seguidores {
+  p {
+    color: var(--primary-color);
+  }
 }
 </style>

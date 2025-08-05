@@ -220,7 +220,15 @@ onUnmounted(() => {
                 <p class="text-start col-8 m-0">Notificaciones</p>
               </router-link>
             </li>
-            <hr style="border: none; height: 3px; background-color: #5d880d; width: 100%; opacity: 100;" />
+            <hr
+              style="
+                border: none;
+                height: 3px;
+                background-color: #5d880d;
+                width: 100%;
+                opacity: 100;
+              "
+            />
             <li>
               <router-link
                 :to="'/ajustes'"
@@ -235,7 +243,7 @@ onUnmounted(() => {
                 <p class="text-start col-8 m-0">Ajustes</p>
               </router-link>
             </li>
-            <li>
+            <!-- <li>
               <router-link
                 :to="'/ayuda'"
                 class="row text-decoration-none d-flex mb-3"
@@ -248,7 +256,7 @@ onUnmounted(() => {
                 />
                 <p class="text-start col-8 m-0">Ayuda</p>
               </router-link>
-            </li>
+            </li> -->
             <li>
               <form action="#" method="post" @submit.prevent="handleLogout">
                 <button
@@ -319,7 +327,9 @@ ul {
   font-size: 0.8rem;
   padding: 0.4em 0.6em;
 }
-
+nav {
+  padding-bottom: 1.5rem;
+}
 .pt-6 {
   padding-top: 6rem;
 }

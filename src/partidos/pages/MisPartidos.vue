@@ -2,7 +2,7 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getPartidos } from "../services/partidos";
 import { ref, onMounted } from "vue";
-import  cardPartido  from "../components/CardPartido.vue"
+import cardPartido from "../components/CardPartido.vue";
 const auth = getAuth();
 
 const partidos = ref([]);
@@ -10,7 +10,6 @@ const partidos = ref([]);
 onAuthStateChanged(auth, (user) => {
   if (user) {
     const uid = user.uid;
-    console.log(uid);
     getPartidosForUser(uid);
   } else {
     console.log("Usuario no autenticado");
@@ -19,13 +18,14 @@ onAuthStateChanged(auth, (user) => {
 
 async function getPartidosForUser(UsuarioId) {
   const partidosData = await getPartidos();
-  console.log(partidosData);
 
-
-  const filteredPartidos = partidosData.filter(
-    (partido) => partido.userId === UsuarioId
-  );
-
+  const filteredPartidos = partidosData.filter((partido) => {
+    const esCreador = partido.userId === UsuarioId;
+    const estaInscripto = partido.contadorInscriptos?.some(
+      (jugador) => jugador.uid === UsuarioId
+    );
+    return esCreador || estaInscripto;
+  });
   partidos.value = filteredPartidos;
 }
 
@@ -48,16 +48,20 @@ onMounted(async () => {
       </div>
       <div class="col-2">
         <router-link to="/partidos">
-          <img src="../../assets/img/arrows-right.png" alt="Icono flechas dobles" class="icono-h2" />
+          <img
+            src="../../assets/img/arrows-right.png"
+            alt="Icono flechas dobles"
+            class="icono-h2"
+          />
         </router-link>
       </div>
     </div>
     <template v-if="partidos.length > 0">
       <cardPartido
-          v-for="partido in partidos"
-          :key="partido.id"
-          :partido="partido"
-        />
+        v-for="partido in partidos"
+        :key="partido.id"
+        :partido="partido"
+      />
     </template>
 
     <template v-else>
@@ -69,7 +73,6 @@ onMounted(async () => {
     </template>
   </section>
 </template>
-
 
 <style scoped>
 .icono-h2 {

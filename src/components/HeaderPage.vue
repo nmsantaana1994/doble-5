@@ -1,5 +1,6 @@
 <script setup>
-import { defineProps } from "vue";
+import { defineProps, onMounted, ref } from "vue";
+import router from "../router/router";
 
 import flechaBlanca from "../assets/img/flecha-izquierda-blanca.png";
 import flechaNegra from "../assets/img/flecha-izquierda.png";
@@ -17,6 +18,10 @@ const props = defineProps({
     default: true,
   },
 });
+
+function goBack() {
+  router.back();
+}
 </script>
 
 <template>
@@ -28,12 +33,12 @@ const props = defineProps({
     }"
   >
     <div class="col-3">
-      <router-link :to="props.route">
+      <button @click="goBack">
         <img
           :src="props.hasBackground ? flechaBlanca : flechaNegra"
           alt="Volver"
         />
-      </router-link>
+      </button>
     </div>
     <div class="col-9">
       <h1>{{ props.title }}</h1>
@@ -88,5 +93,10 @@ h1 {
   margin: auto;
   text-align: right;
   font-size: 1.5rem;
+}
+
+button {
+  background-color: transparent;
+  border: none;
 }
 </style>

@@ -65,11 +65,8 @@ export async function getPartidoById(idPartido) {
   try {
     const partidoDoc = await getDoc(doc(db, "partidos", idPartido));
     if (partidoDoc.exists()) {
-      // El documento existe, devolver los datos del partido
       return partidoDoc.data();
     } else {
-      // El documento no existe
-      console.log("No se encontró el partido con el ID proporcionado.");
       return null;
     }
   } catch (error) {
@@ -79,7 +76,6 @@ export async function getPartidoById(idPartido) {
 }
 
 export async function inscribirPartido(idPartido, usuarioInscripto) {
-  console.log(idPartido, usuarioInscripto);
   try {
     let partido = await getPartidoById(idPartido);
     let usuario = {
@@ -87,19 +83,18 @@ export async function inscribirPartido(idPartido, usuarioInscripto) {
       nombre: usuarioInscripto.value.displayName,
       image: usuarioInscripto.value.photoURL,
     };
-    // Verificar si el usuario ya está inscrito en el partido
-    const usuarioYaInscrito = partido.contadorInscriptos.some(
+    // Verificar si el usuario ya está inscripto en el partido
+    const usuarioYaInscripto = partido.contadorInscriptos.some(
       (inscrito) => inscrito.uid === usuario.uid
     );
-    if (usuarioYaInscrito && partido.contadorInscriptos.length < 10) {
-      throw new Error("El usuario ya está inscrito en este partido.");
+    if (usuarioYaInscripto && partido.contadorInscriptos.length < 10) {
+      throw new Error("El usuario ya está inscripto en este partido.");
     }
 
-    // Si el usuario no está inscrito, agregarlo a la lista de inscritos
+    // Si el usuario no está inscripto, agregarlo a la lista de inscriptos
 
     partido.contadorInscriptos.push(usuario);
     await actualizarListaInscriptos(idPartido, partido.contadorInscriptos);
-    console.log("Usuario inscrito correctamente.");
   } catch (error) {
     console.error("Error al inscribirse al partido:", error);
     throw error;
