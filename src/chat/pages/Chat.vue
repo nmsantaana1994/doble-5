@@ -16,19 +16,6 @@ const router = useRouter();
 
 const searchTerm = ref("");
 
-// onMounted(async () => {
-//   try {
-//     if (user.value) {
-//       chats.value = await getChatsByUser(user.value.id);
-//       console.log(chats.value);
-//     }
-//   } catch (error) {
-//     console.error("Error getting chats: ", error);
-//   } finally {
-//     loading.value = false;
-//   }
-// });
-
 const allUsers = ref([]);
 
 onMounted(async () => {
@@ -36,7 +23,6 @@ onMounted(async () => {
     if (user.value) {
       chats.value = await getChatsByUser(user.value.id);
       allUsers.value = await getAllUsers();
-      console.log("allUsers", allUsers.value);
       allUsers.value = allUsers.value.filter((u) => u.id !== user.value.id);
     }
   } catch (error) {
@@ -45,13 +31,6 @@ onMounted(async () => {
     loading.value = false;
   }
 });
-
-// function goToChat(chat) {
-//   const otherUserId = Object.keys(chat.users).find(
-//     (id) => id !== user.value.id
-//   );
-//   router.push(`/usuario/${otherUserId}/chat`);
-// }
 
 function goToChat(chat) {
   const otherUserId = Object.keys(chat.users).find(
@@ -67,22 +46,6 @@ function goToChat(chat) {
   }
 }
 
-// const filteredChats = computed(() => {
-//   if (!searchTerm.value) return chats.value;
-
-//   const term = searchTerm.value.toLowerCase().trim();
-
-//   return chats.value.filter((chat) => {
-//     const otherUser = Object.entries(chat.users).find(
-//       ([id]) => id !== user.value.id
-//     );
-
-//     const nombre = otherUser?.[1]?.nombre?.toLowerCase() || "";
-//     const displayName = otherUser?.[1]?.displayName?.toLowerCase() || "";
-
-//     return nombre.includes(term) || displayName.includes(term);
-//   });
-// });
 const filteredChats = computed(() => {
   if (!searchTerm.value) return chats.value;
 

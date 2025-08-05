@@ -21,7 +21,7 @@ const props = defineProps({
 const router = useRouter();
 
 function goBack() {
-  router.push("/chat");
+  router.back();
 }
 </script>
 

@@ -58,15 +58,6 @@ function goToList() {
   router.push("/usuario/" + props.user.id + "/valorationList");
 }
 
-// function handlePhotoUpdated(success) {
-//   if (success) {
-//     console.log("Foto de perfil actualizada con éxito");
-//   } else {
-//     console.log("Error al actualizar la foto de perfil");
-//   }
-//   flagChangePhoto.value = false;
-// }
-
 const promedioEstrellas = computed(() => {
   const valoraciones = props.user.valoraciones || [];
   if (valoraciones.length === 0) return 0;
@@ -93,10 +84,6 @@ function onPreview(url) {
   props.user.photoURL = url;
 }
 
-// function onSave(url) {
-//   props.user.photoURL = url;
-//   flagChangePhoto.value = false;
-// }
 </script>
 
 <template>

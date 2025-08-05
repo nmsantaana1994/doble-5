@@ -1,36 +1,48 @@
-import { addDoc, collection, doc, getDoc, updateDoc, query, where, onSnapshot, orderBy, deleteDoc, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  updateDoc,
+  query,
+  where,
+  onSnapshot,
+  orderBy,
+  deleteDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 import { db } from "../../services/firebase";
 
 export const createNotification = async (
-    userId,
-    message,
-    tipo = null,
-    referenciaId = null,
-    ruta = null
+  userId,
+  message,
+  tipo = null,
+  referenciaId = null,
+  ruta = null
 ) => {
-    try {
-        const userDocRef = doc(db, "users", userId);
-        const userSnap = await getDoc(userDocRef);
+  try {
+    const userDocRef = doc(db, "users", userId);
+    const userSnap = await getDoc(userDocRef);
 
-        if (!userSnap.exists()) return;
+    if (!userSnap.exists()) return;
 
-        const settings = userSnap.data().settings?.notifications || {};
+    const settings = userSnap.data().settings?.notifications || {};
 
-        if (tipo && settings[tipo] === false) return; // no crear si está desactivado
+    if (tipo && settings[tipo] === false) return; // no crear si está desactivado
 
-        const notificacionesRef = collection(db, "notificaciones");
-        await addDoc(notificacionesRef, {
-            userId,
-            mensaje: message,
-            leida: false,
-            tipo,
-            referenciaId,
-            ruta,
-            created_at: serverTimestamp(),
-        });
-    } catch (error) {
-        console.error("Error al crear la notificación:", error);
-    }
+    const notificacionesRef = collection(db, "notificaciones");
+    await addDoc(notificacionesRef, {
+      userId,
+      mensaje: message,
+      leida: false,
+      tipo,
+      referenciaId,
+      ruta,
+      created_at: serverTimestamp(),
+    });
+  } catch (error) {
+    console.error("Error al crear la notificación:", error);
+  }
 };
 
 // // Función para crear una notificación
@@ -67,10 +79,8 @@ export const obtenerNotificaciones = (userId, callback) => {
           id: doc.id,
           ...doc.data(),
         }));
-        console.log("Notificaciones obtenidas desde Firebase:", notificaciones); // Depuración
         callback(notificaciones);
       } else {
-        console.warn("No se encontraron notificaciones para el usuario:", userId);
         callback([]); // Devolver un array vacío si no hay notificaciones
       }
     },
