@@ -24,7 +24,6 @@ async function inscribirseAlPartido(idPartido) {
         type: "success",
         message: "Usuario inscripto correctamente.",
       });
-      console.log("Usuario inscrito correctamente.");
     } else {
       console.error("No se ha encontrado el partido para inscribirse.");
     }

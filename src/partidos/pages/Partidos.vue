@@ -67,8 +67,6 @@ function listenToPartidos(userId) {
 
     partidos.value = todos;
     Mispartidos.value = mios;
-
-    console.log("partidos actuales:", partidos.value);
   });
 }
 
@@ -92,7 +90,6 @@ onMounted(async () => {
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
     barrios.value = docSnap.data().nombres || [];
-    console.log("barrios", barrios.value);
   } else {
     console.warn("Documento capital_federal no encontrado");
   }

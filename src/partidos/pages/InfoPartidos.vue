@@ -36,7 +36,6 @@ onMounted(async () => {
   try {
     const partido = await getPartidoById(route.params.id);
     partidoFiltrado.value = partido;
-    console.log(partidoFiltrado.value);
     flagInscription.value = estaInscripto();
     listenToChanges();
     if (user.value.id === partidoFiltrado.value.userId) {
@@ -142,7 +141,6 @@ async function eliminarPartido(userid) {
         setFeedbackMessage({ type: "error", message: error });
       }
     } else if (result === "closex") {
-      console.log("no hacer nada");
       return;
     }
   } catch (error) {

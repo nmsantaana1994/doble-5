@@ -5,7 +5,6 @@ export async function getCanchaById(idCancha) {
   try {
     const canchaDoc = await getDoc(doc(db, "admin-canchas", idCancha));
     if (canchaDoc.exists()) {
-      // El documento existe, devolver los datos del partido
       return canchaDoc.data();
     } else {
       // El documento no existe
@@ -21,13 +20,11 @@ export async function getCanchaById(idCancha) {
 export async function actualizarCancha(idCancha, reservas) {
   try {
     let cancha = await getCanchaById(idCancha);
-    
-    // Si no hay reservas para ese día, inicializalo
+
     if (!cancha?.reservas[reservas.fecha]) {
       cancha.reservas[reservas.fecha] = {};
     }
 
-    // Verificar si ya existe una reserva para esa hora
     const reservaExistente = cancha.reservas[reservas.fecha][reservas.hora];
     if (reservaExistente && reservaExistente.disponible === false) {
       throw new Error(
@@ -35,7 +32,6 @@ export async function actualizarCancha(idCancha, reservas) {
       );
     }
 
-    // Agregar o actualizar la reserva
     cancha.reservas[reservas.fecha][reservas.hora] = {
       disponible: false, // marcar como ocupada
     };
@@ -52,10 +48,6 @@ export async function actualizarListaReservas(idCancha, cancha) {
     const canchaRef = doc(db, "admin-canchas", idCancha);
     await updateDoc(canchaRef, {
       reservas: cancha.reservas,
-    });
-    console.log("Contenido que se va a guardar:", {
-      reservas: cancha.reservas,
-      horarios: cancha.horarios,
     });
     console.log("cancha actualizada correctamente");
   } catch (error) {

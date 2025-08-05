@@ -65,11 +65,8 @@ export async function getPartidoById(idPartido) {
   try {
     const partidoDoc = await getDoc(doc(db, "partidos", idPartido));
     if (partidoDoc.exists()) {
-      // El documento existe, devolver los datos del partido
       return partidoDoc.data();
     } else {
-      // El documento no existe
-      console.log("No se encontró el partido con el ID proporcionado.");
       return null;
     }
   } catch (error) {
@@ -79,7 +76,6 @@ export async function getPartidoById(idPartido) {
 }
 
 export async function inscribirPartido(idPartido, usuarioInscripto) {
-  console.log(idPartido, usuarioInscripto);
   try {
     let partido = await getPartidoById(idPartido);
     let usuario = {
@@ -99,7 +95,6 @@ export async function inscribirPartido(idPartido, usuarioInscripto) {
 
     partido.contadorInscriptos.push(usuario);
     await actualizarListaInscriptos(idPartido, partido.contadorInscriptos);
-    console.log("Usuario inscripto correctamente.");
   } catch (error) {
     console.error("Error al inscribirse al partido:", error);
     throw error;
