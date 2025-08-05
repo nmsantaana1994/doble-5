@@ -86,10 +86,8 @@ function useCargaPartido() {
           setFeedbackMessage({ type: "error", message: error });
         }
       } else if (!result) {
-        console.log("no sumarme al partido");
         router.push("/home");
       } else if (result === "closex") {
-        console.log("no hacer nada");
         router.push("/home");
         return;
       }
@@ -113,7 +111,6 @@ onMounted(async () => {
   try {
     const canchasData = await getCanchas();
     canchas.value = canchasData;
-    console.log(canchas.value);
   } catch (error) {
     console.error(error.message);
   }
@@ -146,7 +143,6 @@ function handleCanchaChange() {
   } else {
     availableHorarios.value = [];
   }
-  console.log("availableHorarios", availableHorarios);
 }
 
 const isFormValid = computed(() => {

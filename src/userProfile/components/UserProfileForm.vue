@@ -135,36 +135,6 @@ function useEditProfile(user) {
           </Label>
           <Input type="date" id="nacimiento" v-model="form.nacimiento" />
         </div>
-        <!-- <div class="mb-3">
-          <Label for="nivel" class="me-3 fw-bold">Nivel de Juego: </Label>
-          <Input id="nivel" v-model="form.nivel" />
-        </div> -->
-        <!-- 
-        <div class="mb-3">
-          <Label class="me-3 fw-bold">VALORACIONES</Label>
-          <div class="estrellas-editables">
-            <span
-              v-for="n in 5"
-              :key="n"
-              class="estrella"
-              :class="{ activa: n <= form.valoracion }"
-              @click="form.valoracion = n"
-              >★</span
-            >
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <Label for="comentario" class="me-3 fw-bold">COMENTARIO:</Label>
-          <textarea
-            id="comentario"
-            v-model="form.comentario"
-            rows="3"
-            class="form-control"
-            placeholder="¿Qué tipo de jugador sos?"
-          ></textarea>
-        </div> -->
-
         <div class="mb-3">
           <Label for="genero" class="me-3 fw-bold">GÉNERO: </Label>
           <Input id="genero" v-model="form.genero" />
@@ -193,7 +163,7 @@ function useEditProfile(user) {
             </div>
           </div>
         </div>
-        <Button class="btn btn-primary w-100">
+        <Button class="btn w-100 save_changes">
           <LoadingContext :loading="loading"> GUARDAR CAMBIOS </LoadingContext>
         </Button>
       </form>
@@ -215,5 +185,8 @@ function useEditProfile(user) {
 
 .estrella.activa {
   color: gold;
+}
+.save_changes {
+  color: white;
 }
 </style>
