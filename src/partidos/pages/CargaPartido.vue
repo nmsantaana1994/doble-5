@@ -129,17 +129,39 @@ const cantidadJugadoresOptions = computed(() => {
   return [];
 });
 
+// function handleCanchaChange() {
+//   if (selectedCancha.value && selectedDia.value) {
+//     const horarios = Object.keys(selectedCancha.value.horarios || {});
+//     availableHorarios.value = horarios.map((horario) => ({
+//       horario,
+//       disponible: checkDisponibilidad(
+//         selectedDia.value,
+//         horario,
+//         selectedCancha.value
+//       ),
+//     }));
+//   } else {
+//     availableHorarios.value = [];
+//   }
+// }
+
 function handleCanchaChange() {
   if (selectedCancha.value && selectedDia.value) {
     const horarios = Object.keys(selectedCancha.value.horarios || {});
-    availableHorarios.value = horarios.map((horario) => ({
-      horario,
-      disponible: checkDisponibilidad(
-        selectedDia.value,
+    availableHorarios.value = horarios
+      .map((horario) => ({
         horario,
-        selectedCancha.value
-      ),
-    }));
+        disponible: checkDisponibilidad(
+          selectedDia.value,
+          horario,
+          selectedCancha.value
+        ),
+      }))
+      .sort((a, b) => {
+        const horaA = parseInt(a.horario.split(" ")[0]);
+        const horaB = parseInt(b.horario.split(" ")[0]);
+        return horaA - horaB;
+      });
   } else {
     availableHorarios.value = [];
   }
@@ -244,9 +266,7 @@ watch([selectedCancha, selectedDia], handleCanchaChange);
               :key="horario.horario"
               :disabled="!horario.disponible"
             >
-              {{ horario.horario }} ({{
-                horario.disponible ? "Disponible" : "No Disponible"
-              }})
+              {{ horario.horario }}
             </option>
           </select>
         </div>

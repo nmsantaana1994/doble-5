@@ -43,17 +43,17 @@ function getRuta(profileID) {
   <Loading :loading="loading" />
   <HeaderPage :route="ruta" :title="'Valoraciones'" />
   <Section>
+    <div class="col-12 go_valoration" v-if="profile">
+      <router-link
+        :to="`/usuario/${profile.id}/valoration`"
+        style="color: var(--primary-color)"
+        class="text-decoration-none"
+        >¿Querés dejar una valoracion a
+        {{ profile.displayName ? profile.displayName : profile.nombre }}
+        ?</router-link
+      >
+    </div>
     <template v-if="profile && profile.valoraciones?.length > 0">
-      <div class="col-12 go_valoration" v-if="profile">
-        <router-link
-          :to="`/usuario/${profile.id}/valoration`"
-          style="color: var(--primary-color)"
-          class="text-decoration-none"
-          >¿Querés dejar una valoracion a
-          {{ profile.displayName ? profile.displayName : profile.nombre }}
-          ?</router-link
-        >
-      </div>
       <div
         v-for="(valoracion, index) in profile.valoraciones"
         :key="index"
