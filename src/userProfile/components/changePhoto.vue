@@ -10,7 +10,8 @@ import Button from "../../components/Button.vue";
 
 // Obtengo el usuario y las funciones de feedback
 const { user } = useAuth();
-const { setFeedbackMessage, clearFeedbackMessage } = inject(notificationProvider);
+const { setFeedbackMessage, clearFeedbackMessage } =
+  inject(notificationProvider);
 // Emit para notificar al padre cuando termine
 const emit = defineEmits(["preview", "saved"]);
 
@@ -39,17 +40,17 @@ async function handleSubmit() {
   try {
     await updateUserProfile(user.value.id, {
       displayName: user.value.displayName,
-      nombre:      user.value.nombre,
-      apellido:    user.value.apellido,
-      email:       user.value.email,
-      nacimiento:  user.value.nacimiento,
-      followers:   user.value.followers,
-      following:   user.value.following,
-      valoraciones:user.value.valoraciones,
-      genero:      user.value.genero,
-      barrio:      user.value.barrio,
-      telefono:    user.value.telefono,
-      photoURL:    form.value.photoURL,
+      nombre: user.value.nombre,
+      apellido: user.value.apellido,
+      email: user.value.email,
+      nacimiento: user.value.nacimiento,
+      followers: user.value.followers,
+      following: user.value.following,
+      valoraciones: user.value.valoraciones,
+      genero: user.value.genero,
+      barrio: user.value.barrio,
+      telefono: user.value.telefono,
+      photoURL: form.value.photoURL,
     });
 
     setFeedbackMessage({
@@ -63,7 +64,7 @@ async function handleSubmit() {
     console.error("[handleSubmit] error al actualizar foto:", err);
     setFeedbackMessage({
       type: "error",
-      message: 
+      message:
         "Ocurrió un error inesperado al tratar de actualizar la foto de perfil: " +
         (err.message || err),
     });
@@ -80,7 +81,7 @@ async function handleSubmit() {
       <Input type="file" id="photoURL" @change="handleFile" />
     </div>
     <div class="col-12 d-grid gap-2">
-      <Button class="btn btn-primary w-100" type="submit" :loading="loading">
+      <Button class="btn w-100" type="submit" :loading="loading">
         ACTUALIZAR MI FOTO
       </Button>
     </div>

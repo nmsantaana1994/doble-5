@@ -55,9 +55,11 @@ onMounted(async () => {
     </template>
 
     <div class="my-3">
-      <Button class="btn btn-succes text-white w-100" @click="toggleEditing">{{
-        editing ? "DEJAR DE EDITAR" : "EDITAR PERFIL"
-      }}</Button>
+      <Button
+        class="btn .save_changes text-white w-100"
+        @click="toggleEditing"
+        >{{ editing ? "DEJAR DE EDITAR" : "EDITAR PERFIL" }}</Button
+      >
     </div>
   </Section>
 </template>

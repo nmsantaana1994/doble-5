@@ -133,7 +133,7 @@ onUnmounted(() => {
                 <p class="text-start h4 m-0">
                   {{ user.displayName ? user.displayName : user.nombre }}
                 </p>
-                <p class="text-start m-0">{{ user.email }}</p>
+                <p class="text-start m-0 email">{{ user.email }}</p>
               </div>
             </li>
             <li>
@@ -332,5 +332,12 @@ nav {
 }
 .pt-6 {
   padding-top: 6rem;
+}
+
+.email {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
 }
 </style>

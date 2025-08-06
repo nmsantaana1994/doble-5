@@ -39,7 +39,6 @@ const fetchUserData = async () => {
     } else {
       isMyProfile.value = false;
     }
-    loading.value = true;
     const seguidores = await obtenerSeguidores(user.value.id);
     const siguiendo = await obtenerSiguiendo(user.value.id);
 
@@ -50,7 +49,6 @@ const fetchUserData = async () => {
     userFollowing.value = seguidores.some(
       (usuario) => usuario.id === userAuth.value.id
     );
-    loading.value = false;
   } catch (error) {
     console.error("Error al obtener seguidores y siguiendo:", error);
   }
@@ -114,8 +112,8 @@ const seguirDejarSeguir = async () => {
     <Section>
       <UserProfileForm @profile-updated="fetchUserData" />
       <div class="my-3" v-if="isMyProfile">
-        <Button class="btn btn-primary w-100" @click="toggleEditing">{{
-          editing ? "Dejar de Editar" : "Editar mi Perfil"
+        <Button class="btn w-100" @click="toggleEditing">{{
+          editing ? "DEJAR DE EDITAR" : "EDITAR MI PERFIL"
         }}</Button>
       </div>
     </Section>
@@ -134,8 +132,8 @@ const seguirDejarSeguir = async () => {
       </div>
 
       <div class="my-3" v-if="isMyProfile">
-        <Button class="btn btn-primary w-100" @click="toggleEditing">{{
-          editing ? "Dejar de Editar" : "Editar mi Perfil"
+        <Button class="btn w-100" @click="toggleEditing">{{
+          editing ? "DEJAR DE EDITAR" : "EDITAR MI PERFIL"
         }}</Button>
       </div>
     </Section>
