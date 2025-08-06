@@ -81,13 +81,8 @@ async function handleSubmit() {
       <Input type="file" id="photoURL" @change="handleFile" />
     </div>
     <div class="col-12 d-grid gap-2">
-<<<<<<< Updated upstream
-      <Button class="btn btn-primary w-100" type="submit" :loading="loading">
-        Actualizar mi foto
-=======
       <Button class="btn w-100" type="submit" :loading="loading">
         ACTUALIZAR MI FOTO
->>>>>>> Stashed changes
       </Button>
     </div>
   </form>

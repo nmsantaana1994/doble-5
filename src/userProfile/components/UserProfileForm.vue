@@ -151,7 +151,6 @@ function useEditProfile(user) {
           <Label for="photoURL" class="fw-bold">FOTO DE PERFIL: </Label>
           <Input type="file" id="photoURL" @change="handleFile" />
         </div>
-<<<<<<< Updated upstream
         <div v-if="form.photoURL !== null" class="row mb-3">
           <div class="col-12 d-flex flex-column align-items-center">
             <p class="mb-3 fw-bold">Previsualización de la imagen:</p>
@@ -166,20 +165,6 @@ function useEditProfile(user) {
         </div>
         <Button class="btn w-100 save_changes">
           <LoadingContext :loading="loading"> GUARDAR CAMBIOS </LoadingContext>
-=======
-        <div v-if="form.photoURL !== null" class="mb-3">
-          <p class="mb-3 fw-bold">Previsualización de la imagen:</p>
-          <img
-            :src="form.photoURL"
-            alt="Previsualización foto de perfil"
-            class="w-100"
-          />
-        </div> -->
-        <Button class="btn w-100">
-          <LoadingContext :loading="loading">
-            ACTUALIZAR MIS DATOS
-          </LoadingContext>
->>>>>>> Stashed changes
         </Button>
       </form>
     </div>
