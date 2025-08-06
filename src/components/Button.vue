@@ -32,5 +32,6 @@ defineProps({
 button {
   background-color: #5d880d;
   border: none;
+  color: white;
 }
 </style>

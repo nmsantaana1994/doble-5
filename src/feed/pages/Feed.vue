@@ -26,12 +26,14 @@ function useFeed() {
       const postSnapshot = await getPosts();
 
       posts.value = postSnapshot.docs.map((doc) => {
+        console.log("doc", doc);
+
         const postData = doc.data();
         postData.likes = postData.likes || [];
         postData.liked = postData.likes.includes(user.value.id);
         return { id: doc.id, ...postData };
       });
-      console.log(posts.value);
+      console.log("post value", posts.value);
     } catch (error) {
       console.error("Error al obtener las publicaciones:", error);
     }
@@ -51,15 +53,14 @@ function useFeed() {
           photoURL: user.value.photoURL,
           likes: [],
           comments: [],
-          // Otros campos que desees agregar
         });
 
         newPostContent.value = "";
 
-        // Después de publicar, actualiza la lista de posts
         const updatedPostSnapshot = await getPosts();
         posts.value = updatedPostSnapshot.docs.map((doc) => {
           const postData = doc.data();
+          console.log("postData", postData);
           postData.likes = postData.likes || [];
           postData.liked = postData.likes.includes(user.value.id);
           return { id: doc.id, ...postData };
@@ -76,10 +77,8 @@ function useFeed() {
 
   const toggleLikeView = async (post) => {
     try {
-      // Llama a la función del servicio para manejar el "Me gusta"
       const updatedPost = await toggleLike(post.id, user.value);
 
-      // Actualiza el post en la lista con los nuevos datos
       const postIndex = posts.value.findIndex((p) => p.id === updatedPost.id);
       if (postIndex !== -1) {
         posts.value[postIndex] = updatedPost;
@@ -120,12 +119,6 @@ function useFeed() {
                   rows="1"
                   class="form-control flex-grow-1"
                 ></textarea>
-                <!-- <button type="submit" class="btn-publish ms-2">
-                      <img
-                        src="../../assets/img/publicar.png"
-                        alt="Enviar"
-                      />
-                    </button> -->
               </div>
               <div class="col-12 d-flex justify-content-end">
                 <button type="submit" class="btn-publish ms-2">

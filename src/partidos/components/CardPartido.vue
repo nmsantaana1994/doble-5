@@ -2,7 +2,7 @@
 import { getFirestore } from "firebase/firestore";
 import { useAuth } from "../../composition/useAuth";
 import { inscribirPartido } from "../services/partidos";
-import { inject } from "vue";
+import { inject, watch, onMounted, ref } from "vue";
 import { notificationProvider } from "../../symbols/symbols";
 import { convertirFecha } from "../../helpers/date";
 
@@ -14,6 +14,26 @@ const { setFeedbackMessage, clearFeedbackMessage } =
 const props = defineProps({
   partido: Object,
 });
+
+const estaInscripto = ref(false);
+
+onMounted(() => {
+  const inscriptos = props.partido?.contadorInscriptos || [];
+  estaInscripto.value = inscriptos.some(
+    (inscripto) => inscripto.uid === user.value.id
+  );
+});
+
+watch(
+  () => props.partido,
+  (nuevoPartido) => {
+    const inscriptos = nuevoPartido?.contadorInscriptos || [];
+    estaInscripto.value = inscriptos.some(
+      (inscripto) => inscripto.uid === user.value.id
+    );
+  },
+  { immediate: true, deep: true }
+);
 
 async function inscribirseAlPartido(idPartido) {
   try {
@@ -110,10 +130,10 @@ async function inscribirseAlPartido(idPartido) {
             >
           </div>
           <div
-            @click="inscribirseAlPartido(partido?.id)"
+            @click="estaInscripto ? null : inscribirseAlPartido(partido?.id)"
             class="col-6 fondo-boton-card rounded d-flex justify-content-center text-white align-items-center"
           >
-            INSCRIBIRME
+            {{ estaInscripto ? "INSCRIPTO" : "INSCRIBIRME" }}
           </div>
         </div>
       </div>
