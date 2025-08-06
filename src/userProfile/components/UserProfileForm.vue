@@ -103,7 +103,7 @@ function useEditProfile(user) {
 </script>
 
 <template>
-  <div class="row d-flex">
+  <div class="row">
     <div class="col-12 mb-3 d-flex justify-content-center">
       <div class="w-50">
         <Image :src="user.photoURL" />
@@ -147,24 +147,22 @@ function useEditProfile(user) {
           <Label for="telefono" class="me-3 fw-bold">TELÉFONO: </Label>
           <Input id="telefono" v-model="form.telefono" />
         </div>
-        <div class="mb-3">
+        <!-- <div class="mb-3">
           <Label for="photoURL" class="fw-bold">FOTO DE PERFIL: </Label>
           <Input type="file" id="photoURL" @change="handleFile" />
         </div>
-        <div v-if="form.photoURL !== null" class="row mb-3">
-          <div class="col-12 d-flex flex-column align-items-center">
-            <p class="mb-3 fw-bold">Previsualización de la imagen:</p>
-            <div class="w-50">
-              <img
-                :src="form.photoURL"
-                alt="Previsualización foto de perfil"
-                class="w-100"
-              />
-            </div>
-          </div>
-        </div>
-        <Button class="btn w-100 save_changes">
-          <LoadingContext :loading="loading"> GUARDAR CAMBIOS </LoadingContext>
+        <div v-if="form.photoURL !== null" class="mb-3">
+          <p class="mb-3 fw-bold">Previsualización de la imagen:</p>
+          <img
+            :src="form.photoURL"
+            alt="Previsualización foto de perfil"
+            class="w-100"
+          />
+        </div> -->
+        <Button class="btn btn-primary w-100">
+          <LoadingContext :loading="loading">
+            ACTUALIZAR MIS DATOS
+          </LoadingContext>
         </Button>
       </form>
     </div>
