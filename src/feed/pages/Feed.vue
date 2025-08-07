@@ -6,8 +6,8 @@ import { publishPost, getPosts, toggleLike } from "../../services/feed.js";
 import { dateToString } from "../../helpers/date.js";
 import Loader from "../../components/Loader.vue";
 import HeaderPage from "../../components/HeaderPage.vue";
-import likeIcon from '../../assets/img/like.png'
-import likeFilledIcon from '../../assets/img/like-filled.png'
+import likeIcon from 'assets/img/like.png'
+import likeFilledIcon from 'assets/img/like-filled.png'
 const { user, newPostContent, loading, posts, handleSubmit, toggleLikeView } =
   useFeed();
 
