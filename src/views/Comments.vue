@@ -8,6 +8,8 @@ import { useAuth } from "../composition/useAuth.js";
 import Loader from "../components/Loader.vue";
 import HeaderPage from "../components/HeaderPage.vue";
 import Section from "../components/Section.vue";
+import likeIcon from 'assets/img/like.png'
+import likeFilledIcon from 'assets/img/like-filled.png'
 
 const { post, user, newComment, loading, addCommentView, toggleLikeView } =
   useComments();
@@ -131,11 +133,7 @@ function useComments() {
           <div class="col-6 d-flex align-items-center">
             <button @click="toggleLikeView" class="action-btn">
               <img
-                :src="
-                  post.liked
-                    ? 'assets/img/like-filled.png'
-                    : 'assets/img/like.png'
-                "
+                :src="post.liked ? likeFilledIcon : likeIcon"
                 alt="Me gusta"
               />
               <span class="ms-2">{{ post.likes.length }} Me gusta</span>
