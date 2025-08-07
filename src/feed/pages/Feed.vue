@@ -172,8 +172,8 @@ function useFeed() {
                 <img
                   :src="
                     post.liked
-                      ? 'assets/img/like-filled.png'
-                      : 'assets/img/like.png'
+                      ? '../../assets/img/like-filled.png'
+                      : '../../assets/img/like.png'
                   "
                   alt="Me gusta"
                 />
