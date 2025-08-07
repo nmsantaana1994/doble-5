@@ -8,8 +8,8 @@ import { useAuth } from "../composition/useAuth.js";
 import Loader from "../components/Loader.vue";
 import HeaderPage from "../components/HeaderPage.vue";
 import Section from "../components/Section.vue";
-import likeIcon from 'assets/img/like.png'
-import likeFilledIcon from 'assets/img/like-filled.png'
+import likeIcon from '../assets/img/like.png'
+import likeFilledIcon from '../assets/img/like-filled.png'
 
 const { post, user, newComment, loading, addCommentView, toggleLikeView } =
   useComments();
