@@ -6,6 +6,8 @@ import { publishPost, getPosts, toggleLike } from "../../services/feed.js";
 import { dateToString } from "../../helpers/date.js";
 import Loader from "../../components/Loader.vue";
 import HeaderPage from "../../components/HeaderPage.vue";
+import likeIcon from '../../assets/img/like.png'
+import likeFilledIcon from '../../assets/img/like-filled.png'
 const { user, newPostContent, loading, posts, handleSubmit, toggleLikeView } =
   useFeed();
 
@@ -170,11 +172,7 @@ function useFeed() {
             <div class="col-6 d-flex align-items-center">
               <button @click="toggleLikeView(post)" class="action-btn">
                 <img
-                  :src="
-                    post.liked
-                      ? '../../assets/img/like-filled.png'
-                      : '../../assets/img/like.png'
-                  "
+                  :src="post.liked ? likeFilledIcon : likeIcon"
                   alt="Me gusta"
                 />
                 <span class="ms-2">{{ post.likes.length }}</span>
